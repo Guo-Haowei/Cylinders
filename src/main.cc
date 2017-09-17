@@ -30,13 +30,16 @@ void updateFPSCount(double& previousSecond, int& updates) {
 
 int main() {
 
-  static const float arr[] = {
-    -1.0f, -1.0f, 0.0f,
-    0.0f, 1.0f, 0.0f,
-    1.0f, -1.0f, 0.0f
-  };
-
-  std::vector<float> vertices(arr, arr + sizeof(arr) / sizeof(arr[0]));
+  std::vector<float> vertices;
+  vertices.push_back(-1.0f);
+  vertices.push_back(-1.0f);
+  vertices.push_back(0.0f);
+  vertices.push_back(0.0f);
+  vertices.push_back(1.0f);
+  vertices.push_back(0.0f);
+  vertices.push_back(1.0f);
+  vertices.push_back(-1.0f);
+  vertices.push_back(0.0f);
   std::vector<float> normals;
   std::vector<unsigned int> indices;
   indices.push_back(0);
@@ -49,6 +52,7 @@ int main() {
   std::vector<Entity*> entities;
   RawModel model = loader.loadToVAO(vertices, normals, indices);
   Entity entity(model);
+  entities.push_back(&entity);
 
   int fps = 60;
   double currentTime, lastTime = DisplayManager::getTime(), previousSecond = lastTime;

@@ -1,6 +1,7 @@
 #define GLEW_STATIC
 #include "Renderer.h"
 #include <GL/glew.h>
+#include <iostream>
 
 Renderer::Renderer() { }
 
@@ -8,6 +9,7 @@ void Renderer::render(vector<Entity*> entities) {
   prepare();
   entityShader.start();
   for (auto& entity: entities) {
+    prepareModel(entity);
     renderEntity(entity);
   }
   entityShader.stop();
@@ -19,7 +21,7 @@ void Renderer::renderEntity(Entity* entity) {
 }
 
 void Renderer::prepare() {
-  glClearColor(0.3f, 0.4f, 0.3f, 1.0f);
+  glClearColor(0.3f, 0.4f, 0.4f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
