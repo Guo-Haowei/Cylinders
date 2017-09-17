@@ -1,4 +1,5 @@
 #pragma once
+#include <glm/glm.hpp>
 
 class ShaderProgram {
 private:
@@ -13,6 +14,9 @@ protected:
   virtual void getAllUniformLocations() = 0;
   int getUniformLocation(const char* uniformName);
   void loadFloat(int location, float value);
+  void loadVector3f(int location, glm::vec3 vec);
+  void loadMatrix4f(int location, glm::mat4 mat);
+  // write my own math library latter
   // void loadVector3f(int location, Vector3f vec);
   // void loadMatrix4f(int location, Matrix4f mat);
 public:

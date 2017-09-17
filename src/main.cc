@@ -31,20 +31,26 @@ void updateFPSCount(double& previousSecond, int& updates) {
 int main() {
 
   std::vector<float> vertices;
-  vertices.push_back(-1.0f);
-  vertices.push_back(-1.0f);
+  vertices.push_back(-0.5f);
+  vertices.push_back(-0.5f);
   vertices.push_back(0.0f);
+  vertices.push_back(-0.5f);
+  vertices.push_back(0.5f);
   vertices.push_back(0.0f);
-  vertices.push_back(1.0f);
+  vertices.push_back(0.5f);
+  vertices.push_back(0.5f);
   vertices.push_back(0.0f);
-  vertices.push_back(1.0f);
-  vertices.push_back(-1.0f);
+  vertices.push_back(0.5f);
+  vertices.push_back(-0.5f);
   vertices.push_back(0.0f);
   std::vector<float> normals;
   std::vector<unsigned int> indices;
   indices.push_back(0);
   indices.push_back(1);
   indices.push_back(2);
+  indices.push_back(0);
+  indices.push_back(2);
+  indices.push_back(3);
 
   DisplayManager::createDisplay();
   Loader loader;

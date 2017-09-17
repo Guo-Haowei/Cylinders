@@ -13,5 +13,19 @@ void EntityShader::bindAttributes() {
 }
 
 void EntityShader::getAllUniformLocations() {
+  location_transformationMatrix = getUniformLocation("transformationMatrix");
+  location_projectionMatrix = getUniformLocation("projectionMatrix");
+  location_viewMatrix = getUniformLocation("viewMatrix");
+}
 
+void EntityShader::loadTransformationMatrx(glm::mat4 mat) {
+  loadMatrix4f(location_transformationMatrix, mat);
+}
+
+void EntityShader::loadProjectionMatrix(glm::mat4 mat) {
+  loadMatrix4f(location_projectionMatrix, mat);
+}
+
+void EntityShader::loadViewMatrix(glm::mat4 mat) {
+  loadMatrix4f(location_viewMatrix, mat);
 }

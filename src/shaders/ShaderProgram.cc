@@ -1,5 +1,6 @@
 #define GLEW_STATIC
 #include "ShaderProgram.h"
+#include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h>
 #include <fstream>
 #include <iostream>
@@ -55,6 +56,14 @@ int ShaderProgram::getUniformLocation(const char* uniformName) {
 
 void ShaderProgram::loadFloat(int location, float value) {
   glUniform1f(location, value);
+}
+
+void ShaderProgram::loadVector3f(int location, glm::vec3 vec) {
+  glUniform3f(location, vec.x ,vec.y, vec.z);
+}
+
+void ShaderProgram::loadMatrix4f(int location, glm::mat4 mat) {
+  glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 unsigned int ShaderProgram::loadShader(const char* file, unsigned int type) {
