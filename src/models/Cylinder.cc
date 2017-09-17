@@ -27,7 +27,7 @@ RawModel Cylinder::createUniformCylinder(Loader& loader) {
   positions.push_back(0.0f);
 
   // indices
-  // circle part
+  // faces
   for (int i = 0; i + 2 < size; i += 2) {
     indices.push_back(size);
     indices.push_back(i);
@@ -42,6 +42,23 @@ RawModel Cylinder::createUniformCylinder(Loader& loader) {
   indices.push_back(size + 1);
   indices.push_back(1);
   indices.push_back(size - 1);
+
+  // side
+  for (int i = 0; i + 2 < size; i += 2) {
+    indices.push_back(i);
+    indices.push_back(i + 1);
+    indices.push_back(i + 2);
+    indices.push_back(i + 1);
+    indices.push_back(i + 2);
+    indices.push_back(i + 3);
+  }
+
+  indices.push_back(0);
+  indices.push_back(1);
+  indices.push_back(size - 1);
+  indices.push_back(0);
+  indices.push_back(size - 1);
+  indices.push_back(size - 2);
 
   return loader.loadToVAO(positions, normals, indices);
 }

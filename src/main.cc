@@ -33,36 +33,15 @@ void updateFPSCount(double& previousSecond, int& updates) {
 
 int main() {
 
-  // std::vector<float> vertices;
-  // vertices.push_back(-0.5f);
-  // vertices.push_back(-0.5f);
-  // vertices.push_back(-1.0f);
-  // vertices.push_back(-0.5f);
-  // vertices.push_back(0.5f);
-  // vertices.push_back(-1.0f);
-  // vertices.push_back(0.5f);
-  // vertices.push_back(0.5f);
-  // vertices.push_back(-1.0f);
-  // vertices.push_back(0.5f);
-  // vertices.push_back(-0.5f);
-  // vertices.push_back(-1.0f);
-  // std::vector<float> normals;
-  // std::vector<unsigned int> indices;
-  // indices.push_back(0);
-  // indices.push_back(1);
-  // indices.push_back(2);
-  // indices.push_back(0);
-  // indices.push_back(2);
-  // indices.push_back(3);
-
   DisplayManager::createDisplay();
   Loader loader;
   Renderer renderer;
   std::vector<Entity*> entities;
-  // RawModel model = loader.loadToVAO(vertices, normals, indices);
   RawModel model = Cylinder::createUniformCylinder(loader);
-  Entity entity(model, glm::vec3(0, 0, -5));
-  entities.push_back(&entity);
+  Entity entity1(model, glm::vec3(0, 0, -5));
+  Entity entity2(model, glm::vec3(0, 3, -7), glm::vec3(5, 6, -7));
+  entities.push_back(&entity1);
+  entities.push_back(&entity2);
   Camera camera;
 
   int fps = 60;
@@ -72,6 +51,7 @@ int main() {
 
   while (!DisplayManager::shouldCloseDisplay()) {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
+      entity1.changeRotation(0.01, 0.0, 0.0);
       DisplayManager::prepareDisplay();
 
       renderer.render(entities, camera);
