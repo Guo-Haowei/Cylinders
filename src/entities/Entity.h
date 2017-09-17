@@ -9,7 +9,7 @@ private:
   glm::vec3 rot;
   float scale;
 public:
-  Entity(RawModel& model, glm::vec3 pos, glm::vec3 rot, float scale);
+  Entity(RawModel& model, glm::vec3 pos = glm::vec3(0, 0, 0), glm::vec3 rot = glm::vec3(0, 0, 0), float scale = 1.0f);
   void changePosition(float dx, float dy, float dz);
   void changeRotation(float dx, float dy, float dz);
 
