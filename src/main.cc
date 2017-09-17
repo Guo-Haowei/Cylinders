@@ -1,9 +1,11 @@
 #include "entities/Camera.h"
 #include "entities/Entity.h"
+#include "models/Cylinder.h"
 #include "models/Loader.h"
 #include "models/RawModel.h"
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Renderer.h"
+#include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
 
@@ -31,34 +33,35 @@ void updateFPSCount(double& previousSecond, int& updates) {
 
 int main() {
 
-  std::vector<float> vertices;
-  vertices.push_back(-0.5f);
-  vertices.push_back(-0.5f);
-  vertices.push_back(-1.0f);
-  vertices.push_back(-0.5f);
-  vertices.push_back(0.5f);
-  vertices.push_back(-1.0f);
-  vertices.push_back(0.5f);
-  vertices.push_back(0.5f);
-  vertices.push_back(-1.0f);
-  vertices.push_back(0.5f);
-  vertices.push_back(-0.5f);
-  vertices.push_back(-1.0f);
-  std::vector<float> normals;
-  std::vector<unsigned int> indices;
-  indices.push_back(0);
-  indices.push_back(1);
-  indices.push_back(2);
-  indices.push_back(0);
-  indices.push_back(2);
-  indices.push_back(3);
+  // std::vector<float> vertices;
+  // vertices.push_back(-0.5f);
+  // vertices.push_back(-0.5f);
+  // vertices.push_back(-1.0f);
+  // vertices.push_back(-0.5f);
+  // vertices.push_back(0.5f);
+  // vertices.push_back(-1.0f);
+  // vertices.push_back(0.5f);
+  // vertices.push_back(0.5f);
+  // vertices.push_back(-1.0f);
+  // vertices.push_back(0.5f);
+  // vertices.push_back(-0.5f);
+  // vertices.push_back(-1.0f);
+  // std::vector<float> normals;
+  // std::vector<unsigned int> indices;
+  // indices.push_back(0);
+  // indices.push_back(1);
+  // indices.push_back(2);
+  // indices.push_back(0);
+  // indices.push_back(2);
+  // indices.push_back(3);
 
   DisplayManager::createDisplay();
   Loader loader;
   Renderer renderer;
   std::vector<Entity*> entities;
-  RawModel model = loader.loadToVAO(vertices, normals, indices);
-  Entity entity(model);
+  // RawModel model = loader.loadToVAO(vertices, normals, indices);
+  RawModel model = Cylinder::createUniformCylinder(loader);
+  Entity entity(model, glm::vec3(0, 0, -5));
   entities.push_back(&entity);
   Camera camera;
 
