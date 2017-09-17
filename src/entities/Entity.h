@@ -17,4 +17,5 @@ public:
   glm::vec3 getPos() const;
   glm::vec3 getRot() const;
   float getScale() const;
+  glm::mat4 createTransformationMatrix();
 };

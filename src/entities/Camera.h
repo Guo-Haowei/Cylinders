@@ -1,11 +1,11 @@
 #pragma once
+#include "../common.h"
 #include <glm/glm.hpp>
 
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 1.0f;
 const float SENSITIVITY = 0.1f;
-const float ZOOM = 45.0f;
 
 class Camera {
 private:
@@ -17,5 +17,17 @@ private:
 
   float pitch;
   float yaw;
+  float zoom;
+  float speed;
+  float sensitivity;
+
+  void updateCameraVectors();
+  void processKeyboard();
+  void processMouseMove();
 public:
+  Camera();
+
+  void update();
+  glm::mat4 getViewMatrix();
+  float getZoom() const;
 };

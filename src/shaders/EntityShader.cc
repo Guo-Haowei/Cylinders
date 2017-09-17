@@ -26,6 +26,6 @@ void EntityShader::loadProjectionMatrix(glm::mat4 mat) {
   loadMatrix4f(location_projectionMatrix, mat);
 }
 
-void EntityShader::loadViewMatrix(glm::mat4 mat) {
-  loadMatrix4f(location_viewMatrix, mat);
+void EntityShader::loadViewMatrix(Camera& camera) {
+  loadMatrix4f(location_viewMatrix, camera.getViewMatrix());
 }

@@ -1,3 +1,4 @@
+#include "entities/Camera.h"
 #include "entities/Entity.h"
 #include "models/Loader.h"
 #include "models/RawModel.h"
@@ -33,16 +34,16 @@ int main() {
   std::vector<float> vertices;
   vertices.push_back(-0.5f);
   vertices.push_back(-0.5f);
-  vertices.push_back(0.0f);
+  vertices.push_back(-1.0f);
   vertices.push_back(-0.5f);
   vertices.push_back(0.5f);
-  vertices.push_back(0.0f);
+  vertices.push_back(-1.0f);
   vertices.push_back(0.5f);
   vertices.push_back(0.5f);
-  vertices.push_back(0.0f);
+  vertices.push_back(-1.0f);
   vertices.push_back(0.5f);
   vertices.push_back(-0.5f);
-  vertices.push_back(0.0f);
+  vertices.push_back(-1.0f);
   std::vector<float> normals;
   std::vector<unsigned int> indices;
   indices.push_back(0);
@@ -59,6 +60,7 @@ int main() {
   RawModel model = loader.loadToVAO(vertices, normals, indices);
   Entity entity(model);
   entities.push_back(&entity);
+  Camera camera;
 
   int fps = 60;
   double currentTime, lastTime = DisplayManager::getTime(), previousSecond = lastTime;
@@ -69,7 +71,7 @@ int main() {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
       DisplayManager::prepareDisplay();
 
-      renderer.render(entities);
+      renderer.render(entities, camera);
 
       DisplayManager::updateDisplay();
       ++updates;

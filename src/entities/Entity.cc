@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 Entity::Entity(RawModel& model, glm::vec3 pos, glm::vec3 rot, float scale): model(model), pos(pos), rot(rot), scale(scale) { }
 
@@ -28,4 +29,14 @@ glm::vec3 Entity::getRot() const {
 
 float Entity::getScale() const {
   return scale;
+}
+
+glm::mat4 Entity::createTransformationMatrix() {
+  glm::mat4 matrix = glm::mat4(1);
+  matrix = glm::translate(matrix, pos);
+  matrix = glm::rotate(matrix, rot.x, glm::vec3(1, 0, 0));
+  matrix = glm::rotate(matrix, rot.y, glm::vec3(0, 1, 0));
+  matrix = glm::rotate(matrix, rot.z, glm::vec3(0, 0, 1));
+  matrix = glm::scale(matrix, glm::vec3(scale));
+  return matrix;
 }
