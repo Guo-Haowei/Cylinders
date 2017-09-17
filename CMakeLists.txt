@@ -15,6 +15,10 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIRS})
 
+# glm
+find_package(glm REQUIRED)
+include_directories(${GLM_INCLUDE_DIRS})
+
 file(GLOB_RECURSE SRCS *.cc)
 file(GLOB_RECURSE HDRS *.h)
 
