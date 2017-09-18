@@ -11,6 +11,7 @@ private:
   int location_transformationMatrix;
   int location_projectionMatrix;
   int location_viewMatrix;
+  int location_color;
 protected:
   void bindAttributes();
   void getAllUniformLocations();
@@ -20,4 +21,5 @@ public:
   void loadTransformationMatrx(glm::mat4 mat);
   void loadProjectionMatrix(glm::mat4 mat);
   void loadViewMatrix(Camera& camera);
+  void loadColor(glm::vec3 color);
 };

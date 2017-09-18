@@ -16,6 +16,7 @@ void EntityShader::getAllUniformLocations() {
   location_transformationMatrix = getUniformLocation("transformationMatrix");
   location_projectionMatrix = getUniformLocation("projectionMatrix");
   location_viewMatrix = getUniformLocation("viewMatrix");
+  location_color = getUniformLocation("color");
 }
 
 void EntityShader::loadTransformationMatrx(glm::mat4 mat) {
@@ -28,4 +29,8 @@ void EntityShader::loadProjectionMatrix(glm::mat4 mat) {
 
 void EntityShader::loadViewMatrix(Camera& camera) {
   loadMatrix4f(location_viewMatrix, camera.getViewMatrix());
+}
+
+void EntityShader::loadColor(glm::vec3 color) {
+  loadVector3f(location_color, color);
 }

@@ -38,8 +38,8 @@ int main() {
   Renderer renderer;
   std::vector<Entity*> entities;
   RawModel model = Cylinder::createUniformCylinder(loader);
-  Entity entity1(model, glm::vec3(0, 0, -5));
-  Entity entity2(model, glm::vec3(0, 3, -7), glm::vec3(5, 6, -7));
+  Entity entity1(model, glm::vec3(0.4, 0.7, 0.6), glm::vec3(0, 0, -5));
+  Entity entity2(model, glm::vec3(0.5, 0.2, 0.3), glm::vec3(0, 3, -7), glm::vec3(5, 6, -7));
   entities.push_back(&entity1);
   entities.push_back(&entity2);
   Camera camera;
