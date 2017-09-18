@@ -26,7 +26,7 @@ RawModel Cylinder::createUniformCylinder(Loader& loader) {
   positions.push_back(-1.0f);
   positions.push_back(0.0f);
 
-  // indices
+  // indices and normals
   // faces
   for (int i = 0; i + 2 < size; i += 2) {
     indices.push_back(size);
