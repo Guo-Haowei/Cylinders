@@ -1,6 +1,7 @@
 #define _USE_MATH_DEFINES
 #include "Cylinder.h"
 #include <math.h>
+#include <iostream>
 #include <vector>
 using std::vector;
 
@@ -29,36 +30,100 @@ RawModel Cylinder::createUniformCylinder(Loader& loader) {
   // indices and normals
   // faces
   for (int i = 0; i + 2 < size; i += 2) {
+    // upper face
     indices.push_back(size);
     indices.push_back(i);
     indices.push_back(i + 2);
+    // upper normal
+    normals.push_back(0.0f);
+    normals.push_back(1.0f);
+    normals.push_back(0.0f);
+    normals.push_back(0.0f);
+    normals.push_back(1.0f);
+    normals.push_back(0.0f);
+    normals.push_back(0.0f);
+    normals.push_back(1.0f);
+    normals.push_back(0.0f);
+    // lower face
     indices.push_back(size + 1);
     indices.push_back(i + 1);
     indices.push_back(i + 3);
+    // lower normal
+    normals.push_back(0.0f);
+    normals.push_back(-1.0f);
+    normals.push_back(0.0f);
+    normals.push_back(0.0f);
+    normals.push_back(-1.0f);
+    normals.push_back(0.0f);
+    normals.push_back(0.0f);
+    normals.push_back(-1.0f);
+    normals.push_back(0.0f);
   }
+  // upper face
   indices.push_back(size);
   indices.push_back(size - 2);
   indices.push_back(0);
+  // upper normal
+  normals.push_back(0);
+  normals.push_back(1);
+  normals.push_back(0);
+  normals.push_back(0);
+  normals.push_back(1);
+  normals.push_back(0);
+  normals.push_back(0);
+  normals.push_back(1);
+  normals.push_back(0);
+  // lower face
   indices.push_back(size + 1);
   indices.push_back(1);
   indices.push_back(size - 1);
+  // lower normal
+  normals.push_back(0);
+  normals.push_back(-1);
+  normals.push_back(0);
+  normals.push_back(0);
+  normals.push_back(-1);
+  normals.push_back(0);
+  normals.push_back(0);
+  normals.push_back(-1);
+  normals.push_back(0);
 
   // side
   for (int i = 0; i + 2 < size; i += 2) {
+    // face
     indices.push_back(i);
     indices.push_back(i + 1);
     indices.push_back(i + 2);
     indices.push_back(i + 1);
     indices.push_back(i + 2);
     indices.push_back(i + 3);
+    // normal
+    float x = (positions[3 * i] + positions[3 * i + 6]) / 2;
+    float z = (positions[3 * i + 2] + positions[3 * i + 8]) / 2;
+    for (int j = 0; j < 6; ++j) {
+      normals.push_back(x);
+      normals.push_back(0);
+      normals.push_back(z);
+    }
   }
-
+  // face
   indices.push_back(0);
   indices.push_back(1);
   indices.push_back(size - 1);
   indices.push_back(0);
   indices.push_back(size - 1);
   indices.push_back(size - 2);
+  // normal
+  float x = (positions[0] + positions[3 * size - 6]) / 2;
+  float z = (positions[2] + positions[3 * size - 4]) / 2;
+  for (int j = 0; j < 6; ++j) {
+    normals.push_back(x);
+    normals.push_back(0);
+    normals.push_back(z);
+  }
+  std::cout << positions.size() << std::endl;
+  std::cout << normals.size() << std::endl;
+  std::cout << indices.size() << std::endl;
 
   return loader.loadToVAO(positions, normals, indices);
 }
