@@ -14,6 +14,5 @@ void main() {
   vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
   gl_Position = projectionMatrix * viewMatrix * worldPosition;
   FragPos = vec3(worldPosition);
-  Normal = normalize(normal);
-  // Normal = vec3(0, 1, 0);
+  Normal = normalize(mat3(transpose(inverse(transformationMatrix))) * normal);
 }

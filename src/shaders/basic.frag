@@ -9,7 +9,7 @@ uniform vec3 color;
 
 void main() {
   // temp light properties
-  vec3 lightPos = vec3(0, 7, -8);
+  vec3 lightPos = vec3(0, -2, 8);
   vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
   vec3 lightDir = normalize(lightPos - FragPos);
 

@@ -18,6 +18,12 @@ RawModel Cylinder::createUniformCylinder(Loader& loader) {
     positions.push_back(x);
     positions.push_back(-1.0f);
     positions.push_back(z);
+    normals.push_back(x);
+    normals.push_back(1.0f);
+    normals.push_back(z);
+    normals.push_back(x);
+    normals.push_back(-1.0f);
+    normals.push_back(z);
   }
   int size = positions.size() / 3;
   positions.push_back(0.0f);
@@ -26,6 +32,12 @@ RawModel Cylinder::createUniformCylinder(Loader& loader) {
   positions.push_back(0.0f);
   positions.push_back(-1.0f);
   positions.push_back(0.0f);
+  normals.push_back(0.0f);
+  normals.push_back(1.0f);
+  normals.push_back(0.0f);
+  normals.push_back(0.0f);
+  normals.push_back(-1.0f);
+  normals.push_back(0.0f);
 
   // indices and normals
   // faces
@@ -35,58 +47,27 @@ RawModel Cylinder::createUniformCylinder(Loader& loader) {
     indices.push_back(i);
     indices.push_back(i + 2);
     // upper normal
-    normals.push_back(0.0f);
-    normals.push_back(1.0f);
-    normals.push_back(0.0f);
-    normals.push_back(0.0f);
-    normals.push_back(1.0f);
-    normals.push_back(0.0f);
-    normals.push_back(0.0f);
-    normals.push_back(1.0f);
-    normals.push_back(0.0f);
+
+
     // lower face
     indices.push_back(size + 1);
     indices.push_back(i + 1);
     indices.push_back(i + 3);
     // lower normal
-    normals.push_back(0.0f);
-    normals.push_back(-1.0f);
-    normals.push_back(0.0f);
-    normals.push_back(0.0f);
-    normals.push_back(-1.0f);
-    normals.push_back(0.0f);
-    normals.push_back(0.0f);
-    normals.push_back(-1.0f);
-    normals.push_back(0.0f);
+
   }
   // upper face
   indices.push_back(size);
   indices.push_back(size - 2);
   indices.push_back(0);
   // upper normal
-  normals.push_back(0);
-  normals.push_back(1);
-  normals.push_back(0);
-  normals.push_back(0);
-  normals.push_back(1);
-  normals.push_back(0);
-  normals.push_back(0);
-  normals.push_back(1);
-  normals.push_back(0);
+
   // lower face
   indices.push_back(size + 1);
   indices.push_back(1);
   indices.push_back(size - 1);
   // lower normal
-  normals.push_back(0);
-  normals.push_back(-1);
-  normals.push_back(0);
-  normals.push_back(0);
-  normals.push_back(-1);
-  normals.push_back(0);
-  normals.push_back(0);
-  normals.push_back(-1);
-  normals.push_back(0);
+
 
   // side
   for (int i = 0; i + 2 < size; i += 2) {
@@ -100,11 +81,6 @@ RawModel Cylinder::createUniformCylinder(Loader& loader) {
     // normal
     float x = (positions[3 * i] + positions[3 * i + 6]) / 2;
     float z = (positions[3 * i + 2] + positions[3 * i + 8]) / 2;
-    for (int j = 0; j < 6; ++j) {
-      normals.push_back(x);
-      normals.push_back(0);
-      normals.push_back(z);
-    }
   }
   // face
   indices.push_back(0);
@@ -116,11 +92,7 @@ RawModel Cylinder::createUniformCylinder(Loader& loader) {
   // normal
   float x = (positions[0] + positions[3 * size - 6]) / 2;
   float z = (positions[2] + positions[3 * size - 4]) / 2;
-  for (int j = 0; j < 6; ++j) {
-    normals.push_back(x);
-    normals.push_back(0);
-    normals.push_back(z);
-  }
+
   std::cout << positions.size() << std::endl;
   std::cout << normals.size() << std::endl;
   std::cout << indices.size() << std::endl;
