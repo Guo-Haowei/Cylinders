@@ -51,7 +51,7 @@ int main() {
 
   while (!DisplayManager::shouldCloseDisplay()) {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
-      entity1.changeRotation(0.01, 0.0, 0.0);
+      entity1.changeRotation(0.01, 0.0f, 0.01f);
       DisplayManager::prepareDisplay();
 
       renderer.render(entities, camera);

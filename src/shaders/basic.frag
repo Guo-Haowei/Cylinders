@@ -9,11 +9,11 @@ uniform vec3 color;
 
 void main() {
   // temp light properties
-  vec3 lightPos = vec3(0, -2, 8);
+  vec3 lightPos = vec3(0, 10, 8);
   vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
   vec3 lightDir = normalize(lightPos - FragPos);
 
-  float diff = max(dot(Normal, lightDir), 0.0);
+  float diff = max(dot(normalize(Normal), lightDir), 0.0);
   vec3 diffuse = diff * lightColor;
 
   float ambientStrength = 0.2;
