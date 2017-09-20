@@ -22,7 +22,8 @@ void Renderer::render(vector<Entity*> entities, Camera& camera) {
 void Renderer::renderEntity(Entity* entity) {
   entityShader.loadColor(entity->getColor());
   entityShader.loadTransformationMatrx(entity->createTransformationMatrix());
-  glDrawElements(GL_TRIANGLES, entity->getModel().getVertexCount(), GL_UNSIGNED_INT, (void*) 0);
+  // glDrawElements(GL_TRIANGLES, entity->getModel().getVertexCount(), GL_UNSIGNED_INT, (void*) 0);
+  glDrawArrays(GL_TRIANGLES, 0, entity->getModel().getVertexCount());
 }
 
 void Renderer::prepare() {

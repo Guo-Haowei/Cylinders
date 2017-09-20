@@ -6,91 +6,103 @@
 using std::vector;
 
 RawModel Cylinder::createUniformCylinder(Loader& loader) {
-  vector<float> positions;
+  vector<float> vertices;
   vector<float> normals;
-  vector<unsigned int> indices;
-  for (int i = 0; i < 360; i += 2) {
-    float x = sin(i * M_PI / 180);
-    float z = cos(i * M_PI / 180);
-    positions.push_back(x);
-    positions.push_back(1.0f);
-    positions.push_back(z);
-    positions.push_back(x);
-    positions.push_back(-1.0f);
-    positions.push_back(z);
-    normals.push_back(x);
-    normals.push_back(2.0f);
-    normals.push_back(z);
-    normals.push_back(x);
-    normals.push_back(-2.0f);
-    normals.push_back(z);
+
+  for (int a = 2; a + 2 < 360; a += 2) {
+    float x1 = sin(a * M_PI / 180);
+    float z1 = cos(a * M_PI / 180);
+    float x2 = sin((a + 2) * M_PI / 180);
+    float z2 = cos((a + 2) * M_PI / 180);
+    // top surface
+    vertices.push_back(0.0f);
+    vertices.push_back(1.0f);
+    vertices.push_back(1.0f);
+    vertices.push_back(x1);
+    vertices.push_back(1.0f);
+    vertices.push_back(z1);
+    vertices.push_back(x2);
+    vertices.push_back(1.0f);
+    vertices.push_back(z2);
+    // top normals
+    normals.push_back(0.0f);
+    normals.push_back(1.0f);
+    normals.push_back(0.0f);
+    normals.push_back(0.0f);
+    normals.push_back(1.0f);
+    normals.push_back(0.0f);
+    normals.push_back(0.0f);
+    normals.push_back(1.0f);
+    normals.push_back(0.0f);
+
+    // bottom surface
+    vertices.push_back(0.0f);
+    vertices.push_back(-1.0f);
+    vertices.push_back(1.0f);
+    vertices.push_back(x1);
+    vertices.push_back(-1.0f);
+    vertices.push_back(z1);
+    vertices.push_back(x2);
+    vertices.push_back(-1.0f);
+    vertices.push_back(z2);
+    // top normals
+    normals.push_back(0.0f);
+    normals.push_back(-1.0f);
+    normals.push_back(0.0f);
+    normals.push_back(0.0f);
+    normals.push_back(-1.0f);
+    normals.push_back(0.0f);
+    normals.push_back(0.0f);
+    normals.push_back(-1.0f);
+    normals.push_back(0.0f);
   }
-  int size = positions.size() / 3;
-  positions.push_back(0.0f);
-  positions.push_back(1.0f);
-  positions.push_back(0.0f);
-  positions.push_back(0.0f);
-  positions.push_back(-1.0f);
-  positions.push_back(0.0f);
-  float x_ = sin(358 * M_PI / 180);
-  float z_ = cos(358 * M_PI / 180);
-  normals.push_back(x_);
-  normals.push_back(2.0f);
-  normals.push_back(z_);
-  normals.push_back(x_);
-  normals.push_back(-2.0f);
-  normals.push_back(z_);
 
-  // indices and normals
-  // faces
-  for (int i = 0; i + 2 < size; i += 2) {
-    // upper face
-    indices.push_back(size);
-    indices.push_back(i);
-    indices.push_back(i + 2);
-
-    // lower face
-    indices.push_back(size + 1);
-    indices.push_back(i + 1);
-    indices.push_back(i + 3);
-  }
-  // upper face
-  indices.push_back(size);
-  indices.push_back(size - 2);
-  indices.push_back(0);
-
-  // lower face
-  indices.push_back(size + 1);
-  indices.push_back(1);
-  indices.push_back(size - 1);
-
-  // side
-  for (int i = 0; i + 2 < size; i += 2) {
-    // face
-    indices.push_back(i);
-    indices.push_back(i + 1);
-    indices.push_back(i + 2);
-    indices.push_back(i + 1);
-    indices.push_back(i + 2);
-    indices.push_back(i + 3);
+  for (int a = 0; a + 2 <= 360; a += 2) {
+    float x1 = sin(a * M_PI / 180);
+    float z1 = cos(a * M_PI / 180);
+    float x2 = sin(((a + 2) % 360) * M_PI / 180);
+    float z2 = cos(((a + 2) % 360) * M_PI / 180);
+    // triangle 1
+    vertices.push_back(x1);
+    vertices.push_back(1.0f);
+    vertices.push_back(z1);
+    vertices.push_back(x2);
+    vertices.push_back(1.0f);
+    vertices.push_back(z2);
+    vertices.push_back(x1);
+    vertices.push_back(-1.0f);
+    vertices.push_back(z1);
     // normal
-    float x = (positions[3 * i] + positions[3 * i + 6]) / 2;
-    float z = (positions[3 * i + 2] + positions[3 * i + 8]) / 2;
+    normals.push_back(x1 + x2);
+    normals.push_back(0);
+    normals.push_back(z1 + z2);
+    normals.push_back(x1 + x2);
+    normals.push_back(0);
+    normals.push_back(z1 + z2);
+    normals.push_back(x1 + x2);
+    normals.push_back(0);
+    normals.push_back(z1 + z2);
+    // triangle 2
+    vertices.push_back(x2);
+    vertices.push_back(1.0f);
+    vertices.push_back(z2);
+    vertices.push_back(x2);
+    vertices.push_back(-1.0f);
+    vertices.push_back(z2);
+    vertices.push_back(x1);
+    vertices.push_back(-1.0f);
+    vertices.push_back(z1);
+    // normal
+    normals.push_back(x1 + x2);
+    normals.push_back(0);
+    normals.push_back(z1 + z2);
+    normals.push_back(x1 + x2);
+    normals.push_back(0);
+    normals.push_back(z1 + z2);
+    normals.push_back(x1 + x2);
+    normals.push_back(0);
+    normals.push_back(z1 + z2);
   }
-  // face
-  indices.push_back(0);
-  indices.push_back(1);
-  indices.push_back(size - 1);
-  indices.push_back(0);
-  indices.push_back(size - 1);
-  indices.push_back(size - 2);
-  // normal
-  float x = (positions[0] + positions[3 * size - 6]) / 2;
-  float z = (positions[2] + positions[3 * size - 4]) / 2;
 
-  std::cout << positions.size() << std::endl;
-  std::cout << normals.size() << std::endl;
-  std::cout << indices.size() << std::endl;
-
-  return loader.loadToVAO(positions, normals, indices);
+  return loader.loadToVAO(vertices, normals);
 }

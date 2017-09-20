@@ -2,13 +2,13 @@
 #include "Loader.h"
 #include <GL/glew.h>
 
-RawModel Loader::loadToVAO(vector<float> positions, vector<float> normals, vector<unsigned int> indices) {
+RawModel Loader::loadToVAO(vector<float> vertices, vector<float> normals) {
   unsigned int vaoID = createVAO();
-  bindIndicesBuffer(indices);
-  storeDataInAttributeList(0, 3, positions);
+  // bindIndicesBuffer(indices);
+  storeDataInAttributeList(0, 3, vertices);
   storeDataInAttributeList(1, 3, normals);
   unbindVAO();
-  return RawModel(vaoID, indices.size());
+  return RawModel(vaoID, vertices.size());
 }
 
 Loader::~Loader() {

@@ -16,5 +16,5 @@ private:
 public:
   ~Loader();
 
-  RawModel loadToVAO(vector<float> positions, vector<float> normals, vector<unsigned int> indices);
+  RawModel loadToVAO(vector<float> vertices, vector<float> normals);
 };
