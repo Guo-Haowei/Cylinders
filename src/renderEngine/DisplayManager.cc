@@ -1,11 +1,14 @@
 #include "DisplayManager.h"
 #include "../common.h"
+#include "../inputManager/KeyboardManager.h"
 #include <iostream>
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 int WIDTH;
 int HEIGHT;
+
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 GLFWwindow* DisplayManager::window;
 
@@ -32,6 +35,7 @@ void DisplayManager::createDisplay() {
   glfwMakeContextCurrent(window);
 
   // set callbacks
+  glfwSetKeyCallback(window, keyCallback);
 
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK) {
@@ -65,3 +69,16 @@ bool DisplayManager::shouldCloseDisplay() {
 long double DisplayManager::getTime() {
   return glfwGetTime();
 }
+
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+    glfwSetWindowShouldClose(window, GL_TRUE);
+  }
+  if (key >= 0 && key < 1024) {
+    if (action == GLFW_PRESS)
+      KeyboardManager::setKeyDown(key);
+    else if (action == GLFW_RELEASE)
+      KeyboardManager::setKeyUp(key);
+  }
+}
+

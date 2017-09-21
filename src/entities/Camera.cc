@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "../inputManager/KeyboardManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 Camera::Camera() {
@@ -28,6 +29,14 @@ float Camera::getZoom() const {
 }
 
 void Camera::processKeyboard() {
+  if (KeyboardManager::isKeyDown(KEYS::KEY_UP))
+      position += speed * front;
+  if (KeyboardManager::isKeyDown(KEYS::KEY_DOWN))
+      position -= speed * front;
+  if (KeyboardManager::isKeyDown(KEYS::KEY_LEFT))
+      position -= speed * right;
+  if (KeyboardManager::isKeyDown(KEYS::KEY_RIGHT))
+      position += speed * right;
 }
 
 void Camera::processMouseMove() {

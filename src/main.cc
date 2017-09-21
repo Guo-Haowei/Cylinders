@@ -1,3 +1,4 @@
+#include "inputManager/KeyboardManager.h"
 #include "entities/Camera.h"
 #include "entities/Entity.h"
 #include "models/Cylinder.h"
@@ -52,11 +53,14 @@ int main() {
   while (!DisplayManager::shouldCloseDisplay()) {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
       entity1.changeRotation(0.01, 0.0f, 0.01f);
+
       DisplayManager::prepareDisplay();
+      camera.update();
 
       renderer.render(entities, camera);
 
       DisplayManager::updateDisplay();
+      KeyboardManager::update();
       ++updates;
     }
 
