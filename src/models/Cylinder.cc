@@ -11,7 +11,7 @@ vector<Entity*> Cylinder::cylinders;
 void Cylinder::update(RawModel& model) {
   // check if c is pressed
   if (KeyboardManager::isKeyPressed(KEYS::KEY_C) && cylinders.size() < 10) {
-    Entity* entity = new Entity(model, glm::vec3(0.3), glm::vec3(2 * cylinders.size()), glm::vec3(0), glm::vec3(1, 1 + cylinders.size(), 1));
+    Entity* entity = new Entity(model, glm::vec3(0.6, 0.8, 0.8), glm::vec3(2 * cylinders.size()), glm::vec3(0), glm::vec3(1, 0.1, 1));
     cylinders.push_back(entity);
   }
   for (auto& it: cylinders) {
@@ -29,9 +29,9 @@ void Cylinder::update(RawModel& model) {
   }
 
   if (selected) {
-    selected->setColor(glm::vec3(0.9));
-    float newHeight = selected->getScale().y + KeyboardManager::isKeyPressed(KEYS::KEY_RIGHT_SQUARE_BRACKET) - KeyboardManager::isKeyPressed(KEYS::KEY_LEFT_SQUARE_BRACKET);
-    selected->setScale(glm::vec3(1, newHeight < 1.0f ? 1.0f : newHeight, 1));
+    selected->setColor(glm::vec3(1.0f));
+    float newHeight = selected->getScale().y + (KeyboardManager::isKeyDown(KEYS::KEY_RIGHT_SQUARE_BRACKET) - KeyboardManager::isKeyDown(KEYS::KEY_LEFT_SQUARE_BRACKET)) * 0.1f;
+    selected->setScale(glm::vec3(1.0f, newHeight < 0.1f ? 0.1f : newHeight, 1.0f));
   }
 }
 

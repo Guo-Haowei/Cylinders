@@ -22,7 +22,7 @@ void main() {
   float attenuation = 1.0 / (1.0 + 0.007 * dist + 0.0002 * dist * dist);
 
   // ambient
-  float ambientStrength = 0.2;
+  float ambientStrength = 0.3;
   vec3 ambient = ambientStrength * lightColor;
   ambient *= attenuation;
 
