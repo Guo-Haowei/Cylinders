@@ -9,7 +9,7 @@ vector<Entity*> Cylinder::cylinders;
 
 void Cylinder::update(RawModel& model) {
   if (KeyboardManager::isKeyPressed(KEYS::KEY_C) && cylinders.size() < 10) {
-    Entity* entity = new Entity(model, glm::vec3(0.1 * cylinders.size()), glm::vec3(cylinders.size()));
+    Entity* entity = new Entity(model, glm::vec3(0.1 * cylinders.size()), glm::vec3(2 * cylinders.size()), glm::vec3(0), glm::vec3(1, 1 + cylinders.size(), 1));
     cylinders.push_back(entity);
   }
   for (auto& it: cylinders)

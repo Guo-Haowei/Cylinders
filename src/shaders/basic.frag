@@ -13,7 +13,7 @@ void main() {
   vec3 unitToCameraVector = normalize(ToCameraVector);
 
   // temp light properties
-  vec3 lightPos = vec3(0, 10, 8);
+  vec3 lightPos = vec3(13, 13, 13);
   vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
   vec3 lightDir = normalize(lightPos - FragPos);
 

@@ -1,7 +1,7 @@
 #include "Entity.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-Entity::Entity(RawModel& model, glm::vec3 color, glm::vec3 pos, glm::vec3 rot, float scale): model(model), color(color), pos(pos), rot(rot), scale(scale) { }
+Entity::Entity(RawModel& model, glm::vec3 color, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale): model(model), color(color), pos(pos), rot(rot), scale(scale) { }
 
 void Entity::changePosition(float dx, float dy, float dz) {
   pos.x += dx;
@@ -27,7 +27,7 @@ glm::vec3 Entity::getRot() const {
   return rot;
 }
 
-float Entity::getScale() const {
+glm::vec3 Entity::getScale() const {
   return scale;
 }
 
@@ -41,6 +41,6 @@ glm::mat4 Entity::createTransformationMatrix() {
   matrix = glm::rotate(matrix, rot.x, glm::vec3(1, 0, 0));
   matrix = glm::rotate(matrix, rot.y, glm::vec3(0, 1, 0));
   matrix = glm::rotate(matrix, rot.z, glm::vec3(0, 0, 1));
-  matrix = glm::scale(matrix, glm::vec3(scale));
+  matrix = glm::scale(matrix, scale);
   return matrix;
 }
