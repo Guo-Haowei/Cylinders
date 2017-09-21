@@ -6,6 +6,8 @@
 using std::vector;
 
 class Cylinder {
+private:
+  static Entity* selected;
 public:
   static vector<Entity*> cylinders;
   static void update(RawModel& model);

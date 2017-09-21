@@ -20,5 +20,9 @@ public:
   glm::vec3 getRot() const;
   glm::vec3 getScale() const;
   glm::vec3 getColor() const;
+  void setPos(glm::vec3 pos);
+  void setRot(glm::vec3 rot);
+  void setScale(glm::vec3 scale);
+  void setColor(glm::vec3 color);
   glm::mat4 createTransformationMatrix();
 };

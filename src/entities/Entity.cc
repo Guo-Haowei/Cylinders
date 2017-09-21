@@ -35,6 +35,22 @@ glm::vec3 Entity::getColor() const {
   return color;
 }
 
+void Entity::setPos(glm::vec3 pos) {
+  this->pos = pos;
+}
+
+void Entity::setRot(glm::vec3 rot) {
+  this->rot = rot;
+}
+
+void Entity::setScale(glm::vec3 scale) {
+  this->scale = scale;
+}
+
+void Entity::setColor(glm::vec3 color) {
+  this->color = color;
+}
+
 glm::mat4 Entity::createTransformationMatrix() {
   glm::mat4 matrix = glm::mat4(1);
   matrix = glm::translate(matrix, pos);

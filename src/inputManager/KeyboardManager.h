@@ -43,6 +43,9 @@ namespace KEYS {
   const int KEY_LEFT = 263;
   const int KEY_DOWN = 264;
   const int KEY_UP = 265;
+
+  const int KEY_LEFT_SQUARE_BRACKET = 91;
+  const int KEY_RIGHT_SQUARE_BRACKET = 93;
 };
 
 class KeyboardManager {
