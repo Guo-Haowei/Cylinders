@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "../inputManager/KeyboardManager.h"
+#include "../inputManager/MouseManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 Camera::Camera() {
@@ -11,6 +12,7 @@ Camera::Camera() {
   pitch = PITCH;
   speed = SPEED;
   sensitivity = SENSITIVITY;
+  mouseSensitivity = 0.1f;
   zoom = ZOOM;
   updateCameraVectors();
 }
@@ -40,6 +42,18 @@ void Camera::processKeyboard() {
 }
 
 void Camera::processMouseMove() {
+  float xOffset = (MouseManager::currentX - MouseManager::lastX) * mouseSensitivity;
+  float yOffset = (MouseManager::lastY - MouseManager::currentY) * mouseSensitivity;
+
+  yaw += xOffset;
+  pitch += yOffset;
+
+  if (pitch > 89.0f)
+    pitch = 89.0f;
+  if (pitch < -89.0f)
+    pitch = -89.0f;
+
+  updateCameraVectors();
 }
 
 void Camera::updateCameraVectors() {

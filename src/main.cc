@@ -1,4 +1,5 @@
 #include "inputManager/KeyboardManager.h"
+#include "inputManager/MouseManager.h"
 #include "entities/Camera.h"
 #include "entities/Entity.h"
 #include "models/Cylinder.h"
@@ -44,6 +45,7 @@ int main() {
   // entities.push_back(&entity1);
   // entities.push_back(&entity2);
   Camera camera;
+  MouseManager::prepare();
 
   int fps = 60;
   double currentTime, lastTime = DisplayManager::getTime(), previousSecond = lastTime;
@@ -53,12 +55,14 @@ int main() {
   while (!DisplayManager::shouldCloseDisplay()) {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
       DisplayManager::prepareDisplay();
+      MouseManager::beforeUpdate();
       camera.update();
       Cylinder::update(model);
 
       renderer.render(Cylinder::cylinders, camera);
 
       DisplayManager::updateDisplay();
+      MouseManager::afterUpdate();
       KeyboardManager::update();
       ++updates;
     }

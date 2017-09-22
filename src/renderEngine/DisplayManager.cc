@@ -70,6 +70,10 @@ long double DisplayManager::getTime() {
   return glfwGetTime();
 }
 
+void DisplayManager::getCursorPos(double* x, double* y) {
+  glfwGetCursorPos(window, x, y);
+}
+
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, GL_TRUE);

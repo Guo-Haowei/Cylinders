@@ -20,6 +20,7 @@ private:
   float zoom;
   float speed;
   float sensitivity;
+  float mouseSensitivity;
 
   void updateCameraVectors();
   void processKeyboard();

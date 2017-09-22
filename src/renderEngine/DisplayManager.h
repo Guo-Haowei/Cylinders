@@ -14,5 +14,5 @@ public:
   static bool shouldCloseDisplay();
 
   static long double getTime();
-  // static void getCursorPos();
+  static void getCursorPos(double* x, double* y);
 };
