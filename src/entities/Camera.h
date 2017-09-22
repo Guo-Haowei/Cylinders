@@ -23,8 +23,7 @@ private:
   float mouseSensitivity;
 
   void updateCameraVectors();
-  void processKeyboard();
-  void processMouseMove();
+  void processScene();
 public:
   Camera();
 

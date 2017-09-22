@@ -1,6 +1,7 @@
 #include "DisplayManager.h"
 #include "../common.h"
 #include "../inputManager/KeyboardManager.h"
+#include "../inputManager/MouseManager.h"
 #include <iostream>
 
 const int WINDOW_WIDTH = 800;
@@ -9,6 +10,7 @@ int WIDTH;
 int HEIGHT;
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
 GLFWwindow* DisplayManager::window;
 
@@ -36,6 +38,7 @@ void DisplayManager::createDisplay() {
 
   // set callbacks
   glfwSetKeyCallback(window, keyCallback);
+  glfwSetScrollCallback(window, scrollCallback);
 
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK) {
@@ -86,3 +89,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
   }
 }
 
+void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
+  MouseManager::xScrollOffset = xOffset;
+  MouseManager::yScrollOffset = yOffset;
+}

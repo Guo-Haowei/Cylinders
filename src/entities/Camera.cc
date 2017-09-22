@@ -2,6 +2,7 @@
 #include "../inputManager/KeyboardManager.h"
 #include "../inputManager/MouseManager.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 Camera::Camera() {
   position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -18,8 +19,7 @@ Camera::Camera() {
 }
 
 void Camera::update() {
-  processKeyboard();
-  processMouseMove();
+  processScene();
 }
 
 glm::mat4 Camera::getViewMatrix() {
@@ -30,18 +30,21 @@ float Camera::getZoom() const {
   return zoom;
 }
 
-void Camera::processKeyboard() {
-  if (KeyboardManager::isKeyDown(KEYS::KEY_UP))
-      position += speed * front;
-  if (KeyboardManager::isKeyDown(KEYS::KEY_DOWN))
-      position -= speed * front;
-  if (KeyboardManager::isKeyDown(KEYS::KEY_LEFT))
+void Camera::processScene() {
+  // camera position
+  if (KeyboardManager::isKeyDown(KEYS::KEY_W))
+      position += speed * up;
+  if (KeyboardManager::isKeyDown(KEYS::KEY_S))
+      position -= speed * up;
+  if (KeyboardManager::isKeyDown(KEYS::KEY_A))
       position -= speed * right;
-  if (KeyboardManager::isKeyDown(KEYS::KEY_RIGHT))
+  if (KeyboardManager::isKeyDown(KEYS::KEY_D))
       position += speed * right;
-}
 
-void Camera::processMouseMove() {
+  int sign = MouseManager::yScrollOffset < 0 ? -1 : (MouseManager::yScrollOffset > 0 ? 1 : 0);
+  position += speed * sign * front;
+
+  // camera rotation
   float xOffset = (MouseManager::currentX - MouseManager::lastX) * mouseSensitivity;
   float yOffset = (MouseManager::lastY - MouseManager::currentY) * mouseSensitivity;
 
