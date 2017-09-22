@@ -44,7 +44,7 @@ void Camera::processScene() {
   if (KeyboardManager::isKeyDown(KEYS::KEY_D))
       position += speed * right;
 
-  int sign = MouseManager::yScrollOffset < 0 ? -1 : (MouseManager::yScrollOffset > 0 ? 1 : 0);
+  int sign = MouseManager::yScrollOffset < 0 ? 1 : (MouseManager::yScrollOffset > 0 ? -1 : 0);
   position += speed * sign * front;
 
   // camera rotation
