@@ -6,6 +6,9 @@ enum MOUSEMODE {
 };
 
 class MouseManager {
+private:
+  static MOUSEMODE currentMode;
+
 public:
   static double lastX;
   static double lastY;
@@ -19,4 +22,7 @@ public:
   static void prepare();
   static void beforeUpdate();
   static void afterUpdate();
+
+  static void setMode(MOUSEMODE mode);
+  static MOUSEMODE getMouseMode();
 };

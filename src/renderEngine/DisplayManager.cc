@@ -40,6 +40,9 @@ void DisplayManager::createDisplay() {
   glfwSetKeyCallback(window, keyCallback);
   glfwSetScrollCallback(window, scrollCallback);
 
+  // hide cursor initially
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK) {
     std::cout << "======================================\n";
@@ -67,6 +70,14 @@ void DisplayManager::cleanDisplay() {
 
 bool DisplayManager::shouldCloseDisplay() {
   return glfwWindowShouldClose(window);
+}
+
+void DisplayManager::hideCursor() {
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void DisplayManager::showCursor() {
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
 long double DisplayManager::getTime() {

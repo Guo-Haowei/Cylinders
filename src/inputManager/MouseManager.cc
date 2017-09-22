@@ -9,6 +9,7 @@ double MouseManager::xOffset;
 double MouseManager::yOffset;
 double MouseManager::xScrollOffset;
 double MouseManager::yScrollOffset;
+MOUSEMODE MouseManager::currentMode = SCENE;
 
 void MouseManager::prepare() {
   DisplayManager::getCursorPos(&lastX, &lastY);
@@ -25,4 +26,12 @@ void MouseManager::afterUpdate() {
   lastY = currentY;
   xScrollOffset = 0;
   yScrollOffset = 0;
+}
+
+void MouseManager::setMode(MOUSEMODE mode) {
+  currentMode = mode;
+}
+
+MOUSEMODE MouseManager::getMouseMode() {
+  return currentMode;
 }

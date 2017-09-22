@@ -1,6 +1,8 @@
 #define _USE_MATH_DEFINES
 #include "Cylinder.h"
+#include "../inputManager/MouseManager.h"
 #include "../inputManager/KeyboardManager.h"
+#include "../renderEngine/DisplayManager.h"
 #include <glm/glm.hpp>
 #include <math.h>
 #include <iostream>
@@ -24,13 +26,22 @@ void Cylinder::update(RawModel& model) {
     if (i - KEYS::KEY_0 + 1 > cylinders.size())
       break;
 
-    if (KeyboardManager::isKeyPressed(i))
+    if (KeyboardManager::isKeyPressed(i)) {
       selected = cylinders[i - KEYS::KEY_0];
+
+      MouseManager::setMode(OBJECT);
+      DisplayManager::showCursor();
+    }
   }
 
-  if (selected) {
+  if (KeyboardManager::isKeyPressed(KEYS::KEY_TAB)) {
+    DisplayManager::hideCursor();
+    MouseManager::setMode(SCENE);
+  }
+
+  if (selected && MouseManager::getMouseMode() == OBJECT) {
     selected->setColor(glm::vec3(1.0f));
-    float newHeight = selected->getScale().y + (KeyboardManager::isKeyDown(KEYS::KEY_RIGHT_SQUARE_BRACKET) - KeyboardManager::isKeyDown(KEYS::KEY_LEFT_SQUARE_BRACKET)) * 0.1f;
+    float newHeight = selected->getScale().y - MouseManager::yScrollOffset * 0.1f;
     selected->setScale(glm::vec3(1.0f, newHeight < 0.1f ? 0.1f : newHeight, 1.0f));
   }
 }

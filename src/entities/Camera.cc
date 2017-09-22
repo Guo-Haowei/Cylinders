@@ -31,6 +31,9 @@ float Camera::getZoom() const {
 }
 
 void Camera::processScene() {
+  if (MouseManager::getMouseMode() != SCENE)
+    return;
+
   // camera position
   if (KeyboardManager::isKeyDown(KEYS::KEY_W))
       position += speed * up;

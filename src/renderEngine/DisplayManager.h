@@ -12,6 +12,8 @@ public:
   static void updateDisplay();
   static void cleanDisplay();
   static bool shouldCloseDisplay();
+  static void hideCursor();
+  static void showCursor();
 
   static long double getTime();
   static void getCursorPos(double* x, double* y);
