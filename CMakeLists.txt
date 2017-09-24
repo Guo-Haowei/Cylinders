@@ -3,6 +3,13 @@ set (CMAKE_CXX_STANDARD 11)
 
 project(exe)
 
+# conditional flag
+option(WITH_FPS "display fps" OFF)
+
+if(WITH_FPS)
+  add_definitions(-DCOUNT_FPS)
+endif()
+
 # glfw
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
