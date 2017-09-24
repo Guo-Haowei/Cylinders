@@ -59,8 +59,10 @@ enum KEYS {
   KEY_LEFT = 263,
   KEY_DOWN = 264,
   KEY_UP = 265,
-  KEY_TAB = 258,
 
+  KEY_TAB = 258,
   KEY_LSB = 91,
-  KEY_RSB = 93
-};;
+  KEY_RSB = 93,
+  KEY_DEL = 261,
+  KEY_BACKSPACE = 259
+};

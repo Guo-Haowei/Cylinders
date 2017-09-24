@@ -8,10 +8,12 @@
 #include <iostream>
 
 Entity* Cylinder::selected = nullptr;
+int Cylinder::selectedEntry = -1;
+
 vector<Entity*> Cylinder::cylinders;
 
 void Cylinder::update(RawModel& model) {
-  // check if c is pressed
+  // create
   if (KeyboardManager::isKeyPressed(KEY_C) && cylinders.size() < 10) {
     Entity* entity = new Entity(model, glm::vec3(0.6, 0.8, 0.8), glm::vec3(2 * cylinders.size()), glm::vec3(0), glm::vec3(1, 0.1, 1));
     cylinders.push_back(entity);
@@ -21,6 +23,23 @@ void Cylinder::update(RawModel& model) {
     it->setColor(glm::vec3(0.3));
   }
 
+  // delete all
+  if (KeyboardManager::isKeyPressed(KEY_DEL)) {
+    clean();
+    selected = nullptr;
+    selectedEntry = -1;
+    MouseManager::setMode(SCENE);
+  }
+
+  // delete selected
+  if (KeyboardManager::isKeyPressed(KEY_BACKSPACE)) {
+    cylinders.erase(cylinders.begin() + selectedEntry);
+    delete selected;
+    selected = nullptr;
+    selectedEntry = -1;
+    MouseManager::setMode(SCENE);
+  }
+
   // check if 0 - 9 is pressed
   for (int i = KEY_0; i <= KEY_9; ++i) {
     if (i - KEY_0 + 1 > cylinders.size())
@@ -28,6 +47,7 @@ void Cylinder::update(RawModel& model) {
 
     if (KeyboardManager::isKeyPressed(i)) {
       selected = cylinders[i - KEY_0];
+      selectedEntry = i - KEY_0;
 
       MouseManager::setMode(OBJECT);
       DisplayManager::showCursor();
@@ -53,6 +73,8 @@ void Cylinder::update(RawModel& model) {
 void Cylinder::clean() {
   for (auto& it: cylinders)
     delete it;
+
+  cylinders.clear();
 }
 
 RawModel Cylinder::createUniformCylinder(Loader& loader) {

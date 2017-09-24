@@ -19,7 +19,7 @@ void main() {
 
   // attenuation
   float dist = length(lightPos - FragPos);
-  float attenuation = 1.0 / (1.0 + 0.007 * dist + 0.0002 * dist * dist);
+  float attenuation = 1.0 / (1.0 + 0.0014 * dist + 0.000007 * dist * dist);
 
   // ambient
   float ambientStrength = 0.3;
