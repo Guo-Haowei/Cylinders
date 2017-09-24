@@ -59,15 +59,20 @@ void Cylinder::update(RawModel& model) {
     MouseManager::setMode(SCENE);
   }
 
-  // change scale
-  if (selected && MouseManager::getMouseMode() == OBJECT) {
-    selected->setColor(glm::vec3(1.0f));
-    // height
-    float newHeight = selected->getScale().y - MouseManager::yScrollOffset * 0.1f;
-    selected->setScale(glm::vec3(1.0f, newHeight < 0.1f ? 0.1f : newHeight, 1.0f));
-    // radius
-    float newRadius = selected->getScale().x - KeyboardManager::isKeyDown(KEY_LSB);
-  }
+  if (!selected || MouseManager::getMouseMode() != OBJECT)
+    return;
+
+  // scale
+  selected->setColor(glm::vec3(1.0f));
+  // height
+  float newHeight = selected->getScale().y - MouseManager::yScrollOffset * 0.1f;
+  newHeight = newHeight < 0.1f ? 0.1f : newHeight;
+  // radius
+  float newRadius = selected->getScale().x - (KeyboardManager::isKeyDown(KEY_LSB) - KeyboardManager::isKeyDown(KEY_RSB)) * 0.1f;
+  newRadius = newRadius < 0.1f ? 0.1f : newRadius;
+  selected->setScale(glm::vec3(newRadius, newHeight, newRadius));
+
+  // transform
 }
 
 void Cylinder::clean() {
