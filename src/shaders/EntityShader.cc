@@ -1,4 +1,5 @@
 #include "EntityShader.h"
+#include "../entities/Camera.h"
 
 const char* EntityShader::VERTEX_FILE = "../src/shaders/basic.vert";
 const char* EntityShader::FRAGMENT_FILE = "../src/shaders/basic.frag";
@@ -27,8 +28,8 @@ void EntityShader::loadProjectionMatrix(glm::mat4 mat) {
   loadMatrix4f(location_projectionMatrix, mat);
 }
 
-void EntityShader::loadViewMatrix(Camera& camera) {
-  loadMatrix4f(location_viewMatrix, camera.getViewMatrix());
+void EntityShader::loadViewMatrix() {
+  loadMatrix4f(location_viewMatrix, Camera::getViewMatrix());
 }
 
 void EntityShader::loadColor(glm::vec3 color) {

@@ -9,25 +9,23 @@ const float SENSITIVITY = 0.01f;
 
 class Camera {
 private:
-  glm::vec3 position;
-  glm::vec3 front;
-  glm::vec3 up;
-  glm::vec3 right;
-  glm::vec3 worldUp;
+  static glm::vec3 position;
+  static glm::vec3 front;
+  static glm::vec3 up;
+  static glm::vec3 right;
+  static glm::vec3 worldUp;
 
-  float pitch;
-  float yaw;
-  float zoom;
-  float speed;
-  float sensitivity;
-  float mouseSensitivity;
+  static float pitch;
+  static float yaw;
+  static float zoom;
+  static float speed;
+  static float sensitivity;
+  static float mouseSensitivity;
 
-  void updateCameraVectors();
-  void processScene();
+  static void processScene();
 public:
-  Camera();
-
-  void update();
-  glm::mat4 getViewMatrix();
-  float getZoom() const;
+  static void update();
+  static glm::mat4 getViewMatrix();
+  static float getZoom();
+  static void updateCameraVectors();
 };

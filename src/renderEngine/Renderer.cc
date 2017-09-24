@@ -7,10 +7,10 @@
 
 Renderer::Renderer() { }
 
-void Renderer::render(vector<Entity*> entities, Camera& camera) {
+void Renderer::render(vector<Entity*> entities) {
   prepare();
   entityShader.start();
-  entityShader.loadViewMatrix(camera);
+  entityShader.loadViewMatrix();
   entityShader.loadProjectionMatrix(glm::perspective(ZOOM, (float) WIDTH / (float) HEIGHT, NEAR_PLANE, FAR_PLANE));
   for (auto& entity: entities) {
     prepareModel(entity);

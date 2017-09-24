@@ -4,19 +4,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-Camera::Camera() {
-  position = glm::vec3(0.0f, 0.0f, 0.0f);
-  up = glm::vec3(0.0f, 1.0f, 0.0f);
-  worldUp = up;
-  front = glm::vec3(0.0f, 0.0f, -1.0f);
-  yaw = YAW;
-  pitch = PITCH;
-  speed = SPEED;
-  sensitivity = SENSITIVITY;
-  mouseSensitivity = 0.1f;
-  zoom = ZOOM;
-  updateCameraVectors();
-}
+glm::vec3 Camera::position = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 Camera::up = glm::vec3(0.0f, 1.0f, 0.0f);
+glm::vec3 Camera::right;
+glm::vec3 Camera::worldUp = up;
+glm::vec3 Camera::front = glm::vec3(0.0f, 0.0f, -1.0f);
+float Camera::yaw = YAW;
+float Camera::pitch = PITCH;
+float Camera::speed = SPEED;
+float Camera::sensitivity = SENSITIVITY;
+float Camera::mouseSensitivity = 0.1f;
+float Camera::zoom = ZOOM;
 
 void Camera::update() {
   processScene();
@@ -26,7 +24,7 @@ glm::mat4 Camera::getViewMatrix() {
   return glm::lookAt(position, position + front, up);
 }
 
-float Camera::getZoom() const {
+float Camera::getZoom() {
   return zoom;
 }
 

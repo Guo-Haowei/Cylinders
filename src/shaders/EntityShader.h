@@ -1,6 +1,5 @@
 #pragma once
 #include "ShaderProgram.h"
-#include "../entities/Camera.h"
 
 class EntityShader: public ShaderProgram {
 private:
@@ -20,6 +19,6 @@ public:
 
   void loadTransformationMatrx(glm::mat4 mat);
   void loadProjectionMatrix(glm::mat4 mat);
-  void loadViewMatrix(Camera& camera);
+  void loadViewMatrix();
   void loadColor(glm::vec3 color);
 };

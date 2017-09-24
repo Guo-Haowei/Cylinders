@@ -44,7 +44,7 @@ int main() {
   // Entity entity2(model, glm::vec3(0.5, 0.2, 0.3), glm::vec3(0, 3, -7), glm::vec3(5, 6, -7));
   // entities.push_back(&entity1);
   // entities.push_back(&entity2);
-  Camera camera;
+  Camera::updateCameraVectors();
   MouseManager::prepare();
 
   int fps = 60;
@@ -56,10 +56,10 @@ int main() {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
       DisplayManager::prepareDisplay();
       MouseManager::beforeUpdate();
-      camera.update();
+      Camera::update();
       Cylinder::update(model);
 
-      renderer.render(Cylinder::cylinders, camera);
+      renderer.render(Cylinder::cylinders);
 
       DisplayManager::updateDisplay();
       MouseManager::afterUpdate();
