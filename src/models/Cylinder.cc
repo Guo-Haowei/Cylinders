@@ -1,5 +1,7 @@
 #define _USE_MATH_DEFINES
 #include "Cylinder.h"
+#include "../common.h"
+#include "../entities/Camera.h"
 #include "../inputManager/MouseManager.h"
 #include "../inputManager/KeyboardManager.h"
 #include "../renderEngine/DisplayManager.h"
@@ -19,7 +21,7 @@ void Cylinder::update(RawModel& model) {
     cylinders.push_back(entity);
   }
   for (auto& it: cylinders) {
-    it->changeRotation(0.01, 0.01, 0.01);
+    // it->changeRotation(0.01, 0.01, 0.01);
     it->setColor(glm::vec3(0.3));
   }
 
@@ -62,17 +64,33 @@ void Cylinder::update(RawModel& model) {
   if (!selected || MouseManager::getMouseMode() != OBJECT)
     return;
 
-  // scale
   selected->setColor(glm::vec3(1.0f));
-  // height
-  float newHeight = selected->getScale().y - MouseManager::yScrollOffset * 0.1f;
-  newHeight = newHeight < 0.1f ? 0.1f : newHeight;
-  // radius
-  float newRadius = selected->getScale().x - (KeyboardManager::isKeyDown(KEY_LSB) - KeyboardManager::isKeyDown(KEY_RSB)) * 0.1f;
-  newRadius = newRadius < 0.1f ? 0.1f : newRadius;
-  selected->setScale(glm::vec3(newRadius, newHeight, newRadius));
+
+  // scale
+  if (!MouseManager::buttonDown(LEFT_BUTTON) && !MouseManager::buttonDown(RIGHT_BUTTON)) {
+    // height
+    float newHeight = selected->getScale().y - MouseManager::yScrollOffset * 0.1f;
+    newHeight = newHeight < 0.1f ? 0.1f : newHeight;
+    // radius
+    float newRadius = selected->getScale().x - (KeyboardManager::isKeyDown(KEY_LSB) - KeyboardManager::isKeyDown(KEY_RSB)) * 0.1f;
+    newRadius = newRadius < 0.1f ? 0.1f : newRadius;
+    selected->setScale(glm::vec3(newRadius, newHeight, newRadius));
+  }
 
   // transform
+  else if (MouseManager::buttonDown(LEFT_BUTTON)) {
+    glm::vec3 camPos = Camera::getPos();
+    glm::vec3 objPos = selected->getPos();
+    float unitDistance =
+      ((camPos.x - objPos.x) * (camPos.x - objPos.x) +
+      (camPos.y - objPos.y) * (camPos.y - objPos.y) +
+      (camPos.z - objPos.z) * (camPos.z - objPos.z));
+    float deltaX = (MouseManager::currentX - MouseManager::lastX) * unitDistance / 4000.0f;
+    float deltaY = (MouseManager::lastY - MouseManager::currentY) * unitDistance / 4800.0f;
+    float deltaZ = MouseManager::yScrollOffset * unitDistance / 2000.0f;
+    glm::vec3 movement = Camera::getUp() * deltaY + Camera::getRight() * deltaX + Camera::getFront() * deltaZ;
+    selected->changePosition(movement.x, movement.y, movement.z);
+  }
 }
 
 void Cylinder::clean() {
