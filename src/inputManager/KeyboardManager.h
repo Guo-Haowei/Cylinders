@@ -2,53 +2,6 @@
 #include <set>
 using std::set;
 
-namespace KEYS {
-  const int KEY_0 = 48;
-  const int KEY_1 = 49;
-  const int KEY_2 = 50;
-  const int KEY_3 = 51;
-  const int KEY_4 = 52;
-  const int KEY_5 = 53;
-  const int KEY_6 = 54;
-  const int KEY_7 = 55;
-  const int KEY_8 = 56;
-  const int KEY_9 = 57;
-  const int KEY_A = 65;
-  const int KEY_B = 66;
-  const int KEY_C = 67;
-  const int KEY_D = 68;
-  const int KEY_E = 69;
-  const int KEY_F = 70;
-  const int KEY_G = 71;
-  const int KEY_H = 72;
-  const int KEY_I = 73;
-  const int KEY_J = 74;
-  const int KEY_K = 75;
-  const int KEY_L = 76;
-  const int KEY_M = 77;
-  const int KEY_N = 78;
-  const int KEY_O = 79;
-  const int KEY_P = 80;
-  const int KEY_Q = 81;
-  const int KEY_R = 82;
-  const int KEY_S = 83;
-  const int KEY_T = 84;
-  const int KEY_U = 85;
-  const int KEY_V = 86;
-  const int KEY_W = 87;
-  const int KEY_X = 88;
-  const int KEY_Y = 89;
-  const int KEY_Z = 90;
-  const int KEY_RIGHT = 262;
-  const int KEY_LEFT = 263;
-  const int KEY_DOWN = 264;
-  const int KEY_UP = 265;
-  const int KEY_TAB = 258;
-
-  const int KEY_LEFT_SQUARE_BRACKET = 91;
-  const int KEY_RIGHT_SQUARE_BRACKET = 93;
-};
-
 class KeyboardManager {
 private:
   static int keys[1024];
@@ -64,3 +17,50 @@ public:
   static bool isKeyPressed(int key);
   static bool isKeyReleased(int key);
 };
+
+enum KEYS {
+  KEY_0 = 48,
+  KEY_1 = 49,
+  KEY_2 = 50,
+  KEY_3 = 51,
+  KEY_4 = 52,
+  KEY_5 = 53,
+  KEY_6 = 54,
+  KEY_7 = 55,
+  KEY_8 = 56,
+  KEY_9 = 57,
+  KEY_A = 65,
+  KEY_B = 66,
+  KEY_C = 67,
+  KEY_D = 68,
+  KEY_E = 69,
+  KEY_F = 70,
+  KEY_G = 71,
+  KEY_H = 72,
+  KEY_I = 73,
+  KEY_J = 74,
+  KEY_K = 75,
+  KEY_L = 76,
+  KEY_M = 77,
+  KEY_N = 78,
+  KEY_O = 79,
+  KEY_P = 80,
+  KEY_Q = 81,
+  KEY_R = 82,
+  KEY_S = 83,
+  KEY_T = 84,
+  KEY_U = 85,
+  KEY_V = 86,
+  KEY_W = 87,
+  KEY_X = 88,
+  KEY_Y = 89,
+  KEY_Z = 90,
+  KEY_RIGHT = 262,
+  KEY_LEFT = 263,
+  KEY_DOWN = 264,
+  KEY_UP = 265,
+  KEY_TAB = 258,
+
+  KEY_LSB = 91,
+  KEY_RSB = 93
+};;

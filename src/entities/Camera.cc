@@ -33,13 +33,13 @@ void Camera::processScene() {
     return;
 
   // camera position
-  if (KeyboardManager::isKeyDown(KEYS::KEY_W))
+  if (KeyboardManager::isKeyDown(KEY_W))
       position += speed * up;
-  if (KeyboardManager::isKeyDown(KEYS::KEY_S))
+  if (KeyboardManager::isKeyDown(KEY_S))
       position -= speed * up;
-  if (KeyboardManager::isKeyDown(KEYS::KEY_A))
+  if (KeyboardManager::isKeyDown(KEY_A))
       position -= speed * right;
-  if (KeyboardManager::isKeyDown(KEYS::KEY_D))
+  if (KeyboardManager::isKeyDown(KEY_D))
       position += speed * right;
 
   int sign = MouseManager::yScrollOffset < 0 ? 1 : (MouseManager::yScrollOffset > 0 ? -1 : 0);

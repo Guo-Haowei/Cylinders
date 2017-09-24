@@ -12,7 +12,7 @@ vector<Entity*> Cylinder::cylinders;
 
 void Cylinder::update(RawModel& model) {
   // check if c is pressed
-  if (KeyboardManager::isKeyPressed(KEYS::KEY_C) && cylinders.size() < 10) {
+  if (KeyboardManager::isKeyPressed(KEY_C) && cylinders.size() < 10) {
     Entity* entity = new Entity(model, glm::vec3(0.6, 0.8, 0.8), glm::vec3(2 * cylinders.size()), glm::vec3(0), glm::vec3(1, 0.1, 1));
     cylinders.push_back(entity);
   }
@@ -22,27 +22,31 @@ void Cylinder::update(RawModel& model) {
   }
 
   // check if 0 - 9 is pressed
-  for (int i = KEYS::KEY_0; i <= KEYS::KEY_9; ++i) {
-    if (i - KEYS::KEY_0 + 1 > cylinders.size())
+  for (int i = KEY_0; i <= KEY_9; ++i) {
+    if (i - KEY_0 + 1 > cylinders.size())
       break;
 
     if (KeyboardManager::isKeyPressed(i)) {
-      selected = cylinders[i - KEYS::KEY_0];
+      selected = cylinders[i - KEY_0];
 
       MouseManager::setMode(OBJECT);
       DisplayManager::showCursor();
     }
   }
 
-  if (KeyboardManager::isKeyPressed(KEYS::KEY_TAB)) {
+  if (KeyboardManager::isKeyPressed(KEY_TAB)) {
     DisplayManager::hideCursor();
     MouseManager::setMode(SCENE);
   }
 
+  // change scale
   if (selected && MouseManager::getMouseMode() == OBJECT) {
     selected->setColor(glm::vec3(1.0f));
+    // height
     float newHeight = selected->getScale().y - MouseManager::yScrollOffset * 0.1f;
     selected->setScale(glm::vec3(1.0f, newHeight < 0.1f ? 0.1f : newHeight, 1.0f));
+    // radius
+    float newRadius = selected->getScale().x - KeyboardManager::isKeyDown(KEY_LSB);
   }
 }
 
