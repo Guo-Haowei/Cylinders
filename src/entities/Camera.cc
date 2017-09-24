@@ -20,6 +20,22 @@ void Camera::update() {
   processScene();
 }
 
+glm::vec3 Camera::getPos() {
+  return position;
+}
+
+glm::vec3 Camera::getFront() {
+  return front;
+}
+
+glm::vec3 Camera::getUp() {
+  return up;
+}
+
+glm::vec3 Camera::getRight() {
+  return right;
+}
+
 glm::mat4 Camera::getViewMatrix() {
   return glm::lookAt(position, position + front, up);
 }
