@@ -11,6 +11,10 @@
 #include <iostream>
 #include <vector>
 
+using std::cout;
+using std::endl;
+using std::vector;
+
 bool shouldUpdate(double& currentTime, double& delta, double& lastTime, const int fps) {
   currentTime = DisplayManager::getTime();
   delta += currentTime - lastTime;
@@ -29,7 +33,7 @@ void updateFPSCount(double& previousSecond, int& updates) {
   }
 
   ++previousSecond;
-  std::cout << "FPS is " << updates << std::endl;
+  cout << "FPS is " << updates << endl;
   updates = 0;
 }
 
@@ -38,12 +42,8 @@ int main() {
   DisplayManager::createDisplay();
   Loader loader;
   Renderer renderer;
-  std::vector<Entity*> entities;
+  vector<Entity*> entities;
   RawModel model = Cylinder::createUniformCylinder(loader);
-  // Entity entity1(model, glm::vec3(0.4, 0.7, 0.6), glm::vec3(0, 0, -5));
-  // Entity entity2(model, glm::vec3(0.5, 0.2, 0.3), glm::vec3(0, 3, -7), glm::vec3(5, 6, -7));
-  // entities.push_back(&entity1);
-  // entities.push_back(&entity2);
   Camera::updateCameraVectors();
   MouseManager::prepare();
 

@@ -3,6 +3,9 @@
 #include "../inputManager/KeyboardManager.h"
 #include "../inputManager/MouseManager.h"
 #include <iostream>
+using std::cout;
+using std::cin;
+using std::endl;
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
@@ -29,9 +32,9 @@ void DisplayManager::createDisplay() {
   window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Cylinders", nullptr, nullptr);
 
   if (window == nullptr) {
-    std::cout << "====================================\n";
-    std::cout << "ERROR::GLFW: Failed to create window\n";
-    std::cout << "====================================\n";
+    cout << "====================================\n";
+    cout << "ERROR::GLFW: Failed to create window\n";
+    cout << "====================================\n";
   }
 
   glfwGetFramebufferSize(window, &WIDTH, &HEIGHT);
@@ -40,15 +43,16 @@ void DisplayManager::createDisplay() {
   // set callbacks
   glfwSetKeyCallback(window, keyCallback);
   glfwSetScrollCallback(window, scrollCallback);
+  glfwSetMouseButtonCallback(window, mouseButtonCallback);
 
   // hide cursor initially
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK) {
-    std::cout << "======================================\n";
-    std::cout << "ERROR::GLEW: Failed to initialize GLEW\n";
-    std::cout << "======================================\n";
+    cout << "======================================\n";
+    cout << "ERROR::GLEW: Failed to initialize GLEW\n";
+    cout << "======================================\n";
   }
 
   glViewport(0, 0, WIDTH, HEIGHT);
