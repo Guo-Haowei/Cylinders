@@ -1,8 +1,8 @@
-# Cylinders
+# Cylinders (In Progress)
 
-This is a program designed to test the intersection of multiple cylinders.
+This program is designed to test if cylinders intersect.
 
-## Input
+## Controls
 Press `c` to create cylinder.
 Press `0` up to `9` to select cylinders (This will put program in OBJECT mode, press `tab` to switch back to SCENE mode)
 Press `backspace` to delete selected cylinders.
