@@ -10,6 +10,7 @@ int WIDTH;
 int HEIGHT;
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mode);
 void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
 GLFWwindow* DisplayManager::window;
@@ -98,6 +99,16 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
     else if (action == GLFW_RELEASE)
       KeyboardManager::setKeyUp(key);
   }
+}
+
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mode) {
+  if (button > 1)
+    return;
+
+  if (action == GLFW_PRESS)
+    MouseManager::buttons[button] = 1;
+  else if (action == GLFW_RELEASE)
+    MouseManager::buttons[button] = 0;
 }
 
 void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {

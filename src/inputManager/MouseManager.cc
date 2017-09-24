@@ -9,6 +9,12 @@ double MouseManager::xOffset;
 double MouseManager::yOffset;
 double MouseManager::xScrollOffset;
 double MouseManager::yScrollOffset;
+
+int MouseManager::buttons[2] = { 0, 0 };
+int MouseManager::currentButtons[2] = { 0, 0 };
+int MouseManager::upButtons[2] = { 0, 0 };
+int MouseManager::downButtons[2] = { 0, 0 };
+
 MOUSEMODE MouseManager::currentMode = SCENE;
 
 void MouseManager::prepare() {
@@ -19,6 +25,16 @@ void MouseManager::prepare() {
 
 void MouseManager::beforeUpdate() {
   DisplayManager::getCursorPos(&currentX, &currentY);
+
+  // button event
+  upButtons[0] = currentButtons[0] && !buttons[0];
+  upButtons[1] = currentButtons[1] && !buttons[1];
+
+  downButtons[0] = !currentButtons[0] && buttons[0];
+  downButtons[1] = !currentButtons[1] && buttons[1];
+
+  currentButtons[0] = buttons[0];
+  currentButtons[1] = buttons[1];
 }
 
 void MouseManager::afterUpdate() {
@@ -34,4 +50,20 @@ void MouseManager::setMode(MOUSEMODE mode) {
 
 MOUSEMODE MouseManager::getMouseMode() {
   return currentMode;
+}
+
+bool MouseManager::buttonUp(int button) {
+  return buttons[button] == 0;
+}
+
+bool MouseManager::buttonDown(int button) {
+  return buttons[button] != 0;
+}
+
+bool MouseManager::buttonPressed(int button) {
+  return downButtons[button];
+}
+
+bool MouseManager::buttonReleased(int button) {
+  return upButtons[button];
 }
