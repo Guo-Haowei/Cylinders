@@ -5,9 +5,14 @@ project(exe)
 
 # conditional flag
 option(WITH_FPS "display fps" OFF)
+option(WITH_AA "anti aliasing" ON)
 
 if(WITH_FPS)
   add_definitions(-DCOUNT_FPS)
+endif()
+
+if(WITH_AA)
+  add_definitions(-DANTI_ALIASING)
 endif()
 
 # glfw

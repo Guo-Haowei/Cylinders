@@ -28,6 +28,9 @@ void DisplayManager::createDisplay() {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+#if ANTI_ALIASING
+  glfwWindowHint(GLFW_SAMPLES, 4); // anti aliasing
+#endif
 
   window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Cylinders", nullptr, nullptr);
 
@@ -57,6 +60,9 @@ void DisplayManager::createDisplay() {
 
   glViewport(0, 0, WIDTH, HEIGHT);
   glEnable(GL_DEPTH_TEST);
+#if ANTI_ALIASING
+  glEnable(GL_MULTISAMPLE);
+#endif
 
   // cull face
 }
