@@ -2,6 +2,17 @@
 
 This program is designed to test if cylinders intersect.
 
+## Compile
+```
+mkdir build
+cd build
+ccmake .. -DWITH_FPS=[ON|OFF] -DWITH_AA=[ON|OFF]
+make
+./exe
+```
+
+Note: `WITH_FPS` displays frame per second, `WITH_AA` enables anti aliasing.
+
 ## Controls
 Press `c` to create cylinder.<br />
 Press `0` up to `9` to select cylinders (This will put program in OBJECT mode, press `tab` to switch back to SCENE mode)<br />
@@ -17,4 +28,3 @@ Scroll wheel in general change the depth.<br />
 1. Rotate cylinder
 2. Raytracing to pick cylinders
 3. Raytracing for refraction effect
-4. Anti-aliasing
