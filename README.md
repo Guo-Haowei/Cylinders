@@ -21,11 +21,12 @@ Press `Delete` to delete all cylinders.<br />
 Use `[`, `]` or scroll wheel to scale selected cylinders.<br />
 Scroll wheel in general change the depth.<br />
 Hold right button to translate selected cylinder.<br />
+Hold left button to rotate selected cylinder.<br />
 
 ## Screen shots
 ![alt text](https://github.com/Guo-Haowei/Cylinders/blob/master/ScreenShot.png)
 
 ## Future
-1. Rotate cylinder
+1. Rotate cylinder(WIP)
 2. Raytracing to pick cylinders
 3. Raytracing for refraction effect
