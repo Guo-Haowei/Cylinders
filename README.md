@@ -20,6 +20,7 @@ Press `backspace` to delete selected cylinders.<br />
 Press `Delete` to delete all cylinders.<br />
 Use `[`, `]` or scroll wheel to scale selected cylinders.<br />
 Scroll wheel in general change the depth.<br />
+Hold right button to translate selected cylinder.<br />
 
 ## Screen shots
 ![alt text](https://github.com/Guo-Haowei/Cylinders/blob/master/ScreenShot.png)

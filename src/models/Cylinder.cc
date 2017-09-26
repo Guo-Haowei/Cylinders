@@ -78,7 +78,7 @@ void Cylinder::update(RawModel& model) {
   }
 
   // transform
-  else if (MouseManager::buttonDown(LEFT_BUTTON)) {
+  else if (MouseManager::buttonDown(RIGHT_BUTTON)) {
     glm::vec3 camPos = Camera::getPos();
     glm::vec3 objPos = selected->getPos();
     float unitDistance =
@@ -87,7 +87,7 @@ void Cylinder::update(RawModel& model) {
       (camPos.z - objPos.z) * (camPos.z - objPos.z));
     float deltaX = (MouseManager::currentX - MouseManager::lastX) * unitDistance / 4000.0f;
     float deltaY = (MouseManager::lastY - MouseManager::currentY) * unitDistance / 4800.0f;
-    float deltaZ = MouseManager::yScrollOffset * unitDistance / 2000.0f;
+    float deltaZ = MouseManager::yScrollOffset * unitDistance / 800.0f;
     glm::vec3 movement = Camera::getUp() * deltaY + Camera::getRight() * deltaX + Camera::getFront() * deltaZ;
     selected->changePosition(movement.x, movement.y, movement.z);
   }
