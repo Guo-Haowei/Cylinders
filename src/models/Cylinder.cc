@@ -8,16 +8,21 @@
 #include <glm/glm.hpp>
 #include <math.h>
 #include <iostream>
+using std::abs;
+using std::cout;
+using std::endl;
 
 Entity* Cylinder::selected = nullptr;
 int Cylinder::selectedEntry = -1;
 
 vector<Entity*> Cylinder::cylinders;
 
+const float W = 400.0f, H = 300.0f, D = 500.0f;
+
 void Cylinder::update(RawModel& model) {
   // create
   if (KeyboardManager::isKeyPressed(KEY_C) && cylinders.size() < 10) {
-    Entity* entity = new Entity(model, glm::vec3(0.6, 0.8, 0.8), glm::vec3(2 * cylinders.size()), glm::vec3(0), glm::vec3(1, 0.1, 1));
+    Entity* entity = new Entity(model, glm::vec3(0.3), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(1, 0.1, 1));
     cylinders.push_back(entity);
   }
   for (auto& it: cylinders) {
@@ -26,7 +31,7 @@ void Cylinder::update(RawModel& model) {
   }
 
   // delete all
-  if (KeyboardManager::isKeyPressed(KEY_DEL)) {
+  if (KeyboardManager::isKeyPressed(KEY_DEL) && selected) {
     clean();
     selected = nullptr;
     selectedEntry = -1;
@@ -34,7 +39,7 @@ void Cylinder::update(RawModel& model) {
   }
 
   // delete selected
-  if (KeyboardManager::isKeyPressed(KEY_BACKSPACE)) {
+  if (KeyboardManager::isKeyPressed(KEY_BACKSPACE) && selected) {
     cylinders.erase(cylinders.begin() + selectedEntry);
     delete selected;
     selected = nullptr;
@@ -90,6 +95,58 @@ void Cylinder::update(RawModel& model) {
     float deltaZ = MouseManager::yScrollOffset * unitDistance / 800.0f;
     glm::vec3 movement = Camera::getUp() * deltaY + Camera::getRight() * deltaX + Camera::getFront() * deltaZ;
     selected->changePosition(movement.x, movement.y, movement.z);
+  }
+
+  // rotation
+  else if (MouseManager::buttonDown(LEFT_BUTTON)) {
+    // construct two points
+    float x0 = MouseManager::lastX - W / 2;
+    float y0 = MouseManager::lastY - H / 2;
+    glm::vec3 P0 = glm::vec3(x0, y0, sqrt(D*D - y0 * y0));
+    float x1 = MouseManager::currentX - W / 2;
+    float y1 = MouseManager::currentY - H / 2;
+    glm::vec3 P1 = glm::vec3(x1, y1, sqrt(D*D - y1 * y1));
+    // rotation vector
+    glm::vec3 a = glm::normalize(glm::cross(P0, P1));
+    if (isnan(a.x) || isnan(a.y) || isnan(a.z))
+      return;
+    // rotation degree
+    float cosTheta = glm::dot(P0, P1) / (glm::length(P0) * glm::length(P1));
+    float sinTheta = sqrt(1 - cosTheta * cosTheta);
+
+    float xAbs = abs(a.x), yAbs = abs(a.y), zAbs = abs(a.z);
+    if (1) {
+    // if (a.x >= a.y && a.x >= a.z) {
+      // project onto xz plane
+      float XZ = sqrt(a.x * a.x + a.z * a.z);
+      float cosPhi = a.x / XZ;
+      float sinPhi = a.z / XZ;
+
+      glm::mat4 Ry_phi(1.0f);
+      Ry_phi[0].x = cosPhi; Ry_phi[0].z = sinPhi;
+      Ry_phi[2].x = -sinPhi; Ry_phi[2].z = cosPhi;
+
+      glm::mat4 Ryphi(1.0f);
+      Ryphi[0].x = cosPhi; Ryphi[0].z = -sinPhi;
+      Ryphi[2].x = sinPhi; Ryphi[2].z = cosPhi;
+
+      float cosPsi = XZ;
+      float sinPsi = a.y;
+
+      glm::mat4 Rz_psi(1.0f);
+      Rz_psi[0].x = cosPsi; Rz_psi[0].y = sinPsi;
+      Rz_psi[1].x = -sinPsi; Rz_psi[1].y = cosPsi;
+
+      glm::mat4 Rzpsi(1.0f);
+      Rzpsi[0].x = cosPsi; Rzpsi[0].y = -sinPsi;
+      Rzpsi[1].x = sinPsi; Rzpsi[1].y = cosPsi;
+
+      glm::mat4 RxTheta(1.0f);
+      RxTheta[1].y = cosTheta; RxTheta[1].z = -sinTheta;
+      RxTheta[2].y = sinTheta; RxTheta[2].z = cosTheta;
+
+      selected->changeRotation(Ryphi * Rzpsi * RxTheta * Rz_psi * Ry_phi);
+    }
   }
 }
 

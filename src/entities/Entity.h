@@ -17,6 +17,7 @@ public:
   glm::vec3 getPos() const;
   glm::vec3 getScale() const;
   glm::vec3 getColor() const;
+  void changeRotation(glm::mat4 rot);
   void setPos(glm::vec3 pos);
   void setScale(glm::vec3 scale);
   void setColor(glm::vec3 color);

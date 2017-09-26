@@ -27,6 +27,10 @@ glm::vec3 Entity::getColor() const {
   return color;
 }
 
+void Entity::changeRotation(glm::mat4 rot) {
+  rotationMatrix = rot * rotationMatrix;
+}
+
 void Entity::setPos(glm::vec3 pos) {
   this->pos = pos;
 }

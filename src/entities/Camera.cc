@@ -13,7 +13,7 @@ float Camera::yaw = YAW;
 float Camera::pitch = PITCH;
 float Camera::speed = SPEED;
 float Camera::sensitivity = SENSITIVITY;
-float Camera::mouseSensitivity = 0.1f;
+float Camera::mouseSensitivity = 0.01f;
 float Camera::zoom = ZOOM;
 
 void Camera::update() {
