@@ -1,7 +1,8 @@
-#include "inputManager/KeyboardManager.h"
-#include "inputManager/MouseManager.h"
 #include "entities/Camera.h"
 #include "entities/Entity.h"
+#include "inputManager/KeyboardManager.h"
+#include "inputManager/MouseManager.h"
+#include "IO/IO.h"
 #include "models/Cylinder.h"
 #include "models/Loader.h"
 #include "models/RawModel.h"
@@ -38,7 +39,7 @@ void updateFPSCount(double& previousSecond, int& updates) {
 }
 #endif
 
-int main() {
+int main(int argc, char* argv[]) {
 
   DisplayManager::createDisplay();
   Loader loader;
@@ -55,6 +56,10 @@ int main() {
 #endif
   double delta = 0;
   int updates = 0;
+
+  if (argc == 2) {
+    IO::read(argv[1], Cylinder::cylinders, model);
+  }
 
   while (!DisplayManager::shouldCloseDisplay()) {
     if (shouldUpdate(currentTime, delta, lastTime, fps)) {
