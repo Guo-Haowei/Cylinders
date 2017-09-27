@@ -11,7 +11,7 @@ make
 ./exe
 ```
 
-Note: `WITH_FPS` displays frame per second, `WITH_AA` enables anti aliasing.
+Note: `WITH_FPS` displays frame per second, default to `OFF`, `WITH_AA` enables anti aliasing, default to `ON`.
 
 ## Controls
 Press `c` to create cylinder.<br />
@@ -27,6 +27,6 @@ Hold left button to rotate selected cylinder.<br />
 ![alt text](https://github.com/Guo-Haowei/Cylinders/blob/master/ScreenShot.png)
 
 ## Future
-1. Rotate cylinder(WIP)
+1. Read in and write out cylinders
 2. Raytracing to pick cylinders
 3. Raytracing for refraction effect
