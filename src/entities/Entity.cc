@@ -46,7 +46,10 @@ void Entity::setColor(glm::vec3 color) {
 glm::mat4 Entity::createTransformationMatrix() {
   glm::mat4 matrix = glm::mat4(1);
   // rotate
-  matrix = rotationMatrix * matrix;
+  glm::mat4 T, T_1;
+  T = glm::translate(T, -pos);
+  T_1 = glm::translate(T_1, pos);
+  matrix = T_1 * rotationMatrix * T;
   // translate
   matrix = glm::translate(matrix, pos);
   // scale
