@@ -18,6 +18,7 @@ Press `c` to create cylinder.<br />
 Press `0` up to `9` to select cylinders (This will put program in OBJECT mode, press `tab` to switch back to SCENE mode)<br />
 Press `backspace` to delete selected cylinders.<br />
 Press `Delete` to delete all cylinders.<br />
+Press `o` to output current cylinder data<br />
 Use `[`, `]` or scroll wheel to scale selected cylinders.<br />
 Scroll wheel in general change the depth.<br />
 Hold right button to translate selected cylinder.<br />
@@ -27,6 +28,6 @@ Hold left button to rotate selected cylinder.<br />
 ![alt text](https://github.com/Guo-Haowei/Cylinders/blob/master/ScreenShot.png)
 
 ## Future
-1. Read in and write out cylinders
+1. Link with C code
 2. Raytracing to pick cylinders
 3. Raytracing for refraction effect
