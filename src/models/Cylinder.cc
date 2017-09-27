@@ -4,6 +4,7 @@
 #include "../entities/Camera.h"
 #include "../inputManager/MouseManager.h"
 #include "../inputManager/KeyboardManager.h"
+#include "../IO/IO.h"
 #include "../renderEngine/DisplayManager.h"
 #include <glm/glm.hpp>
 #include <math.h>
@@ -19,7 +20,14 @@ vector<Entity*> Cylinder::cylinders;
 
 const float W = 400.0f, H = 300.0f, D = 500.0f;
 
+void Cylinder::output() {
+  if (KeyboardManager::isKeyPressed(KEY_O) && cylinders.size() > 0) {
+    IO::write(cylinders);
+  }
+}
+
 void Cylinder::update(RawModel& model) {
+  output();
   // create
   if (KeyboardManager::isKeyPressed(KEY_C) && cylinders.size() < 10) {
     Entity* entity = new Entity(model, glm::vec3(0.3), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1, 0.1, 1));

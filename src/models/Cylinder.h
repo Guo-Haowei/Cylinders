@@ -9,6 +9,7 @@ class Cylinder {
 private:
   static Entity* selected;
   static int selectedEntry;
+  static void output();
 public:
   static vector<Entity*> cylinders;
   static void update(RawModel& model);
