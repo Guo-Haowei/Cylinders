@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_VERBOSE_MAKEFILE on)
 
 project(exe)
 
@@ -32,7 +33,8 @@ find_package(glm REQUIRED)
 include_directories(${GLM_INCLUDE_DIRS})
 
 file(GLOB_RECURSE SRCS *.cc)
+file(GLOB_RECURSE CSRCS *.c)
 file(GLOB_RECURSE HDRS *.h)
 
-add_executable(exe ${SRCS} ${HDRS})
-target_link_libraries(exe ${OPENGL_LIBRARY} ${GLEW_LIBRARIES} ${GLFW_LIBRARIES})
+add_executable(exe ${SRCS} ${CSRCS} ${HDRS})
+target_link_libraries(exe ${OPENGL_LIBRARY} ${GLEW_LIBRARIES} ${GLFW_LIBRARIES} m)
