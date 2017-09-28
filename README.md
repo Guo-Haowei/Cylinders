@@ -29,6 +29,9 @@ Hold left button to rotate selected cylinder.<br />
 ## Screen shots
 ![alt text](https://github.com/Guo-Haowei/Cylinders/blob/master/ScreenShot.png)
 
+## Features
+* Trackball rotation
+
 ## Future
 1. Link with C code
 2. Raytracing to pick cylinders

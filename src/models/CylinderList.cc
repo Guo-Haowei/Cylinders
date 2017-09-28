@@ -1,5 +1,5 @@
 #define _USE_MATH_DEFINES
-#include "Cylinder.h"
+#include "CylinderList.h"
 #include "../common.h"
 #include "../entities/Camera.h"
 #include "../inputManager/MouseManager.h"
@@ -13,20 +13,20 @@ using std::abs;
 using std::cout;
 using std::endl;
 
-Entity* Cylinder::selected = nullptr;
-int Cylinder::selectedEntry = -1;
+Entity* CylinderList::selected = nullptr;
+int CylinderList::selectedEntry = -1;
 
-vector<Entity*> Cylinder::cylinders;
+vector<Entity*> CylinderList::cylinders;
 
 const float W = 400.0f, H = 300.0f, D = 500.0f;
 
-void Cylinder::output() {
+void CylinderList::output() {
   if (KeyboardManager::isKeyPressed(KEY_O) && cylinders.size() > 0) {
     IO::write(cylinders);
   }
 }
 
-void Cylinder::update(RawModel& model) {
+void CylinderList::update(RawModel& model) {
   output();
   // create
   if (KeyboardManager::isKeyPressed(KEY_C) && cylinders.size() < 10) {
@@ -161,14 +161,14 @@ void Cylinder::update(RawModel& model) {
   }
 }
 
-void Cylinder::clean() {
+void CylinderList::clean() {
   for (auto& it: cylinders)
     delete it;
 
   cylinders.clear();
 }
 
-RawModel Cylinder::createUniformCylinder(Loader& loader) {
+RawModel CylinderList::createUniformCylinder(Loader& loader) {
   vector<float> vertices;
   vector<float> normals;
 

@@ -3,7 +3,7 @@
 #include "inputManager/KeyboardManager.h"
 #include "inputManager/MouseManager.h"
 #include "IO/IO.h"
-#include "models/Cylinder.h"
+#include "models/CylinderList.h"
 #include "models/Loader.h"
 #include "models/RawModel.h"
 #include "renderEngine/DisplayManager.h"
@@ -14,6 +14,9 @@
 using std::cout;
 using std::endl;
 using std::vector;
+
+// #include "cyl/cylIntersect.c"
+// extern "C" Space W3;
 
 bool shouldUpdate(double& currentTime, double& delta, double& lastTime, const int fps) {
   currentTime = DisplayManager::getTime();
@@ -45,7 +48,7 @@ int main(int argc, char* argv[]) {
   Loader loader;
   Renderer renderer;
   vector<Entity*> entities;
-  RawModel model = Cylinder::createUniformCylinder(loader);
+  RawModel model = CylinderList::createUniformCylinder(loader);
   Camera::updateCameraVectors();
   MouseManager::prepare();
 
@@ -58,7 +61,7 @@ int main(int argc, char* argv[]) {
   int updates = 0;
 
   if (argc == 2) {
-    IO::read(argv[1], Cylinder::cylinders, model);
+    IO::read(argv[1], CylinderList::cylinders, model);
   }
 
   while (!DisplayManager::shouldCloseDisplay()) {
@@ -66,9 +69,9 @@ int main(int argc, char* argv[]) {
       DisplayManager::prepareDisplay();
       MouseManager::beforeUpdate();
       Camera::update();
-      Cylinder::update(model);
+      CylinderList::update(model);
 
-      renderer.render(Cylinder::cylinders);
+      renderer.render(CylinderList::cylinders);
 
       DisplayManager::updateDisplay();
       MouseManager::afterUpdate();
@@ -81,7 +84,7 @@ int main(int argc, char* argv[]) {
 #endif
   }
   DisplayManager::cleanDisplay();
-  Cylinder::clean();
+  CylinderList::clean();
 
   return 0;
 }

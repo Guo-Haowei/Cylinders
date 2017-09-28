@@ -5,7 +5,7 @@
 #include <vector>
 using std::vector;
 
-class Cylinder {
+class CylinderList {
 private:
   static Entity* selected;
   static int selectedEntry;
