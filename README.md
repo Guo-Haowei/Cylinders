@@ -8,10 +8,12 @@ mkdir build
 cd build
 ccmake .. -DWITH_FPS=[ON|OFF] -DWITH_AA=[ON|OFF]
 make
-./exe
+./exe [1|2|3|...]
 ```
 
-Note: `WITH_FPS` displays frame per second, default to `OFF`, `WITH_AA` enables anti aliasing, default to `ON`.
+Note: <br />
+&nbsp;&nbsp;`WITH_FPS` displays frame per second, default to `OFF`, `WITH_AA` enables anti aliasing, default to `ON`. <br />
+&nbsp;&nbsp;Run `./exe` with optional argument `$number` will load cylinders from `IO/$number.txt`. <br />
 
 ## Controls
 Press `c` to create cylinder.<br />
