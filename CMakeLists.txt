@@ -32,9 +32,10 @@ include_directories(${GLEW_INCLUDE_DIRS})
 find_package(glm REQUIRED)
 include_directories(${GLM_INCLUDE_DIRS})
 
-file(GLOB_RECURSE SRCS "*.c*")
+file(GLOB_RECURSE SRCS "*.cc")
+file(GLOB_RECURSE CSRCS "cyl/*.c")
 file(GLOB_RECURSE HDRS "*.h")
 
 add_definitions("-m64")
-add_executable(exe ${SRCS} ${HDRS})
+add_executable(exe ${CSRCS} ${SRCS} ${HDRS})
 target_link_libraries(exe ${OPENGL_LIBRARY} ${GLEW_LIBRARIES} ${GLFW_LIBRARIES} m)
