@@ -15,7 +15,7 @@ RawModel Loader::loadToVAO(vector<float> vertices, vector<float> normals) {
   return RawModel(vaoID, vertices.size());
 }
 
-void Loader::cleanUp() {
+void Loader::clean() {
   for (auto& vao: vaos) {
     glDeleteVertexArrays(1, &vao);
   }

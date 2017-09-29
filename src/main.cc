@@ -42,10 +42,9 @@ void updateFPSCount(double& previousSecond, int& updates) {
 int main(int argc, char* argv[]) {
 
   DisplayManager::createDisplay();
-  Loader loader;
   Renderer renderer;
   vector<Entity*> entities;
-  RawModel model = CylinderList::createUniformCylinder(loader);
+  RawModel model = Entity::createUniformCylinder();
   Camera::updateCameraVectors();
   MouseManager::prepare();
 
@@ -82,6 +81,7 @@ int main(int argc, char* argv[]) {
   }
   DisplayManager::cleanDisplay();
   CylinderList::clean();
+  Loader::clean();
 
   return 0;
 }

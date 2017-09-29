@@ -13,6 +13,5 @@ private:
 public:
   static vector<Entity*> cylinders;
   static void update(RawModel& model);
-  static RawModel createUniformCylinder(Loader& loader);
   static void clean();
 };

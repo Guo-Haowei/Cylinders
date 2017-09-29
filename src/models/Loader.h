@@ -14,7 +14,7 @@ private:
   static void bindIndicesBuffer(vector<unsigned int> indices);
 
 public:
-  static void cleanUp();
+  static void clean();
 
   static RawModel loadToVAO(vector<float> vertices, vector<float> normals);
 };
