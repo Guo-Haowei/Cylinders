@@ -15,9 +15,6 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-// #include "cyl/cylIntersect.c"
-// extern "C" Space W3;
-
 bool shouldUpdate(double& currentTime, double& delta, double& lastTime, const int fps) {
   currentTime = DisplayManager::getTime();
   delta += currentTime - lastTime;

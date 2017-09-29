@@ -13,6 +13,16 @@ using std::abs;
 using std::cout;
 using std::endl;
 
+#include "../cyl/geometry.h"
+#include "../cyl/cylinder.h"
+#include "../cyl/unionfind.h"
+#include "../cyl/cylIntersect.h"
+
+Space W3;
+Space W2;
+Frame F3;
+Frame F2;
+
 Entity* CylinderList::selected = nullptr;
 int CylinderList::selectedEntry = -1;
 
