@@ -1,6 +1,10 @@
 #define GLEW_STATIC
 #include "Loader.h"
 #include <GL/glew.h>
+using std::vector;
+
+vector<unsigned int> Loader::vaos;
+vector<unsigned int> Loader::vbos;
 
 RawModel Loader::loadToVAO(vector<float> vertices, vector<float> normals) {
   unsigned int vaoID = createVAO();
@@ -11,7 +15,7 @@ RawModel Loader::loadToVAO(vector<float> vertices, vector<float> normals) {
   return RawModel(vaoID, vertices.size());
 }
 
-Loader::~Loader() {
+void Loader::cleanUp() {
   for (auto& vao: vaos) {
     glDeleteVertexArrays(1, &vao);
   }
