@@ -33,13 +33,13 @@ find_package(glm REQUIRED)
 include_directories(${GLM_INCLUDE_DIRS})
 
 set(SOURCE
-  src/cyl/geometry.c
-  src/cyl/cylIntersect.c
-  src/cyl/matrix.c
-  src/cyl/miller87.c
-  src/cyl/polyroots.c
-  src/cyl/s3d.c
-  src/cyl/unionfind.c
+  src/cyl/geometry.cc
+  src/cyl/cylIntersect.cc
+  src/cyl/matrix.cc
+  src/cyl/miller87.cc
+  src/cyl/polyroots.cc
+  src/cyl/s3d.cc
+  src/cyl/unionfind.cc
   src/entities/Camera.cc
   src/entities/Entity.cc
   src/inputManager/KeyboardManager.cc
