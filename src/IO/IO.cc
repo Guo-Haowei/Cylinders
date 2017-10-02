@@ -9,12 +9,10 @@ using std::ofstream;
 
 std::vector<std::string> split(std::string const& original, char separator);
 
-int IO::fileCount = 0;
-
 void IO::write(std::vector<Entity*>& entities) {
   ofstream outfile;
-  outfile.open("../IO/" + std::to_string(++fileCount) + ".txt");
-  cout << "Writing file " << fileCount << "...\n";
+  outfile.open("cylinders.txt");
+  cout << "Writing file cylinders.txt...\n";
   for (int i = 0; i < entities.size(); ++i) {
     glm::vec3 position = entities[i]->getPos();
     glm::vec3 scale = entities[i]->getScale();
@@ -34,14 +32,14 @@ void IO::write(std::vector<Entity*>& entities) {
   outfile.close();
 }
 
-void IO::read(std::string name, std::vector<Entity*>& entities, RawModel& model) {
+void IO::read(std::vector<Entity*>& entities, RawModel& model) {
   glm::vec3 position, scale;
   glm::mat4 rotation;
   ifstream infile;
-  cout << "Reading file " << name << "...\n";
-  infile.open("../IO/" + name + ".txt");
+  cout << "Reading file cylinders.txt...\n";
+  infile.open("cylinders.txt");
   if (!infile) {
-    cout << "ERROR::File Stream: Failed to open file '" << name << "'\n";
+    cout << "ERROR::File Stream: Failed to open file cylinders.txt\n";
     return;
   }
 
@@ -51,7 +49,6 @@ void IO::read(std::string name, std::vector<Entity*>& entities, RawModel& model)
   while (std::getline(infile, line)) {
     if (line == "" || line[0] == '#')
       continue;
-    // cout << line << '\n';
     // position
     if (lineCount % 6 == 0) {
       std::vector<std::string> floats = split(line, ' ');

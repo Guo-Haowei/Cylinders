@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
   int updates = 0;
 
   if (argc == 2) {
-    IO::read(argv[1], CylinderList::cylinders, model);
+    IO::read(CylinderList::cylinders, model);
   }
 
   while (!DisplayManager::shouldCloseDisplay()) {

@@ -5,8 +5,7 @@
 #include <vector>
 
 class IO {
-  static int fileCount;
 public:
   static void write(std::vector<Entity*>& entities);
-  static void read(std::string name, std::vector<Entity*>& entities, RawModel& model);
+  static void read(std::vector<Entity*>& entities, RawModel& model);
 };
