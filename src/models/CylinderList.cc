@@ -30,6 +30,12 @@ vector<Entity*> CylinderList::cylinders;
 
 const float W = 400.0f, H = 300.0f, D = 500.0f;
 
+Cylinder createCylinderFromEntity(Entity* entity);
+
+// void CylinderList::intersect(Entity* cyl1, Entity* cyl2) {
+//
+// }
+
 void CylinderList::output() {
   if (KeyboardManager::isKeyPressed(KEY_O) && cylinders.size() > 0) {
     IO::write(cylinders);
@@ -176,4 +182,21 @@ void CylinderList::clean() {
     delete it;
 
   cylinders.clear();
+}
+
+Cylinder createCylinderFromEntity(Entity* entity) {
+  Cylinder c;
+  c.r = entity->getScale().x;
+  c.h = entity->getScale().y * 2;
+  glm::vec4 y4d = entity->getRotationMatrix() * glm::vec4(0, 1, 0, 1);
+  glm::vec3 y = glm::vec3(c.h * y4d.x / 2, c.h * y4d.y / 2, c.h * y4d.z / 2);
+  glm::vec3 A = entity->getPos() - y;
+  glm::vec3 B = entity->getPos() + y;
+  c.P = PCreate(F3, A.x, A.y, A.z);
+  c.A = c.P;
+  c.B = PCreate(F3, B.x, B.y, B.z);
+  glm::vec3 v  = glm::normalize(B - A);
+  c.v = VCreate(F3, v.x, v.y, v.z);
+
+  return c;
 }
