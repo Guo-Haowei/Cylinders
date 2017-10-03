@@ -31,9 +31,12 @@ Hold left button to rotate selected cylinder.<br />
 
 ## Features
 * Trackball rotation
-* Unionfind all intersected cylinders and label them with same color
+* Use unionfind data structure to label intersected cylinders with same color
+
+## Issues
+1. Project rotation matrix to the closet axis
 
 ## Future
-1. Link with C code
-2. Raytracing to pick cylinders
+1. Color picking for selecting cylinders
+2. Hightlight the border of the selected cylinder
 3. Raytracing for refraction effect
