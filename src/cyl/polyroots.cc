@@ -11,60 +11,60 @@
 //------------------------------------------------------------------------- */
 
 /*
-** File: PolyRoots.c
-** Purpose: Find the roots of polynomials of degree 4 or less.
-** Author:  James Painter
-** Last Modified: 27 January 1988
-**
-**  Notes:  Stability of the solution is a major consideration here.
-**  See:      ``Solving Quartics and Cubics for Graphics'',
-**            Don Herbison-Evans
-**            University of Waterloo Research Report
-**            CS-86-56,  November, 1986
-**
-** Copyright (c), 1987 GRAIL, University of Washington
-**
-** $Revision: 1.2 $
-** $Date: 2004/04/29 20:20:08 $
-** $Locker:  $
-** $Log: polyroots.c,v $
-** Revision 1.2  2004/04/29 20:20:08  csk
-** *** empty log message ***
-**
-** Revision 1.1  2004/04/29 20:13:54  csk
-** *** empty log message ***
-**
-** Revision 1.1  2004/04/23 20:35:31  csk
-** *** empty log message ***
-**
-** Revision 1.1  2004/02/19 04:10:05  csk
-** *** empty log message ***
-**
-** Revision 1.1  2003/12/03 22:35:00  csk
-** HYello.
-**
-** Revision 1.2  2003/07/07 13:17:19  csk
-** Things.
-**
-** Revision 1.1  2003/07/05 03:54:18  csk
-** Whatever.
-**
-** Revision 1.1  2003/04/02 03:20:23  csk
-** Things.
-**
-** Revision 1.1  2003/03/28 22:09:03  csk
-** *** empty log message ***
-**
+ ** File: PolyRoots.c
+ ** Purpose: Find the roots of polynomials of degree 4 or less.
+ ** Author:  James Painter
+ ** Last Modified: 27 January 1988
+ **
+ **  Notes:  Stability of the solution is a major consideration here.
+ **  See:      ``Solving Quartics and Cubics for Graphics'',
+ **            Don Herbison-Evans
+ **            University of Waterloo Research Report
+ **            CS-86-56,  November, 1986
+ **
+ ** Copyright (c), 1987 GRAIL, University of Washington
+ **
+ ** $Revision: 1.2 $
+ ** $Date: 2004/04/29 20:20:08 $
+ ** $Locker:  $
+ ** $Log: polyroots.c,v $
+ ** Revision 1.2  2004/04/29 20:20:08  csk
+ ** *** empty log message ***
+ **
+ ** Revision 1.1  2004/04/29 20:13:54  csk
+ ** *** empty log message ***
+ **
+ ** Revision 1.1  2004/04/23 20:35:31  csk
+ ** *** empty log message ***
+ **
+ ** Revision 1.1  2004/02/19 04:10:05  csk
+ ** *** empty log message ***
+ **
+ ** Revision 1.1  2003/12/03 22:35:00  csk
+ ** HYello.
+ **
+ ** Revision 1.2  2003/07/07 13:17:19  csk
+ ** Things.
+ **
+ ** Revision 1.1  2003/07/05 03:54:18  csk
+ ** Whatever.
+ **
+ ** Revision 1.1  2003/04/02 03:20:23  csk
+ ** Things.
+ **
+ ** Revision 1.1  2003/03/28 22:09:03  csk
+ ** *** empty log message ***
+ **
  * Revision 2.0  88/04/29  16:07:19  gem
  * *** empty log message ***
- * 
+ *
  * Revision 1.4  88/04/28  12:42:51  jamie
  * *** empty log message ***
- * 
+ *
  * Revision 1.3  88/02/01  18:41:46  jamie
  * Total rewrite to improve speed and stability.
- * 
-*/
+ *
+ */
 
 /* Imports */
 #include <stdlib.h>
@@ -73,8 +73,8 @@
 
 /* Forward declarations */
 double sink_lookup(double), cosk_lookup(double);
-static double PolishRoot( 
-	size_t degree, double A, double B, double C, double D, double root );
+static double PolishRoot(
+    size_t degree, double A, double B, double C, double D, double root );
 #define fabs(x) ( ((x) > 0) ? x : -x )
 
 /* The square root of 3:  */
@@ -84,64 +84,64 @@ static double PolishRoot(
 #define SIGN(x) (((x) < 0) ? -1 : 1)
 
 /*
- * Hack together a Windows equivalent for cube root.  It's defined 
+ * Hack together a Windows equivalent for cube root.  It's defined
  * in Linux.  This is probably not the best way to implement the cube
  * root function.
  */
 #ifdef _WIN32
 static double cbrt( double t )
 {
-	return pow( t, 1.0/3.0 );
-}	
+  return pow( t, 1.0/3.0 );
+}
 #endif
 
 /*
-**  Return the real roots of a quadratic polynomial over the reals.
-**   Reference:  ``Quadratic and Cubic Equations'',  Numerical Recipes
-**               pp 145-146.
-**    Note that the method used here is more stable the the standard
-**    -b +- (b^2 - 4ac)/ 2a  when b and the discriminant are of similar
-**    magnitude.
-*/
+ **  Return the real roots of a quadratic polynomial over the reals.
+ **   Reference:  ``Quadratic and Cubic Equations'',  Numerical Recipes
+ **               pp 145-146.
+ **    Note that the method used here is more stable the the standard
+ **    -b +- (b^2 - 4ac)/ 2a  when b and the discriminant are of similar
+ **    magnitude.
+ */
 size_t quadraticRoots( double A, double B, double C, double roots[2] )
 {
-	double D;
-	double q;
+  double D;
+  double q;
 
-	if( A == 0 ) {
-		if( B == 0 ) {
-			return 0;
-		} else {	
-			roots[0] = -C/B;
-			return 1;
-		}
-	} else {
-		/*  Compute the discrimanant D=b^2 - 4ac */
-		D = B*B - 4*A*C;
-		if( D < 0 ) {
-			return 0;
-		} else {
-			/* Two real roots */
-			q = -( B + SIGN(B)*sqrt(D) ) / 2.0;
-			roots[0] = q / A;
-			if( q != 0 ) {
-				roots[1] = C / q;
-			} else {
-				roots[1] = roots[0];
-			}
-			return 2;
-		}
-	}
+  if( A == 0 ) {
+    if( B == 0 ) {
+      return 0;
+    } else {
+      roots[0] = -C/B;
+      return 1;
+    }
+  } else {
+    /*  Compute the discrimanant D=b^2 - 4ac */
+    D = B*B - 4*A*C;
+    if( D < 0 ) {
+      return 0;
+    } else {
+      /* Two real roots */
+      q = -( B + SIGN(B)*sqrt(D) ) / 2.0;
+      roots[0] = q / A;
+      if( q != 0 ) {
+        roots[1] = C / q;
+      } else {
+        roots[1] = roots[0];
+      }
+      return 2;
+    }
+  }
 }
 
 /*
-**  Return the real roots of a monic cubic polynomial over the reals.
-**  Reference: ``Solving Quartics and Cubics for Graphics'',
-**            Don Herbison-Evans
-**            University of Waterloo Research Report
-**            CS-86-56,  November, 1986
-**    Note:  The accuracy of the root can be improved with "PolishRoot".
-*/
+ **  Return the real roots of a monic cubic polynomial over the reals.
+ **  Reference: ``Solving Quartics and Cubics for Graphics'',
+ **            Don Herbison-Evans
+ **            University of Waterloo Research Report
+ **            CS-86-56,  November, 1986
+ **    Note:  The accuracy of the root can be improved with "PolishRoot".
+ */
 /* Coefficients :   x^3  + C[0] x^2 + C[1] x  + C[2] */
 size_t cubicRoots( double p, double q, double r, double roots[3] )
 {
@@ -152,9 +152,9 @@ size_t cubicRoots( double p, double q, double r, double roots[3] )
   v = r - p*q/3 + 2*p*p*p/27;
 
   /* Better stability could be gained by expanded out the expression
-  ** for w in terms of p,q and r and summing in increasing order of 
-  ** magnitude.  For now, we won't bother.
-  */
+   ** for w in terms of p,q and r and summing in increasing order of
+   ** magnitude.  For now, we won't bother.
+   */
   w = (4*u*u*u)/27 + v*v;
 
   if (w > 0)  {			/* One real root */
@@ -166,12 +166,12 @@ size_t cubicRoots( double p, double q, double r, double roots[3] )
       double w_plus_v = w + v;
       roots[0] = - cbrt(w_plus_v/2.0) + (u*cbrt(2.0/w_plus_v) - p) / 3.0;
     }
-	return 1;
+    return 1;
   } else {			/* Three real roots */
     s = sqrt( -u / 3 );
     if (s != 0) {
       t = -v / (2.0 * s*s*s);
-#ifdef TABLE_LOOKUP      
+#ifdef TABLE_LOOKUP
       cosk = cosk_lookup( t  );
       sink = sink_lookup( t );
 #else
@@ -185,175 +185,175 @@ size_t cubicRoots( double p, double q, double r, double roots[3] )
     roots[0] = 2.0 * s * cosk - p_over_3;
     roots[1] = 2.0 * s * (-cosk + SQRT3*sink)/2.0 - p_over_3;
     roots[2] = 2.0 * s * (-cosk - SQRT3*sink)/2.0 - p_over_3;
-	return 3;
+    return 3;
   }
 }
 
 #define SQ(A) ((A)*(A))
 
 /*
-**  Return the real roots of a monic quartic polynomial over the reals.
-**  Reference: ``Solving Quartics and Cubics for Graphics'',
-**            Don Herbison-Evans
-**            University of Waterloo Research Report
-**            CS-86-56,  November, 1986
-*/
+ **  Return the real roots of a monic quartic polynomial over the reals.
+ **  Reference: ``Solving Quartics and Cubics for Graphics'',
+ **            Don Herbison-Evans
+ **            University of Waterloo Research Report
+ **            CS-86-56,  November, 1986
+ */
 /* Coefficients :  x^4 + C[0] x^3  + C[1] x^2 + C[2] x  + C[3] */
-size_t quarticRoots( 
-	double a, double b, double c, double d, double roots[4] )
+size_t quarticRoots(
+    double a, double b, double c, double d, double roots[4] )
 {
-	double h,h1,h2,H,   g,g1,g2,G, n, m, en, em, y;
-	double cubic[3];	/* Cubic and quadratic coefficients */
-	int i, nr;
+  double h,h1,h2,H,   g,g1,g2,G, n, m, en, em, y;
+  double cubic[3];	/* Cubic and quadratic coefficients */
+  int i, nr;
 
-	/* Find the a real root of a certain cubic */
-	cubic[0] = -2.0*b;
-	cubic[1] = b*b + a*c - 4*d;
-	cubic[2] = c*c - a*b*c + a*a*d;
-	nr = cubicRoots( cubic[0], cubic[1], cubic[2], roots );
+  /* Find the a real root of a certain cubic */
+  cubic[0] = -2.0*b;
+  cubic[1] = b*b + a*c - 4*d;
+  cubic[2] = c*c - a*b*c + a*a*d;
+  nr = cubicRoots( cubic[0], cubic[1], cubic[2], roots );
 
-	if( nr == 1 ) {
-		y = PolishRoot( 3, cubic[0], cubic[1], cubic[2], 0.0, roots[0] );
-	} else {
-		if( b < 0 && d < 0 ) {
-			y = PolishRoot( 3, cubic[0], cubic[1], cubic[2], 0.0, roots[2] );
-		} else {
-			y = PolishRoot( 3, cubic[0], cubic[1], cubic[2], 0.0, roots[0] );
-		}
-	}
+  if( nr == 1 ) {
+    y = PolishRoot( 3, cubic[0], cubic[1], cubic[2], 0.0, roots[0] );
+  } else {
+    if( b < 0 && d < 0 ) {
+      y = PolishRoot( 3, cubic[0], cubic[1], cubic[2], 0.0, roots[2] );
+    } else {
+      y = PolishRoot( 3, cubic[0], cubic[1], cubic[2], 0.0, roots[0] );
+    }
+  }
 
-	g1 = a/2.0;
-	h1 = (b-y)/2.0;
-	if( y < 0 ) {
-		n = a*a - 4*y;
-		if( n <= 0 ) {
-			return 0;
-		}
-		g2 = sqrt(n);
-		if( g2 == 0 ) {
-			return 0;
-		}
-		h2 = (a*((b-y)/2.0) - c) / g2;
-		g2 /= 2.0;
-	} else if( y > 0 && d > 0 && b < 0 ) {
-		m = (b-y)*(b-y) - 4*d;
-		if( m <= 0 ) {
-			return 0;
-		}
-		h2 = sqrt(m);
-		if( h2 == 0 ) {
-			return 0;
-		}
-		g2 = (a*h1 - c) / h2;
-		h2 /= 2.0;
-	} else {
-		n = a*a - 4*y;
-		m = (b-y)*(b-y) - 4*d;
-		en = b*b + 2.*fabs(b*y) + y*y + 4*fabs(d);
-		em = a*a + 4.*fabs(y);
-		if( m*en > n*em ) {		/* use m */
-			if( m <= 0 ) { 
-				return 0; 
-			}
-			h2 = sqrt(m);
-			if( h2 == 0 ) { 
-				return 0; 
-			}
-			g2 = (a*h1 - c) / h2;
-			h2 /= 2.0;
-		} else {			/* use n */
-			if (n <= 0) {
-				return 0;
-			}
-			g2 = sqrt(n);
-			if (g2 == 0) { 
-				return 0; 
-			}
-			h2 = (a*( (b-y)/2.0) - c) / g2;
-			g2 /= 2.0;
-		}
-	}
+  g1 = a/2.0;
+  h1 = (b-y)/2.0;
+  if( y < 0 ) {
+    n = a*a - 4*y;
+    if( n <= 0 ) {
+      return 0;
+    }
+    g2 = sqrt(n);
+    if( g2 == 0 ) {
+      return 0;
+    }
+    h2 = (a*((b-y)/2.0) - c) / g2;
+    g2 /= 2.0;
+  } else if( y > 0 && d > 0 && b < 0 ) {
+    m = (b-y)*(b-y) - 4*d;
+    if( m <= 0 ) {
+      return 0;
+    }
+    h2 = sqrt(m);
+    if( h2 == 0 ) {
+      return 0;
+    }
+    g2 = (a*h1 - c) / h2;
+    h2 /= 2.0;
+  } else {
+    n = a*a - 4*y;
+    m = (b-y)*(b-y) - 4*d;
+    en = b*b + 2.*fabs(b*y) + y*y + 4*fabs(d);
+    em = a*a + 4.*fabs(y);
+    if( m*en > n*em ) {		/* use m */
+      if( m <= 0 ) {
+        return 0;
+      }
+      h2 = sqrt(m);
+      if( h2 == 0 ) {
+        return 0;
+      }
+      g2 = (a*h1 - c) / h2;
+      h2 /= 2.0;
+    } else {			/* use n */
+      if (n <= 0) {
+        return 0;
+      }
+      g2 = sqrt(n);
+      if (g2 == 0) {
+        return 0;
+      }
+      h2 = (a*( (b-y)/2.0) - c) / g2;
+      g2 /= 2.0;
+    }
+  }
 
-	if( SIGN(g1) == SIGN(g2) ) {
-		G = g1 + g2;
-		g = (G==0) ? g1-g2  : y/G;
-	} else {
-		g = g1 - g2;
-		G = (g == 0) ?  g1+g2 : y/g;
-	}
-	if( SIGN(h1) == SIGN(h2) ) {
-		H = h1+h2;
-		h = (H == 0) ? h1-h2  : d/H;
-	} else {
-		h = h1 - h2;
-		H = (h == 0) ? h1+h2  : d/h;
-	}
+  if( SIGN(g1) == SIGN(g2) ) {
+    G = g1 + g2;
+    g = (G==0) ? g1-g2  : y/G;
+  } else {
+    g = g1 - g2;
+    G = (g == 0) ?  g1+g2 : y/g;
+  }
+  if( SIGN(h1) == SIGN(h2) ) {
+    H = h1+h2;
+    h = (H == 0) ? h1-h2  : d/H;
+  } else {
+    h = h1 - h2;
+    H = (h == 0) ? h1+h2  : d/h;
+  }
 
-	nr = quadraticRoots( 1.0, G, H, roots );
-	nr += quadraticRoots( 1.0, g, h, roots+nr );
+  nr = quadraticRoots( 1.0, G, H, roots );
+  nr += quadraticRoots( 1.0, g, h, roots+nr );
 
-	for( i=0; i < nr; ++i ) {
-		roots[i] = PolishRoot( 4, a, b, c, d, roots[i] );
-	}
+  for( i=0; i < nr; ++i ) {
+    roots[i] = PolishRoot( 4, a, b, c, d, roots[i] );
+  }
 
-	/* remove non-roots */
-	//	fprintf(stderr,"REMOVE NONROOTS %d\n",nr);
-	for ( i=0; i < nr; i++ ) {
-		double r;
-		r = (((roots[i]+a)*roots[i]+b)*roots[i]+c)*roots[i]+d;
-		//		fprintf(stderr,"root %d is %g\n",i,r);
-		if ( fabs(r)>1e-4 ) {
-			roots[i] = roots[nr-1];
-			nr--; i--;
-		}
-	}
+  /* remove non-roots */
+  //	fprintf(stderr,"REMOVE NONROOTS %d\n",nr);
+  for ( i=0; i < nr; i++ ) {
+    double r;
+    r = (((roots[i]+a)*roots[i]+b)*roots[i]+c)*roots[i]+d;
+    //		fprintf(stderr,"root %d is %g\n",i,r);
+    if ( fabs(r)>1e-4 ) {
+      roots[i] = roots[nr-1];
+      nr--; i--;
+    }
+  }
 
-	return nr;
+  return nr;
 }
 
 /*  Polish a monic polynomial root by Newton-Raphson iteration */
 /* degree <= 4; c[] has 'degree' values. */
-static double PolishRoot( 
-	size_t degree, double A, double B, double C, double D, double root )
+static double PolishRoot(
+    size_t degree, double A, double B, double C, double D, double root )
 {
-	size_t i, j;
-	double x, y, dydx, dx, lastx = HUGE, lasty = HUGE;
-	double cs[4] = { A, B, C, D };
+  size_t i, j;
+  double x, y, dydx, dx, lastx = HUGE, lasty = HUGE;
+  double cs[4] = { A, B, C, D };
 
-	x = root;
+  x = root;
 
-	for( i = 0; i < 3; ++i ) {  /* Up to 3 iterations */
-		/* Evaluate the polynomial and its derivative */
-		y = 1;
-		dydx = 0;
+  for( i = 0; i < 3; ++i ) {  /* Up to 3 iterations */
+    /* Evaluate the polynomial and its derivative */
+    y = 1;
+    dydx = 0;
 
-		for( j = 0; j < degree; ++j ) {
-			dydx = dydx*x + y;
-			y *= x;
-			y += cs[ j ];
-		}
+    for( j = 0; j < degree; ++j ) {
+      dydx = dydx*x + y;
+      y *= x;
+      y += cs[ j ];
+    }
 
-		if( dydx == 0 ) {
-			break;	/* Bad news */
-		}
+    if( dydx == 0 ) {
+      break;	/* Bad news */
+    }
 
-		if( fabs(y) > fabs(lasty) ) {
-			x = lastx;
-			break;			/* Not converging */
-		}
+    if( fabs(y) > fabs(lasty) ) {
+      x = lastx;
+      break;			/* Not converging */
+    }
 
-		lasty = y;
+    lasty = y;
 
-		/* Form a new estimate for the root */
-		dx = y/dydx;
-		lastx = x;
-		x -= dx;
-		if( lastx == x ) {
-			break;  /* Can't do any better */
-		}
-	}
+    /* Form a new estimate for the root */
+    dx = y/dydx;
+    lastx = x;
+    x -= dx;
+    if( lastx == x ) {
+      break;  /* Can't do any better */
+    }
+  }
 
-	return x;
+  return x;
 }
 
 #ifdef TABLE_LOOKUP
@@ -571,14 +571,14 @@ static double cosk_lookup(double t)
 
   if (t > .999999) 		/* Asymtotic forms */
     return (8.0 + t) / 9.0;
-  if (t < -.99999)		
+  if (t < -.99999)
     return (1 + sqrt(t+1.)/3.0)/2.0;
 
   /* Use linear interpolation between table entries. */
 
   /* convert t to a table index */
-           /* Table is 1025 elements long with a delta of 1/512 */
-  tprime = ((t+1.0)*512); 
+  /* Table is 1025 elements long with a delta of 1/512 */
+  tprime = ((t+1.0)*512);
   it = (int) tprime;
 
   /* Use linear interpolation between table entries. */
@@ -800,15 +800,15 @@ static double sink_lookup(double t)
     0.078050456881,0.075204432527,0.072247487062,0.069165394090,0.065940605898,
     0.062551054850,0.058968333762,0.055154809898,0.051058792051,0.046605855187,
     0.041681762316,0.036094192631,0.029468115200,0.020835217922,0.000000000000
-    };
+  };
   if (t > .999999) 		/* Asymtotic forms */
     return sqrt(2.0*(1.0 - t)/9.0);
-  if (t < -.99999)		
+  if (t < -.99999)
     return ( SQRT3 - sqrt(2.0*(t+1))/3.0)/2.0;
-    
-    
+
+
   /* convert t to a table index */
-           /* Table is 1025 elements long with a delta of 1/512 */
+  /* Table is 1025 elements long with a delta of 1/512 */
   tprime = ((t+1.0)*512);
   it = (int) tprime;
 
@@ -860,7 +860,7 @@ static double sink_lookup(double t)
 #endif
 extern double  sqrt( double x );
 extern double  cbrt( double x );
-extern double cos( double x ); 
+extern double cos( double x );
 extern double acos( double x );
 
 /* epsilon surrounding for near zero values */
@@ -870,205 +870,205 @@ extern double acos( double x );
 
 #ifdef NOCBRT
 #define     cbrt(x)     ((x) > 0.0 ? pow((double)(x), 1.0/3.0) : \
-                          ((x) < 0.0 ? -pow((double)-(x), 1.0/3.0) : 0.0))
+    ((x) < 0.0 ? -pow((double)-(x), 1.0/3.0) : 0.0))
 #endif
 
 int SolveQuadric( double c[3], double s[2] )
 {
-    double p, q, D;
+  double p, q, D;
 
-    /* normal form: x^2 + px + q = 0 */
+  /* normal form: x^2 + px + q = 0 */
 
-    p = c[ 1 ] / (2 * c[ 2 ]);
-    q = c[ 0 ] / c[ 2 ];
+  p = c[ 1 ] / (2 * c[ 2 ]);
+  q = c[ 0 ] / c[ 2 ];
 
-    D = p * p - q;
+  D = p * p - q;
 
-    if (IsZero(D))
-    {
-	s[ 0 ] = - p;
-	return 1;
-    }
-    else if (D < 0)
-    {
-	return 0;
-    }
-    else if (D > 0)
-    {
-	double sqrt_D = sqrt(D);
+  if (IsZero(D))
+  {
+    s[ 0 ] = - p;
+    return 1;
+  }
+  else if (D < 0)
+  {
+    return 0;
+  }
+  else if (D > 0)
+  {
+    double sqrt_D = sqrt(D);
 
-	s[ 0 ] =   sqrt_D - p;
-	s[ 1 ] = - sqrt_D - p;
-	return 2;
-    } else {
-		return 0;
-	}
+    s[ 0 ] =   sqrt_D - p;
+    s[ 1 ] = - sqrt_D - p;
+    return 2;
+  } else {
+    return 0;
+  }
 }
 
 
 int SolveCubic( double c[4], double s[3] )
 {
-    int     i, num;
-    double  sub;
-    double  A, B, C;
-    double  sq_A, p, q;
-    double  cb_p, D;
+  int     i, num;
+  double  sub;
+  double  A, B, C;
+  double  sq_A, p, q;
+  double  cb_p, D;
 
-    /* normal form: x^3 + Ax^2 + Bx + C = 0 */
+  /* normal form: x^3 + Ax^2 + Bx + C = 0 */
 
-    A = c[ 2 ] / c[ 3 ];
-    B = c[ 1 ] / c[ 3 ];
-    C = c[ 0 ] / c[ 3 ];
+  A = c[ 2 ] / c[ 3 ];
+  B = c[ 1 ] / c[ 3 ];
+  C = c[ 0 ] / c[ 3 ];
 
-    /*  substitute x = y - A/3 to eliminate quadric term:
-	x^3 +px + q = 0 */
+  /*  substitute x = y - A/3 to eliminate quadric term:
+      x^3 +px + q = 0 */
 
-    sq_A = A * A;
-    p = 1.0/3 * (- 1.0/3 * sq_A + B);
-    q = 1.0/2 * (2.0/27 * A * sq_A - 1.0/3 * A * B + C);
+  sq_A = A * A;
+  p = 1.0/3 * (- 1.0/3 * sq_A + B);
+  q = 1.0/2 * (2.0/27 * A * sq_A - 1.0/3 * A * B + C);
 
-    /* use Cardano's formula */
+  /* use Cardano's formula */
 
-    cb_p = p * p * p;
-    D = q * q + cb_p;
+  cb_p = p * p * p;
+  D = q * q + cb_p;
 
-    if (IsZero(D))
+  if (IsZero(D))
+  {
+    if (IsZero(q)) /* one triple solution */
     {
-	if (IsZero(q)) /* one triple solution */
-	{
-	    s[ 0 ] = 0;
-	    num = 1;
-	}
-	else /* one single and one double solution */
-	{
-	    double u = cbrt(-q);
-	    s[ 0 ] = 2 * u;
-	    s[ 1 ] = - u;
-	    num = 2;
-	}
+      s[ 0 ] = 0;
+      num = 1;
     }
-    else if (D < 0) /* Casus irreducibilis: three real solutions */
+    else /* one single and one double solution */
     {
-	double phi = 1.0/3 * acos(-q / sqrt(-cb_p));
-	double t = 2 * sqrt(-p);
-
-	s[ 0 ] =   t * cos(phi);
-	s[ 1 ] = - t * cos(phi + M_PI / 3);
-	s[ 2 ] = - t * cos(phi - M_PI / 3);
-	num = 3;
+      double u = cbrt(-q);
+      s[ 0 ] = 2 * u;
+      s[ 1 ] = - u;
+      num = 2;
     }
-    else /* one real solution */
-    {
-	double sqrt_D = sqrt(D);
-	double u = cbrt(sqrt_D - q);
-	double v = - cbrt(sqrt_D + q);
+  }
+  else if (D < 0) /* Casus irreducibilis: three real solutions */
+  {
+    double phi = 1.0/3 * acos(-q / sqrt(-cb_p));
+    double t = 2 * sqrt(-p);
 
-	s[ 0 ] = u + v;
-	num = 1;
-    }
+    s[ 0 ] =   t * cos(phi);
+    s[ 1 ] = - t * cos(phi + M_PI / 3);
+    s[ 2 ] = - t * cos(phi - M_PI / 3);
+    num = 3;
+  }
+  else /* one real solution */
+  {
+    double sqrt_D = sqrt(D);
+    double u = cbrt(sqrt_D - q);
+    double v = - cbrt(sqrt_D + q);
 
-    /* resubstitute */
+    s[ 0 ] = u + v;
+    num = 1;
+  }
 
-    sub = 1.0/3 * A;
+  /* resubstitute */
 
-    for (i = 0; i < num; ++i)
-	s[ i ] -= sub;
+  sub = 1.0/3 * A;
 
-    return num;
+  for (i = 0; i < num; ++i)
+    s[ i ] -= sub;
+
+  return num;
 }
 
 
 int SolveQuartic( double c[5], double s[4] )
 {
-    double  coeffs[ 4 ];
-    double  z, u, v, sub;
-    double  A, B, C, D;
-    double  sq_A, p, q, r;
-    int     i, num;
+  double  coeffs[ 4 ];
+  double  z, u, v, sub;
+  double  A, B, C, D;
+  double  sq_A, p, q, r;
+  int     i, num;
 
-    /* normal form: x^4 + Ax^3 + Bx^2 + Cx + D = 0 */
+  /* normal form: x^4 + Ax^3 + Bx^2 + Cx + D = 0 */
 
-    A = c[ 3 ] / c[ 4 ];
-    B = c[ 2 ] / c[ 4 ];
-    C = c[ 1 ] / c[ 4 ];
-    D = c[ 0 ] / c[ 4 ];
+  A = c[ 3 ] / c[ 4 ];
+  B = c[ 2 ] / c[ 4 ];
+  C = c[ 1 ] / c[ 4 ];
+  D = c[ 0 ] / c[ 4 ];
 
-    /*  substitute x = y - A/4 to eliminate cubic term:
-	x^4 + px^2 + qx + r = 0 */
+  /*  substitute x = y - A/4 to eliminate cubic term:
+      x^4 + px^2 + qx + r = 0 */
 
-    sq_A = A * A;
-    p = - 3.0/8 * sq_A + B;
-    q = 1.0/8 * sq_A * A - 1.0/2 * A * B + C;
-    r = - 3.0/256*sq_A*sq_A + 1.0/16*sq_A*B - 1.0/4*A*C + D;
+  sq_A = A * A;
+  p = - 3.0/8 * sq_A + B;
+  q = 1.0/8 * sq_A * A - 1.0/2 * A * B + C;
+  r = - 3.0/256*sq_A*sq_A + 1.0/16*sq_A*B - 1.0/4*A*C + D;
 
-    if (IsZero(r))
-    {
-	/* no absolute term: y(y^3 + py + q) = 0 */
+  if (IsZero(r))
+  {
+    /* no absolute term: y(y^3 + py + q) = 0 */
 
-	coeffs[ 0 ] = q;
-	coeffs[ 1 ] = p;
-	coeffs[ 2 ] = 0;
-	coeffs[ 3 ] = 1;
+    coeffs[ 0 ] = q;
+    coeffs[ 1 ] = p;
+    coeffs[ 2 ] = 0;
+    coeffs[ 3 ] = 1;
 
-	num = SolveCubic(coeffs, s);
+    num = SolveCubic(coeffs, s);
 
-	s[ num++ ] = 0;
-    }
+    s[ num++ ] = 0;
+  }
+  else
+  {
+    /* solve the resolvent cubic ... */
+
+    coeffs[ 0 ] = 1.0/2 * r * p - 1.0/8 * q * q;
+    coeffs[ 1 ] = - r;
+    coeffs[ 2 ] = - 1.0/2 * p;
+    coeffs[ 3 ] = 1;
+
+    (void) SolveCubic(coeffs, s);
+
+    /* ... and take the one real solution ... */
+
+    z = s[ 0 ];
+
+    /* ... to build two quadric equations */
+
+    u = z * z - r;
+    v = 2 * z - p;
+
+    if (IsZero(u))
+      u = 0;
+    else if (u > 0)
+      u = sqrt(u);
     else
-    {
-	/* solve the resolvent cubic ... */
+      return 0;
 
-	coeffs[ 0 ] = 1.0/2 * r * p - 1.0/8 * q * q;
-	coeffs[ 1 ] = - r;
-	coeffs[ 2 ] = - 1.0/2 * p;
-	coeffs[ 3 ] = 1;
+    if (IsZero(v))
+      v = 0;
+    else if (v > 0)
+      v = sqrt(v);
+    else
+      return 0;
 
-	(void) SolveCubic(coeffs, s);
+    coeffs[ 0 ] = z - u;
+    coeffs[ 1 ] = q < 0 ? -v : v;
+    coeffs[ 2 ] = 1;
 
-	/* ... and take the one real solution ... */
+    num = SolveQuadric(coeffs, s);
 
-	z = s[ 0 ];
+    coeffs[ 0 ]= z + u;
+    coeffs[ 1 ] = q < 0 ? v : -v;
+    coeffs[ 2 ] = 1;
 
-	/* ... to build two quadric equations */
+    num += SolveQuadric(coeffs, s + num);
+  }
 
-	u = z * z - r;
-	v = 2 * z - p;
+  /* resubstitute */
 
-	if (IsZero(u))
-	    u = 0;
-	else if (u > 0)
-	    u = sqrt(u);
-	else
-	    return 0;
+  sub = 1.0/4 * A;
 
-	if (IsZero(v))
-	    v = 0;
-	else if (v > 0)
-	    v = sqrt(v);
-	else
-	    return 0;
+  for (i = 0; i < num; ++i)
+    s[ i ] -= sub;
 
-	coeffs[ 0 ] = z - u;
-	coeffs[ 1 ] = q < 0 ? -v : v;
-	coeffs[ 2 ] = 1;
-
-	num = SolveQuadric(coeffs, s);
-
-	coeffs[ 0 ]= z + u;
-	coeffs[ 1 ] = q < 0 ? v : -v;
-	coeffs[ 2 ] = 1;
-
-	num += SolveQuadric(coeffs, s + num);
-    }
-
-    /* resubstitute */
-
-    sub = 1.0/4 * A;
-
-    for (i = 0; i < num; ++i)
-	s[ i ] -= sub;
-
-    return num;
+  return num;
 }
 
 #endif
