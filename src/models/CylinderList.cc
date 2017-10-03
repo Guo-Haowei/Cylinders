@@ -204,7 +204,7 @@ void CylinderList::update(RawModel& model) {
 
   for (int i = 0; i < cylinders.size(); ++i) {
     int entry = find(&nodes[i])->color;
-    cylinders[i]->setColor(glm::vec3(COLORS[i*3], COLORS[i*3+1], COLORS[i*3+2]));
+    cylinders[i]->setColor(glm::vec3(COLORS[entry*3], COLORS[entry*3+1], COLORS[entry*3+2]));
   }
 }
 
