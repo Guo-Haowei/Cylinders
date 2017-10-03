@@ -30,28 +30,41 @@ vector<Entity*> CylinderList::cylinders;
 
 const float W = 400.0f, H = 300.0f, D = 500.0f;
 
+// helpers
 Cylinder createCylinderFromEntity(Entity* entity);
+bool intersect(Entity* cyl1, Entity* cyl2);
 
-// void CylinderList::intersect(Entity* cyl1, Entity* cyl2) {
-//
-// }
+typedef struct Node {
+  Entity* entity;
+  Node* parent;
+  int color;
+} Node;
 
-void CylinderList::output() {
-  if (KeyboardManager::isKeyPressed(KEY_O) && cylinders.size() > 0) {
-    IO::write(cylinders);
+Node* find(Node* node) {
+  Node* root = node;
+  while (root != root->parent) {
+    root = root->parent;
   }
+
+  return root;
+}
+
+void unionNodes(Node* n1, Node* n2) {
+  Node *r1 = find(n1);
+  Node *r2 = find(n2);
+  if (r1 != r2)
+    r2->parent = r1;
 }
 
 void CylinderList::update(RawModel& model) {
-  output();
+  if (KeyboardManager::isKeyPressed(KEY_O) && cylinders.size() > 0) {
+    IO::write(cylinders);
+  }
   // create
   if (KeyboardManager::isKeyPressed(KEY_C) && cylinders.size() < 10) {
-    Entity* entity = new Entity(model, glm::vec3(0.3), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1, 0.1, 1));
+    int color = cylinders.size();
+    Entity* entity = new Entity(model, glm::vec3(COLORS[color*3], COLORS[color*3+1], COLORS[color*3+2]), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1, 0.1, 1));
     cylinders.push_back(entity);
-  }
-  for (auto& it: cylinders) {
-    // it->changeRotation(0.01, 0.01, 0.01);
-    it->setColor(glm::vec3(0.3));
   }
 
   // delete all
@@ -93,8 +106,6 @@ void CylinderList::update(RawModel& model) {
   if (!selected || MouseManager::getMouseMode() != OBJECT)
     return;
 
-  selected->setColor(glm::vec3(1.0f));
-
   // scale
   if (!MouseManager::buttonDown(LEFT_BUTTON) && !MouseManager::buttonDown(RIGHT_BUTTON)) {
     // height
@@ -112,8 +123,8 @@ void CylinderList::update(RawModel& model) {
     glm::vec3 objPos = selected->getPos();
     float unitDistance =
       ((camPos.x - objPos.x) * (camPos.x - objPos.x) +
-      (camPos.y - objPos.y) * (camPos.y - objPos.y) +
-      (camPos.z - objPos.z) * (camPos.z - objPos.z));
+       (camPos.y - objPos.y) * (camPos.y - objPos.y) +
+       (camPos.z - objPos.z) * (camPos.z - objPos.z));
     float deltaX = (MouseManager::currentX - MouseManager::lastX) * unitDistance / 4000.0f;
     float deltaY = (MouseManager::lastY - MouseManager::currentY) * unitDistance / 4800.0f;
     float deltaZ = MouseManager::yScrollOffset * unitDistance / 800.0f;
@@ -142,7 +153,6 @@ void CylinderList::update(RawModel& model) {
 
       float xAbs = abs(a.x), yAbs = abs(a.y), zAbs = abs(a.z);
       if (1) {
-        // if (a.x >= a.y && a.x >= a.z) {
         // project onto xz plane
         float XZ = sqrt(a.x * a.x + a.z * a.z);
         float cosPhi = a.x / XZ;
@@ -175,11 +185,32 @@ void CylinderList::update(RawModel& model) {
       }
     }
   }
+
+  // change color
+  Node nodes[cylinders.size()];
+  for (int i = 0; i < cylinders.size(); ++i) {
+    nodes[i].parent = &nodes[i];
+    nodes[i].entity = cylinders[i];
+    nodes[i].color = i;
+  }
+
+  for (int i = 0; i < cylinders.size(); ++i) {
+    for (int j = i + 1; j < cylinders.size(); ++j) {
+      if (intersect(nodes[i].entity, nodes[j].entity)) {
+        unionNodes(&nodes[i], &nodes[j]);
+      }
+    }
+  }
+
+  for (int i = 0; i < cylinders.size(); ++i) {
+    int entry = find(&nodes[i])->color;
+    cylinders[i]->setColor(glm::vec3(COLORS[i*3], COLORS[i*3+1], COLORS[i*3+2]));
+  }
 }
 
 void CylinderList::clean() {
-  for (auto& it: cylinders)
-    delete it;
+  for (int i = 0; i < cylinders.size(); ++i)
+    delete cylinders[i];
 
   cylinders.clear();
 }
@@ -199,4 +230,8 @@ Cylinder createCylinderFromEntity(Entity* entity) {
   c.v = VCreate(F3, v.x, v.y, v.z);
 
   return c;
+}
+
+bool intersect(Entity* cyl1, Entity* cyl2) {
+  return CylIntersect(createCylinderFromEntity(cyl1), createCylinderFromEntity(cyl2));
 }
