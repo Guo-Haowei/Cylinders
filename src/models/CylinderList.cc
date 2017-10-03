@@ -18,10 +18,10 @@ using std::endl;
 #include "../cyl/unionfind.h"
 #include "../cyl/cylIntersect.h"
 
-Space W3;
-Space W2;
-Frame F3;
-Frame F2;
+Space W2 = SCreate("2-space", 2);
+Frame F2 = StdFrame(W2);
+Space W3 = SCreate("3-space", 3);
+Frame F3 = StdFrame(W3);
 
 Entity* CylinderList::selected = nullptr;
 int CylinderList::selectedEntry = -1;
