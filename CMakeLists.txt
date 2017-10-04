@@ -47,6 +47,7 @@ set(SOURCE
   src/models/CylinderList.cc
   src/models/Loader.cc
   src/models/RawModel.cc
+  src/maths/Maths.cc
   src/renderEngine/DisplayManager.cc
   src/renderEngine/Renderer.cc
   src/shaders/EntityShader.cc
@@ -71,6 +72,7 @@ set(HEADER
   src/models/CylinderList.h
   src/models/Loader.h
   src/models/RawModel.h
+  src/maths/Maths.h
   src/renderEngine/DisplayManager.h
   src/renderEngine/Renderer.h
   src/shaders/EntityShader.h

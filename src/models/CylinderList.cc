@@ -6,6 +6,7 @@
 #include "../inputManager/KeyboardManager.h"
 #include "../IO/IO.h"
 #include "../renderEngine/DisplayManager.h"
+#include "../maths/Maths.h"
 #include <glm/glm.hpp>
 #include <math.h>
 #include <iostream>
@@ -147,42 +148,7 @@ void CylinderList::update(RawModel& model) {
       glm::vec3 a = glm::normalize(glm::cross(P0, P1));
       if (isnan(a.x) || isnan(a.y) || isnan(a.z))
         return;
-      // rotation degree
-      float cosTheta = glm::dot(P0, P1) / (glm::length(P0) * glm::length(P1));
-      float sinTheta = sqrt(1 - cosTheta * cosTheta);
-
-      float xAbs = abs(a.x), yAbs = abs(a.y), zAbs = abs(a.z);
-      if (1) {
-        // project onto xz plane
-        float XZ = sqrt(a.x * a.x + a.z * a.z);
-        float cosPhi = a.x / XZ;
-        float sinPhi = a.z / XZ;
-
-        glm::mat4 Ry_phi(1.0f);
-        Ry_phi[0].x = cosPhi; Ry_phi[0].z = sinPhi;
-        Ry_phi[2].x = -sinPhi; Ry_phi[2].z = cosPhi;
-
-        glm::mat4 Ryphi(1.0f);
-        Ryphi[0].x = cosPhi; Ryphi[0].z = -sinPhi;
-        Ryphi[2].x = sinPhi; Ryphi[2].z = cosPhi;
-
-        float cosPsi = XZ;
-        float sinPsi = a.y;
-
-        glm::mat4 Rz_psi(1.0f);
-        Rz_psi[0].x = cosPsi; Rz_psi[0].y = sinPsi;
-        Rz_psi[1].x = -sinPsi; Rz_psi[1].y = cosPsi;
-
-        glm::mat4 Rzpsi(1.0f);
-        Rzpsi[0].x = cosPsi; Rzpsi[0].y = -sinPsi;
-        Rzpsi[1].x = sinPsi; Rzpsi[1].y = cosPsi;
-
-        glm::mat4 RxTheta(1.0f);
-        RxTheta[1].y = cosTheta; RxTheta[1].z = -sinTheta;
-        RxTheta[2].y = sinTheta; RxTheta[2].z = cosTheta;
-
-        selected->changeRotation(Ryphi * Rzpsi * RxTheta * Rz_psi * Ry_phi);
-      }
+      selected->changeRotation(Maths::calculateRotationMatrix(P0, P1, a));
     }
   }
 
