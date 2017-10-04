@@ -162,8 +162,12 @@ void CylinderList::update(RawModel& model) {
 
   for (int i = 0; i < cylinders.size(); ++i) {
     for (int j = i + 1; j < cylinders.size(); ++j) {
-      if (intersect(nodes[i].entity, nodes[j].entity)) {
-        unionNodes(&nodes[i], &nodes[j]);
+      try {
+        if (intersect(nodes[i].entity, nodes[j].entity)) {
+          unionNodes(&nodes[i], &nodes[j]);
+        }
+      } catch (...) {
+        cout << "Oops\n";
       }
     }
   }
