@@ -33,7 +33,7 @@ const float W = 400.0f, H = 300.0f, D = 500.0f;
 
 // helpers
 Cylinder createCylinderFromEntity(Entity* entity);
-bool intersect(Entity* cyl1, Entity* cyl2);
+int intersect(Entity* cyl1, Entity* cyl2);
 
 typedef struct Node {
   Entity* entity;
@@ -188,20 +188,28 @@ void CylinderList::clean() {
 Cylinder createCylinderFromEntity(Entity* entity) {
   Cylinder c;
   c.r = entity->getScale().x;
-  c.h = entity->getScale().y * 2;
-  glm::vec4 y4d = entity->getRotationMatrix() * glm::vec4(0, 1, 0, 1);
-  glm::vec3 y = glm::vec3(c.h * y4d.x / 2, c.h * y4d.y / 2, c.h * y4d.z / 2);
+  c.h = entity->getScale().y * 2.0f;
+  glm::vec4 y4d = entity->getRotationMatrix() * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
+  glm::vec3 y = (float)c.h / 2.0f * glm::vec3(y4d.x, y4d.y, y4d.z);
   glm::vec3 A = entity->getPos() - y;
   glm::vec3 B = entity->getPos() + y;
-  c.P = PCreate(F3, A.x, A.y, A.z);
+  c.P = PCreate3(F3, A.x, A.y, A.z);
   c.A = c.P;
-  c.B = PCreate(F3, B.x, B.y, B.z);
-  glm::vec3 v  = glm::normalize(B - A);
-  c.v = VCreate(F3, v.x, v.y, v.z);
+  c.B = PCreate3(F3, B.x, B.y, B.z);
+  glm::vec3 v = glm::normalize(B - A);
+  c.v = VCreate3(F3, v.x, v.y, v.z);
+  // cout << "\n==============\n";
+  // cout << "\nP: " << A.x << ' ' << A.y << ' ' << A.z;
+  // cout << "\nv: " << v.x << ' ' << v.y << ' ' << v.z;
+  // cout << "\nr: " << c.r;
+  // cout << "\nh: " << c.h;
+  // cout << "\n==============\n";
 
   return c;
 }
 
-bool intersect(Entity* cyl1, Entity* cyl2) {
-  return CylIntersect(createCylinderFromEntity(cyl1), createCylinderFromEntity(cyl2));
+int intersect(Entity* cyl1, Entity* cyl2) {
+  int r = CylIntersect(createCylinderFromEntity(cyl1), createCylinderFromEntity(cyl2));
+  cout << "\nIntersect? " << r << endl;
+  return r;
 }

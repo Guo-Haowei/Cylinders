@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <math.h>
 #include "geometry.h"
 
 /* Convenient macros */
@@ -108,7 +107,6 @@ int IsVector(Vector v)
         fabs(ME(v.v, 0,3))<EPSILON ){
       return 1;
     } else {
-      fprintf(stderr,"IsVector: Dim = 3\n");
       return 0;
     }
   } else {
@@ -116,7 +114,6 @@ int IsVector(Vector v)
         fabs(ME(v.v, 0,2))<EPSILON ){
       return 1;
     } else {
-      fprintf(stderr,"IsVector: Dim = 2\n");
       return 0;
     }
   }
@@ -302,17 +299,14 @@ Point PCreate( Frame F,  Scalar c0, Scalar c1, ... )
   return NewPoint;
 }
 
-/*
- ** Create and return a new point.  The coordinates of the
- ** point are (c0,c1,[c2,]1) relative to the frame F.  The
- ** coordinate c2 is only used if F spans a 3-space.
- */
-/* va_list isn't working, so use PCreate3 instead */
-Point PCreate3( Frame F,  Scalar c0, Scalar c1, Scalar c2 )
+Point PCreate3(Frame F, Scalar c0, Scalar c1, Scalar c2)
 {
   Point NewPoint;
 
   SpaceOf(NewPoint) = SpaceOf(F);
+  if (Dim(SpaceOf(NewPoint))!=3) {
+    (*AffineError)("PCreate3: Space not 3-dimensional.");
+  }
   NewPoint.p = MatrixCreate( 1, 4);
 
   /* Compute standard coords */
@@ -328,7 +322,7 @@ Point PCreate3( Frame F,  Scalar c0, Scalar c1, Scalar c2 )
 
 /*
  ** Create and return a new vector.  The coordinates of the
- ** vector are (c0,c1,[c2,]0) relative to the frame F.  The
+ ** vector are (c0,c1,[c2,]1) relative to the frame F.  The
  ** coordinate c2 is only used if F spans a 3-space.
  */
 Vector VCreate(Frame F, Scalar c0, Scalar c1, ...)
@@ -368,17 +362,14 @@ Vector VCreate(Frame F, Scalar c0, Scalar c1, ...)
   return NewVector;
 }
 
-/*
- ** Create and return a new vector.  The coordinates of the
- ** vector are (c0,c1,[c2,]0) relative to the frame F.  The
- ** coordinate c2 is only used if F spans a 3-space.
- */
-/* va_list isn't working, so use VCreate3 instead */
-Vector VCreate3( Frame F,  Scalar c0, Scalar c1, Scalar c2 )
+Vector VCreate3(Frame F, Scalar c0, Scalar c1, Scalar c2)
 {
   Vector NewVector;
 
   SpaceOf(NewVector) = SpaceOf(F);
+  if (Dim(SpaceOf(NewVector))!=3) {
+    (*AffineError)("VCreate3: Space not 3-dimensional.");
+  }
   NewVector.v = MatrixCreate( 1, 4);
 
   /* Compute standard coords */
@@ -405,17 +396,6 @@ Normal NCreate( Frame f, Scalar c0, Scalar c1, ... )
     va_end(ap);
   }
   return VDual( VCreate( f, c0, c1, c2));
-}
-
-/*
- ** Create and return a new normal.  The coordinates of the
- ** normal are (c0,c1,[c2,]0) relative to the frame F.  The
- ** coordinate c2 is only used if F spans a 3-space.
- */
-/* va_list isn't working, so use NCreate3 instead */
-Normal NCreate3( Frame F,  Scalar c0, Scalar c1, Scalar c2 )
-{
-  return VDual( VCreate3( F, c0, c1, c2));
 }
 
 /*
@@ -1347,7 +1327,6 @@ Normal VDual(Vector v)
   Normal phi;
 
   if ( !IsVector(v) ){
-    fprintf(stderr,"v: MatrixRows(v.v) == %d =? 1  &&  MatrixColumns(v.v) == %d =? 4  && fabs(ME(v.v, 0,3))=%g<EPSILON\n",MatrixRows(v.v),MatrixColumns(v.v),fabs(ME(v.v, 0,3)));
     (*AffineError)("VDual: v is not a Vector.");
   }
 

@@ -247,8 +247,8 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
   }
 
   VCoords(C.v,F3, &c0,&c1,&c2);
-  Vector v1=VCreate(F3,c0/sqrt(c0*c0+c1*c1),c1/sqrt(c0*c0+c1*c1),0);
-  //	Vector v1=VCreate(F3,sqrt(c0*c0+c1*c1),0.,c2);
+  Vector v1=VCreate3(F3,c0/sqrt(c0*c0+c1*c1),c1/sqrt(c0*c0+c1*c1),0);
+  //	Vector v1=VCreate3(F3,sqrt(c0*c0+c1*c1),0.,c2);
   if ( printinfo ) {
     fprintf(stderr,"  New frame v1:  "); VPrintf(stderr,v1);
   }
@@ -591,6 +591,32 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
   Point CP1,CP2;
   Cylinder C1C, C2C;
 
+  {
+    double x, y, z;
+    printf("\n\nCylinder 1\n");
+    PCoords(C1.P, F3, &x, &y, &z);
+    printf("P: %g, %g, %g\n", x, y, z);
+    PCoords(C1.A, F3, &x, &y, &z);
+    printf("A: %g, %g, %g\n", x, y, z);
+    PCoords(C1.B, F3, &x, &y, &z);
+    printf("B: %g, %g, %g\n", x, y, z);
+    VCoords(C1.v, F3, &x, &y, &z);
+    printf("v: %g, %g, %g\n", x, y, z);
+    printf("r: %g\n", C1.r);
+    printf("h: %g\n", C1.h);
+
+    printf("\n\nCylinder 2\n");
+    PCoords(C2.P, F3, &x, &y, &z);
+    printf("P: %g, %g, %g\n", x, y, z);
+    PCoords(C2.A, F3, &x, &y, &z);
+    printf("A: %g, %g, %g\n", x, y, z);
+    PCoords(C2.B, F3, &x, &y, &z);
+    printf("B: %g, %g, %g\n", x, y, z);
+    VCoords(C2.v, F3, &x, &y, &z);
+    printf("v: %g, %g, %g\n", x, y, z);
+    printf("r: %g\n", C2.r);
+    printf("h: %g\n", C2.h);
+  }
   AlignCylinders(C1,&C2);
   MapToCanonicalCylinder(C1,C2,&C1C,&C2C);
   //	C1C = C1;

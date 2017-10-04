@@ -1,17 +1,17 @@
 /*
-** geometry.h: Header file for the affine geometry package.
-**
-** Copyright (c) 1989, Graphics and AI Laboratory, University of Washington
-** Copying, use and development for non-commercial purposes permitted.
-**                  All rights for commercial use reserved.
-**		    This software is unsupported.
-**
-** Converted to ANSI C and the routines NPPac, NPPvc, NVVlc, SVVCross
-**  were added by Stephen Mann, April 1996.
-**
-** $Header: /p/SurfaceFitting/geometry.ansi/RCS/geometry.h,v 1.1 1996/04/05 15:25:57 smann Exp smann $
-**
-*/
+ ** geometry.h: Header file for the affine geometry package.
+ **
+ ** Copyright (c) 1989, Graphics and AI Laboratory, University of Washington
+ ** Copying, use and development for non-commercial purposes permitted.
+ **                  All rights for commercial use reserved.
+ **		    This software is unsupported.
+ **
+ ** Converted to ANSI C and the routines NPPac, NPPvc, NVVlc, SVVCross
+ **  were added by Stephen Mann, April 1996.
+ **
+ ** $Header: /p/SurfaceFitting/geometry.ansi/RCS/geometry.h,v 1.1 1996/04/05 15:25:57 smann Exp smann $
+ **
+ */
 #ifndef _GEOMETRY_H_
 #define _GEOMETRY_H_
 
@@ -33,39 +33,39 @@
 #define PPDist(p1,p2)		VMag(PPDiff(p2,p1))
 
 typedef struct frame {			/* An affine frame.                */
-	struct euclideanSpace *s;	/* The containing space.           */
-	char *name;			/* Printable name for debugging.   */
-	Matrix tostdf;			/* Rep of frame rel to s->stdf.    */
-	Matrix fromstdf;		/* Rep of s->stdf rel to frame.    */
+  struct euclideanSpace *s;	/* The containing space.           */
+  char *name;			/* Printable name for debugging.   */
+  Matrix tostdf;			/* Rep of frame rel to s->stdf.    */
+  Matrix fromstdf;		/* Rep of s->stdf rel to frame.    */
 } Frame;
 
 typedef struct euclideanSpace {		/* A Euclidean space.            */
-	int dim;			/* The dimension of the space    */
-	char *name;			/* Printable name for debugging  */
-	Frame stdf;			/* A predefined Cartesian frame. */
+  int dim;			/* The dimension of the space    */
+  char *name;			/* Printable name for debugging  */
+  Frame stdf;			/* A predefined Cartesian frame. */
 } *Space;
 
 typedef struct {			/* A point.                      */
-	Space s;			/* The containing space.         */
-	Matrix p;			/* Coords relative to s->stdf    */
+  Space s;			/* The containing space.         */
+  Matrix p;			/* Coords relative to s->stdf    */
 } Point;
 
 typedef struct {			/* A vector.                     */
-        Space s;                        /* The containing space.         */
-	Matrix v;			/* Coords relative to s->stdf    */
+  Space s;                        /* The containing space.         */
+  Matrix v;			/* Coords relative to s->stdf    */
 } Vector;
 
 typedef struct {			/* A normal vector.              */
-	Space s;         		/* The containing space.         */
-	Matrix n;			/* Coords relative to s->stdf    */
+  Space s;         		/* The containing space.         */
+  Matrix n;			/* Coords relative to s->stdf    */
 } Normal;
 
 typedef struct {			/* An affine transformation.     */
-        char invertible;                /* TRUE if an invertible xform.  */
-	Space range, domain;
-	Matrix t, invt;			/* For efficiency, both the  */
-					/* transform and its inverse */
-					/* are stored.               */
+  char invertible;                /* TRUE if an invertible xform.  */
+  Space range, domain;
+  Matrix t, invt;			/* For efficiency, both the  */
+  /* transform and its inverse */
+  /* are stored.               */
 } AffineMap;
 
 /* Imported routines */
@@ -74,15 +74,14 @@ extern double sqrt(double);
 /* Creation routines */
 extern Space       SCreate(char*, int);
 extern Frame       FCreate(char *name,Point origin, Vector, Vector, ...);
-extern Point       PCreate(Frame F,  Scalar, Scalar, ...); 
-extern Point       PCreate3(Frame F,  Scalar, Scalar, Scalar); 
+extern Point       PCreate(Frame F,  Scalar, Scalar, ...);
+extern Point       PCreate3(Frame F,  Scalar, Scalar, Scalar);
 extern Vector      VCreate(Frame F,  Scalar, Scalar, ...);
 extern Vector      VCreate3(Frame F,  Scalar, Scalar, Scalar);
 extern Vector      VZero(Space S);
 extern Normal      NCreate( Frame f,  Scalar, Scalar, ...);
-extern Normal      NCreate3( Frame f,  Scalar, Scalar, Scalar);
-extern AffineMap   ACreate(Frame F,Point Oprime, Vector v0prime, 
-			   Vector v1prime, ...);
+extern AffineMap   ACreate(Frame F,Point Oprime, Vector v0prime,
+    Vector v1prime, ...);
 extern AffineMap   ACreateF(Frame F1, Frame F2);
 extern AffineMap   AIdentity(Space S);
 
@@ -100,12 +99,12 @@ extern Point       PVAdd(Point p, Vector v);
 extern Vector      PPDiff(Point p, Point q);
 extern Point	   PPrr(Point p1, Point p2, Scalar r1, Scalar r2);
 extern Point	   PPac(Point p1, Point p2, Scalar a1);
-extern Point	   PPac3(Point p1, Point p2, Point p3, 
-			 Scalar a1, Scalar a2, Scalar a3);
+extern Point	   PPac3(Point p1, Point p2, Point p3,
+    Scalar a1, Scalar a2, Scalar a3);
 extern Point	   PPacN(int n, Point p[], Scalar a[]);
-extern Point	   NPPac(int n, Point, Scalar, ...); 
+extern Point	   NPPac(int n, Point, Scalar, ...);
 extern Vector      PPvcN(int n, Point p[], Scalar a[]);
-extern Vector	   NPPvc(int n, Point, Scalar, ...); 
+extern Vector	   NPPvc(int n, Point, Scalar, ...);
 extern Normal      PPPNormal(Point p1, Point p2, Point p3);
 
 /* Primitive vector space operations */
