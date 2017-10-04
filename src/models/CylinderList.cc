@@ -146,7 +146,7 @@ void CylinderList::update(RawModel& model) {
     if (x0 * x0 + y0 * y0 <= D * D) {
       // rotation vector
       glm::vec3 a = glm::normalize(glm::cross(P0, P1));
-      if (isnan(a.x) || isnan(a.y) || isnan(a.z))
+      if (std::isnan(a.x) || std::isnan(a.y) || std::isnan(a.z))
         return;
       selected->changeRotation(Maths::calculateRotationMatrix(P0, P1, a));
     }

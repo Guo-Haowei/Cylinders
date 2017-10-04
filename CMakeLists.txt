@@ -81,4 +81,4 @@ set(HEADER
 
 add_definitions("-m64")
 add_executable(exe ${HEADER} ${SOURCE})
-target_link_libraries(exe ${OPENGL_LIBRARY} ${GLEW_LIBRARIES} ${GLFW_LIBRARIES} m)
+target_link_libraries(exe ${OPENGL_LIBRARY} ${GLEW_LIBRARIES} ${GLFW_STATIC_LIBRARIES} m)
