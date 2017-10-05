@@ -4,7 +4,7 @@
 #include <vector>
 using std::vector;
 
-Entity::Entity(RawModel& model, glm::vec3 color, glm::vec3 pos, glm::vec3 scale, glm::mat4 rotationMatrix, glm::mat4 rotationCenterMatrix): model(model), color(color), pos(pos), scale(scale), rotationMatrix(rotationMatrix), rotationCenter(glm::vec3(0, 0, 0)), rotationCenterMatrix(rotationCenterMatrix) { }
+Entity::Entity(RawModel& model, glm::vec3 color, glm::vec3 pos, glm::vec3 scale, glm::mat4 rotationMatrix): model(model), color(color), pos(pos), scale(scale), rotationMatrix(rotationMatrix) { }
 
 void Entity::changePosition(float dx, float dy, float dz) {
   pos.x += dx;
@@ -48,27 +48,18 @@ void Entity::setColor(glm::vec3 color) {
   this->color = color;
 }
 
-void Entity::setRotationCenterMatrix(glm::mat4 mat) {
-
-}
-
-void Entity::setRotationCenter(glm::vec3 center) {
-  this->rotationCenter = center;
-}
-
 glm::mat4 Entity::createTransformationMatrix() {
   glm::mat4 matrix = glm::mat4(1);
+
   // rotate around cylinder center
   glm::mat4 T, T_1;
   T = glm::translate(T, -pos);
   T_1 = glm::translate(T_1, pos);
   matrix = T_1 * rotationMatrix * T;
-  // rotate around scene center
-  T = glm::translate(T, rotationCenter - pos);
-  T_1 = glm::translate(T_1, rotationCenter + pos);
-  matrix = T_1 * rotationCenterMatrix * T * matrix;
+
   // translate
   matrix = glm::translate(matrix, pos);
+
   // scale
   matrix = glm::scale(matrix, scale);
   return matrix;
