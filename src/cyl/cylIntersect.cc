@@ -18,7 +18,7 @@ extern Frame F3;
 extern Frame F2;
 
 static int prints3d=0;
-static int printinfo=1;
+static int printinfo=0;
 
 
 #define SQ(x) ((x)*(x))
@@ -591,32 +591,6 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
   Point CP1,CP2;
   Cylinder C1C, C2C;
 
-  {
-    double x, y, z;
-    printf("\n\nCylinder 1\n");
-    PCoords(C1.P, F3, &x, &y, &z);
-    printf("P: %g, %g, %g\n", x, y, z);
-    PCoords(C1.A, F3, &x, &y, &z);
-    printf("A: %g, %g, %g\n", x, y, z);
-    PCoords(C1.B, F3, &x, &y, &z);
-    printf("B: %g, %g, %g\n", x, y, z);
-    VCoords(C1.v, F3, &x, &y, &z);
-    printf("v: %g, %g, %g\n", x, y, z);
-    printf("r: %g\n", C1.r);
-    printf("h: %g\n", C1.h);
-
-    printf("\n\nCylinder 2\n");
-    PCoords(C2.P, F3, &x, &y, &z);
-    printf("P: %g, %g, %g\n", x, y, z);
-    PCoords(C2.A, F3, &x, &y, &z);
-    printf("A: %g, %g, %g\n", x, y, z);
-    PCoords(C2.B, F3, &x, &y, &z);
-    printf("B: %g, %g, %g\n", x, y, z);
-    VCoords(C2.v, F3, &x, &y, &z);
-    printf("v: %g, %g, %g\n", x, y, z);
-    printf("r: %g\n", C2.r);
-    printf("h: %g\n", C2.h);
-  }
   AlignCylinders(C1,&C2);
   MapToCanonicalCylinder(C1,C2,&C1C,&C2C);
   //	C1C = C1;
