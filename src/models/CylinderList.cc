@@ -7,7 +7,6 @@
 #include "../IO/IO.h"
 #include "../renderEngine/DisplayManager.h"
 #include "../maths/Maths.h"
-#include <glm/glm.hpp>
 #include <math.h>
 #include <iostream>
 using std::abs;
@@ -34,7 +33,6 @@ const float W = 400.0f, H = 300.0f, D = 500.0f;
 // helpers
 Cylinder createCylinderFromEntity(Entity* entity);
 int intersect(Entity* cyl1, Entity* cyl2);
-glm::vec3 centerPoint();
 
 typedef struct Node {
   Entity* entity;
@@ -59,13 +57,6 @@ void unionNodes(Node* n1, Node* n2) {
 }
 
 void CylinderList::update(RawModel& model) {
-  if (cylinders.size() > 0) {
-    glm::vec3 rotationCenter = centerPoint();
-    for (int i = 0; i < cylinders.size(); ++i) {
-      cylinders[i]->setRotationCenter(rotationCenter);
-    }
-  }
-
   if (KeyboardManager::isKeyPressed(KEY_O) && cylinders.size() > 0) {
     IO::write(cylinders);
   }
@@ -108,6 +99,7 @@ void CylinderList::update(RawModel& model) {
 
   if (KeyboardManager::isKeyPressed(KEY_TAB)) {
     MouseManager::setMode(SCENE);
+    selected = nullptr;
   }
 
   // scale
@@ -147,17 +139,10 @@ void CylinderList::update(RawModel& model) {
     glm::vec3 P1 = glm::vec3(x1, y1, sqrt(D*D - y1 * y1));
     // rotation vector
     glm::vec3 a = glm::normalize(glm::cross(P0, P1));
-    if (std::isnan(a.x) || std::isnan(a.y) || std::isnan(a.z))
+    if (std::isnan(a.x) || std::isnan(a.y) || std::isnan(a.z) || !selected)
       return;
     glm::mat4 rotationMatrix = Maths::calculateRotationMatrix(P0, P1, a);
-    if (selected) {
-      selected->setRotationCenter(glm::vec3(0, 0, 0));
-      selected->changeRotation(rotationMatrix);
-    } else {
-      for (int i = 0; i < cylinders.size(); ++i) {
-        cylinders[i]->changeRotation(rotationMatrix);
-      }
-    }
+    selected->changeRotation(rotationMatrix);
   }
 
   // change color
@@ -186,6 +171,16 @@ void CylinderList::update(RawModel& model) {
   }
 }
 
+glm::vec3 CylinderList::calculateCenterPoint() {
+  glm::vec3 result = glm::vec3(0, 0, 0);
+  if (cylinders.size() == 0)
+    return result;
+  for (int i = 0; i < CylinderList::cylinders.size(); ++i) {
+    result += CylinderList::cylinders[i]->getPos();
+  }
+  return result / (float)CylinderList::cylinders.size();
+}
+
 void CylinderList::clean() {
   for (int i = 0; i < cylinders.size(); ++i)
     delete cylinders[i];
@@ -212,12 +207,4 @@ Cylinder createCylinderFromEntity(Entity* entity) {
 
 int intersect(Entity* cyl1, Entity* cyl2) {
   return CylIntersect(createCylinderFromEntity(cyl1), createCylinderFromEntity(cyl2));
-}
-
-glm::vec3 centerPoint() {
-  glm::vec3 result = glm::vec3(0, 0, 0);
-  for (int i = 0; i < CylinderList::cylinders.size(); ++i) {
-    result += CylinderList::cylinders[i]->getPos();
-  }
-  return result / (float)CylinderList::cylinders.size();
 }
