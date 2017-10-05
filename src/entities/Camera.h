@@ -2,8 +2,6 @@
 #include "../common.h"
 #include <glm/glm.hpp>
 
-const float YAW = -90.0f;
-const float PITCH = 0.0f;
 const float SPEED = 1.0f;
 const float SENSITIVITY = 0.01f;
 
@@ -15,9 +13,8 @@ private:
   static glm::vec3 right;
   static glm::vec3 worldUp;
 
-  static float pitch;
-  static float yaw;
-  static float zoom;
+  static glm::mat4 rotationMatrix;
+
   static float speed;
   static float sensitivity;
   static float mouseSensitivity;
@@ -30,6 +27,5 @@ public:
   static glm::vec3 getUp();
   static glm::vec3 getRight();
   static glm::mat4 getViewMatrix();
-  static float getZoom();
   static void updateCameraVectors();
 };
