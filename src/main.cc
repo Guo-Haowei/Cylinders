@@ -57,7 +57,9 @@ int main(int argc, char* argv[]) {
   int updates = 0;
 
   if (argc == 2) {
-    IO::read(CylinderList::cylinders, model);
+    if (!strcmp(argv[1], "-r")) {
+      IO::read(CylinderList::cylinders, model);
+    }
   }
 
   while (!DisplayManager::shouldCloseDisplay()) {
