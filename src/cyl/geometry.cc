@@ -257,6 +257,71 @@ Frame FCreate(char *name,Point origin, Vector v0, Vector v1, ...)
   return NewFrame;
 }
 
+Frame FCreate3(char *name,Point origin, Vector v0, Vector v1, Vector v2)
+{
+  Frame NewFrame;
+  int isValid = TRUE;
+
+#ifdef DEBUG
+  PPrintf( stderr, origin);
+  VPrintf( stderr, v0);
+  VPrintf( stderr, v1);
+#endif
+
+  if ( !IsPoint(origin) ){
+    (*AffineError)("FCreate3: origin not a Point.");
+  }
+  if ( !IsVector(v0) ){
+    (*AffineError)("FCreate3: v0 not a Vector.");
+  }
+  if ( !IsVector(v1) ){
+    (*AffineError)("FCreate3: v1 not a Vector.");
+  }
+  if ( !IsVector(v2) ){
+    (*AffineError)("FCreate3: v2 not a Vector.");
+  }
+
+  isValid = (SpaceOf(origin) == SpaceOf(v0)) && (SpaceOf(origin) == SpaceOf(v1));
+  if (isValid) {
+
+    SpaceOf(NewFrame) = SpaceOf(origin);
+    NewFrame.name = name;
+
+    switch (Dim(SpaceOf(NewFrame))) {
+      case 3:
+        /* Create a frame for an affine 3-space */
+        NewFrame.tostdf = MatrixZero( 4);
+
+        /* The ith row of tostdf consists stdcoords of vi */
+        SetRow(NewFrame.tostdf, 0, v0.v);
+        SetRow(NewFrame.tostdf, 1, v1.v);
+        SetRow(NewFrame.tostdf, 2, v2.v);
+
+        /* The last row consists of stdcoords of origin */
+        SetRow(NewFrame.tostdf, 3, origin.p);
+        break;
+     default:
+        (*AffineError)("FCreate3: Space not 3 dimensional.");
+        break;
+    }
+
+    /* Check to make sure a valid frame has been specified */
+    if (fabs(MatrixDet( &(NewFrame.tostdf))) < EPSILON) {
+#ifdef DEBUG
+      MatrixPrint( NewFrame.tostdf, stderr);
+#endif
+      (*AffineError)("FCreate3: Vectors not linearly independent.");
+    } else {
+      /* A valid frame, so compute fromstdf */
+      NewFrame.fromstdf = MatrixInverse( &(NewFrame.tostdf));
+    }
+
+  } else {
+    (*AffineError)("FCreate3: elements not from same space.");
+  }
+  return NewFrame;
+}
+
 /*
  ** Create and return a new point.  The coordinates of the
  ** point are (c0,c1,[c2,]1) relative to the frame F.  The
@@ -492,6 +557,80 @@ AffineMap ACreate(Frame F,Point Oprime,
   }
 #ifdef DEBUG
   fprintf( stderr, "ACreated...\n");
+  TPrintf( stderr, T);
+#endif
+  return T;
+}
+
+AffineMap ACreate3(Frame F,Point Oprime,
+    Vector v0prime, Vector v1prime, Vector v2prime)
+{
+  AffineMap T;			/* The returned transform */
+  Matrix Tprime;			/* Rows built from primed objects */
+  int isValid = 1;
+
+
+  if ( !IsPoint(Oprime) ){
+    (*AffineError)("ACreate3: Oprime not a Point.");
+  }
+  if ( !IsVector(v0prime) ){
+    (*AffineError)("ACreate3: v0prime not a Vector.");
+  }
+  if ( !IsVector(v1prime) ){
+    (*AffineError)("ACreate3: v1prime not a Vector.");
+  }
+  if ( !IsVector(v2prime) ){
+    (*AffineError)("ACreate3: v2prime not a Vector.");
+  }
+
+  isValid = (SpaceOf(Oprime) == SpaceOf(v0prime)) &&
+    (SpaceOf(Oprime) == SpaceOf(v1prime)) && 
+    (SpaceOf(Oprime) == SpaceOf(v2prime));
+
+  if (isValid) {
+    T.domain = SpaceOf(F);
+    T.range  = SpaceOf(Oprime);
+
+    /* Assume for now that the map isn't invertible */
+    T.invertible = FALSE;
+
+    /* Build Tprime */
+    Tprime = MatrixCreate( Dim(SpaceOf(F))+1, Dim(SpaceOf(Oprime))+1);
+
+    switch (Dim(SpaceOf(F))) {
+      case 3:
+        SetRow(Tprime, 0, v0prime.v);
+        SetRow(Tprime, 1, v1prime.v);
+        SetRow(Tprime, 2, v2prime.v);
+        SetRow(Tprime, 3, Oprime.p);
+        break;
+      default:
+        (*AffineError)("ACreate3: Space not 3 dimensional.");
+        break;
+    }
+
+    /*-----------------------------------------*/
+    /* T.t satisfies: F.tostdf * T.t = Tprime, */
+    /* So T.t = F.fromstdf * Tprime.           */
+    /*-----------------------------------------*/
+    T.t = MatrixMult( &(F.fromstdf), &(Tprime));
+
+    /*-------------------------------------------------------*/
+    /* If T's domain and range have the same dimension, then */
+    /* the inverse matrix may also be stored.                */
+    /*-------------------------------------------------------*/
+    if (Dim(SpaceOf(F)) == Dim(SpaceOf(Oprime))) {
+      /* See if T.t is invertible */
+      if (fabs(MatrixDet(&(T.t))) > EPSILON) {
+        T.invt = MatrixInverse( &(T.t));
+        T.invertible = TRUE;
+      }
+    }
+  } else {
+    (*AffineError)("ACreate3: image objects not in common space.");
+  }
+#ifdef DEBUG
+  fprintf( stderr, "ACreate3ed...\n");
   TPrintf( stderr, T);
 #endif
   return T;

@@ -74,6 +74,7 @@ extern double sqrt(double);
 /* Creation routines */
 extern Space       SCreate(char*, int);
 extern Frame       FCreate(char *name,Point origin, Vector, Vector, ...);
+extern Frame       FCreate3(char *name,Point origin, Vector, Vector, Vector);
 extern Point       PCreate(Frame F,  Scalar, Scalar, ...);
 extern Point       PCreate3(Frame F,  Scalar, Scalar, Scalar);
 extern Vector      VCreate(Frame F,  Scalar, Scalar, ...);
@@ -82,6 +83,7 @@ extern Vector      VZero(Space S);
 extern Normal      NCreate( Frame f,  Scalar, Scalar, ...);
 extern AffineMap   ACreate(Frame F,Point Oprime, Vector v0prime,
     Vector v1prime, ...);
+extern AffineMap   ACreate3(Frame F,Point Oprime, Vector v0prime, Vector v2prime);
 extern AffineMap   ACreateF(Frame F1, Frame F2);
 extern AffineMap   AIdentity(Space S);
 

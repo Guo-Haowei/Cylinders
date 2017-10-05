@@ -253,7 +253,7 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
     fprintf(stderr,"  New frame v1:  "); VPrintf(stderr,v1);
   }
   Vector v2=VVCross(FV(F3,2),v1);
-  Frame FT=FCreate("tmp",FOrg(F3),v1,v2,FV(F3,2));
+  Frame FT=FCreate3("tmp",FOrg(F3),v1,v2,FV(F3,2));
   AffineMap AT = ACreateF(FT,F3);
   AffineMap ATR = ACreateF(F3,FT);
   CR.P =PAxform(C.P,AT);
@@ -298,7 +298,7 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
                 fprintf(stderr,"CI: case 1\n");
               intersection.hitmiss = 1;
               PCoords(pts[0],F2, &p0,&p1);
-              Point tmpP = PCreate(FT, p0,p1,p2);
+              Point tmpP = PCreate3(FT, p0,p1,p2);
               intersection.a = intersection.b = VVDot(PPDiff(tmpP,C.P),C.v);
               break;
             }
@@ -308,13 +308,13 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
 
               intersection.hitmiss = 1;
               PCoords(pts[0],F2, &p0,&p1);
-              Point tmpP = PCreate(FT, p0,p1,p2);
+              Point tmpP = PCreate3(FT, p0,p1,p2);
               if ( prints3d )
                 printf("o 1 1 0\n");
               intersection.a = VVDot(PPDiff(tmpP,C.P),C.v);
 
               PCoords(pts[1],F2, &p0,&p1);
-              tmpP = PCreate(FT, p0,p1,p2);
+              tmpP = PCreate3(FT, p0,p1,p2);
               if ( prints3d )
                 printf("o 1 1 0\n");
               intersection.b = VVDot(PPDiff(tmpP,C.P),C.v);
@@ -340,7 +340,7 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
   VCoords(C2.v, F3, &a1,&a2,&a3);
 
   // special case - axes are parallel, so just check distance
-  fprintf(stderr,"how close is close?  %g %g\n",a3,fabs(a3-1.));
+  if (printinfo) fprintf(stderr,"how close is close?  %g %g\n",a3,fabs(a3-1.));
   if ( fabs(a3-1.) < 1e-5 ) {
     Point CP2 = PVAdd(C2.P, SVMult(VVDot(C2.v, PPDiff(C1.P,C2.P)),
           C2.v));
@@ -412,7 +412,7 @@ static Frame CylFrame(Cylinder C, char* name) {
   v2 = VVCross(v1,v3);
 
   Frame FT;
-  FT = FCreate(name,C.P,v1,v2,v3);
+  FT = FCreate3(name,C.P,v1,v2,v3);
   return FT;
 }
 
@@ -437,7 +437,7 @@ static void MapToCanonicalCylinder(Cylinder C1, Cylinder C2,
 
   Frame FT;
   FT = CylFrame(C1,"test");
-  //    FT = FCreate("test",C1.P,v1,v2,v3);
+  //    FT = FCreate3("test",C1.P,v1,v2,v3);
   AffineMap Map = ACreateF(FT,F3);
 
   // now map C1 and C2 through Map
@@ -591,6 +591,32 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
   Point CP1,CP2;
   Cylinder C1C, C2C;
 
+  if (printinfo) {
+    double x, y, z;
+    printf("\n\nCylinder 1\n");
+    PCoords(C1.P, F3, &x, &y, &z);
+    printf("P: %g, %g, %g\n", x, y, z);
+    PCoords(C1.A, F3, &x, &y, &z);
+    printf("A: %g, %g, %g\n", x, y, z);
+    PCoords(C1.B, F3, &x, &y, &z);
+    printf("B: %g, %g, %g\n", x, y, z);
+    VCoords(C1.v, F3, &x, &y, &z);
+    printf("v: %g, %g, %g\n", x, y, z);
+    printf("r: %g\n", C1.r);
+    printf("h: %g\n", C1.h);
+
+    printf("\n\nCylinder 2\n");
+    PCoords(C2.P, F3, &x, &y, &z);
+    printf("P: %g, %g, %g\n", x, y, z);
+    PCoords(C2.A, F3, &x, &y, &z);
+    printf("A: %g, %g, %g\n", x, y, z);
+    PCoords(C2.B, F3, &x, &y, &z);
+    printf("B: %g, %g, %g\n", x, y, z);
+    VCoords(C2.v, F3, &x, &y, &z);
+    printf("v: %g, %g, %g\n", x, y, z);
+    printf("r: %g\n", C2.r);
+    printf("h: %g\n", C2.h);
+  }
   AlignCylinders(C1,&C2);
   MapToCanonicalCylinder(C1,C2,&C1C,&C2C);
   //	C1C = C1;
@@ -598,8 +624,8 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
 
   switch(ClosestPointsOnCylinders(C1C,C2C,&CP1,&CP2)) {
     case -1:
-      //		if ( printinfo )
-      fprintf(stderr,"distance between closest points too large.\n");
+//	if ( printinfo )
+      // fprintf(stderr,"distance between closest points too large.\n");
       return 0; // TEST: closest points are too far away
     case 0:;
            //		if ( printinfo )
@@ -690,7 +716,7 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
                  CP2,VDual(C2.v),C2.r);
            }
 
-           fprintf(stderr,"NOT calling IntersectCircles\n");
+           // fprintf(stderr,"NOT calling IntersectCircles\n");
 
            // Now, intersect the top and bottom of each cylinder with
            // the other ellipse
