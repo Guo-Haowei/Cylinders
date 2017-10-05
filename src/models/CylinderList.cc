@@ -95,12 +95,10 @@ void CylinderList::update(RawModel& model) {
       selectedEntry = i - KEY_0;
 
       MouseManager::setMode(OBJECT);
-      DisplayManager::showCursor();
     }
   }
 
   if (KeyboardManager::isKeyPressed(KEY_TAB)) {
-    DisplayManager::hideCursor();
     MouseManager::setMode(SCENE);
   }
 
