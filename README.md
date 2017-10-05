@@ -13,7 +13,7 @@ make
 
 Note: <br />
 &nbsp;&nbsp;`WITH_FPS` displays frame per second, default to `OFF`, `WITH_AA` enables anti aliasing, default to `ON`. <br />
-&nbsp;&nbsp;Run `./exe` with optional argument `$number` will load cylinders from `IO/$number.txt`. <br />
+&nbsp;&nbsp;Run `./exe` with optional argument `-r` will load file `cylinders.txt`. <br />
 
 ## Controls
 Press `c` to create cylinder.<br />
@@ -32,9 +32,6 @@ Hold left button to rotate selected cylinder.<br />
 ## Features
 * Trackball rotation
 * Use unionfind data structure to label intersected cylinders with same color
-
-## Issues
-1. Project rotation matrix to the closet axis
 
 ## Future
 1. Color picking for selecting cylinders
