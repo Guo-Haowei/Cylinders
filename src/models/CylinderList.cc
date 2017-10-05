@@ -196,12 +196,6 @@ Cylinder createCylinderFromEntity(Entity* entity) {
   c.B = PCreate3(F3, B.x, B.y, B.z);
   glm::vec3 v = glm::normalize(B - A);
   c.v = VCreate3(F3, v.x, v.y, v.z);
-  // cout << "\n==============\n";
-  // cout << "\nP: " << A.x << ' ' << A.y << ' ' << A.z;
-  // cout << "\nv: " << v.x << ' ' << v.y << ' ' << v.z;
-  // cout << "\nr: " << c.r;
-  // cout << "\nh: " << c.h;
-  // cout << "\n==============\n";
 
   return c;
 }

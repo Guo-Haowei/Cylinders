@@ -11,9 +11,10 @@ using std::ofstream;
 using std::stringstream;
 
 void IO::write(std::vector<Entity*>& entities) {
+  // write file 1
   ofstream outfile;
+  cout << "Writing files...\n";
   outfile.open("../cylinders.txt");
-  cout << "Writing file cylinders.txt...\n";
   for (int i = 0; i < entities.size(); ++i) {
     glm::vec3 position = entities[i]->getPos();
     glm::vec3 scale = entities[i]->getScale();
@@ -28,6 +29,27 @@ void IO::write(std::vector<Entity*>& entities) {
       outfile << rotation[j].x << ' ' << rotation[j].y << ' ' << rotation[j].z << ' ' << rotation[j].w << '\n';
     }
     outfile << '\n';
+  }
+
+  outfile.close();
+
+  // write file 2
+  outfile.open("../cylinders_standard.txt");
+  for (int i = 0; i < entities.size(); ++i) {
+    float h = entities[i]->getScale().y * 2.0f;
+    glm::vec4 y4d = entities[i]->getRotationMatrix() * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
+    glm::vec3 y = h / 2.0f * glm::vec3(y4d.x, y4d.y, y4d.z);
+    glm::vec3 A = entities[i]->getPos() - y;
+    glm::vec3 B = entities[i]->getPos() + y;
+    glm::vec3 v = glm::normalize(B - A);
+
+    outfile << "## Cylinder" << (i + 1) << '\n';
+    outfile << "## P\n";
+    outfile << A.x << ' ' << A.y << ' ' << A.z << '\n';
+    outfile << "## v\n";
+    outfile << v.x << ' ' << v.y << ' ' << v.z << '\n';
+    outfile << "## h\n" << h << '\n';
+    outfile << "## r\n" << entities[i]->getScale().x << "\n\n";
   }
 
   outfile.close();
