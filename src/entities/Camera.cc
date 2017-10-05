@@ -62,6 +62,7 @@ void Camera::processScene() {
   position += speed * sign * front;
 
   // camera rotation
+#if 0
   float xOffset = (MouseManager::currentX - MouseManager::lastX) * mouseSensitivity;
   float yOffset = (MouseManager::lastY - MouseManager::currentY) * mouseSensitivity;
 
@@ -72,6 +73,7 @@ void Camera::processScene() {
     pitch = 89.0f;
   if (pitch < -89.0f)
     pitch = -89.0f;
+#endif
 
   updateCameraVectors();
 }
