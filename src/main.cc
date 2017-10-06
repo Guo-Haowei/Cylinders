@@ -11,6 +11,7 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
+#include <string.h>
 using std::cout;
 using std::endl;
 using std::vector;
