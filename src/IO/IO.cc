@@ -10,11 +10,11 @@ using std::ifstream;
 using std::ofstream;
 using std::stringstream;
 
-void IO::write(std::vector<Entity*>& entities) {
+void IO::write(std::vector<Entity*>& entities, std::string name) {
   // write file 1
   ofstream outfile;
   cout << "Writing files...\n";
-  outfile.open("../cylinders.txt");
+  outfile.open("../" + name + ".txt");
   for (int i = 0; i < entities.size(); ++i) {
     glm::vec3 position = entities[i]->getPos();
     glm::vec3 scale = entities[i]->getScale();
@@ -34,7 +34,7 @@ void IO::write(std::vector<Entity*>& entities) {
   outfile.close();
 
   // write file 2
-  outfile.open("../cylinders_standard.txt");
+  outfile.open("../" + name + "_standard.txt");
   for (int i = 0; i < entities.size(); ++i) {
     float h = entities[i]->getScale().y * 2.0f;
     glm::vec4 y4d = entities[i]->getRotationMatrix() * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
