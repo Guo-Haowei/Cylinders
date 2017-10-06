@@ -33,7 +33,12 @@ Hold left button to rotate selected cylinder.<br />
 * Trackball rotation
 * Use unionfind data structure to label intersected cylinders with same color
 
+# Issues
+* Cylinder disappears occasionally when rotating
+* glm::lookAt function is not perfect for this program
+* cylIntersect raises "Not a point/vector problem"
+
 ## Future
-1. Color picking for selecting cylinders
-2. Hightlight the border of the selected cylinder
-3. Raytracing for refraction effect
+* Color picking for selecting cylinders
+* Hightlight the border of the selected cylinder
+* Raytracing for refraction effect
