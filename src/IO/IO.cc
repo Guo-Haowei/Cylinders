@@ -43,13 +43,7 @@ void IO::write(std::vector<Entity*>& entities, std::string name) {
     glm::vec3 B = entities[i]->getPos() + y;
     glm::vec3 v = glm::normalize(B - A);
 
-    outfile << "## Cylinder" << (i + 1) << '\n';
-    outfile << "## P\n";
-    outfile << A.x << ' ' << A.y << ' ' << A.z << '\n';
-    outfile << "## v\n";
-    outfile << v.x << ' ' << v.y << ' ' << v.z << '\n';
-    outfile << "## h\n" << h << '\n';
-    outfile << "## r\n" << entities[i]->getScale().x << "\n\n";
+    outfile << A.x << ' ' << A.y << ' ' << A.z << ' ' << v.x << ' ' << v.y << ' ' << v.z << ' ' << h << ' ' << entities[i]->getScale().x << '\n';
   }
 
   outfile.close();
