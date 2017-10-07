@@ -40,6 +40,7 @@ set(SOURCE
   src/cyl/miller87.cc
   src/cyl/polyroots.cc
   src/cyl/s3d.cc
+  src/exceptions/MyException.cc
   src/entities/Camera.cc
   src/entities/Entity.cc
   src/inputManager/KeyboardManager.cc
@@ -65,6 +66,7 @@ set(HEADER
   src/cyl/miller87.h
   src/cyl/polyroots.h
   src/cyl/s3d.h
+  src/exceptions/MyException.h
   src/entities/Camera.h
   src/entities/Entity.h
   src/inputManager/KeyboardManager.h
