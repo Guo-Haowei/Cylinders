@@ -164,9 +164,9 @@ void CylinderList::update(RawModel& model) {
         if (intersect(nodes[i].entity, nodes[j].entity)) {
           unionNodes(&nodes[i], &nodes[j]);
         }
-      } catch (std::string &e) {
-        if (e == "VVDot")
-          IO::write(cylinders, "VVDot");
+      } catch (std::exception& e) {
+        cout << e.what() << endl;
+        IO::write(cylinders, "VVDot");
         exit(-1);
       }
     }

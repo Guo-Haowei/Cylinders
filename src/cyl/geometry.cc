@@ -21,8 +21,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <string>
+#include <string.h>
 #include "geometry.h"
+#include "../exceptions/MyException.h"
 
 /* Convenient macros */
 /* Fill in a row of a matrix */
@@ -67,7 +68,7 @@ int DefAffineError( const char *errmesg )
   fprintf(stderr, "Affine error: %s...dumping core.\n", errmesg);
   fflush(stderr);
   if (strcmp("VVDot: v1 is not a Vector", errmesg))
-    throw std::string("VVDot");
+    throw MyException(errmesg);
   else
     abort();
 }
