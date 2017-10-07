@@ -13,6 +13,7 @@
 #include <vector>
 #include <string.h>
 using std::cout;
+using std::cerr;
 using std::endl;
 using std::vector;
 
@@ -57,10 +58,14 @@ int main(int argc, char* argv[]) {
   double delta = 0;
   int updates = 0;
 
-  if (argc == 2) {
-    if (!strcmp(argv[1], "-r")) {
+  if (argc == 2 || argc == 3) {
+    if (strcmp(argv[1], "-r"))
+      cerr << "Invalid argument\n";
+
+    if (argc == 2)
       IO::read(CylinderList::cylinders, model);
-    }
+    else
+      IO::read(CylinderList::cylinders, model, std::string(argv[2]));
   }
 
   while (!DisplayManager::shouldCloseDisplay()) {

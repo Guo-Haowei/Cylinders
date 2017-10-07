@@ -55,12 +55,12 @@ void IO::write(std::vector<Entity*>& entities, std::string name) {
   outfile.close();
 }
 
-void IO::read(std::vector<Entity*>& entities, RawModel& model) {
+void IO::read(std::vector<Entity*>& entities, RawModel& model, std::string name) {
   glm::vec3 position, scale;
   glm::mat4 rotation;
   ifstream infile;
   cout << "Reading file cylinders.txt...\n";
-  infile.open("../cylinders.txt");
+  infile.open(name);
   if (!infile) {
     cout << "ERROR::File Stream: Failed to open file cylinders.txt\n";
     return;
