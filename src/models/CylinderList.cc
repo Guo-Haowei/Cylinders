@@ -142,7 +142,11 @@ void CylinderList::update(RawModel& model) {
     if (std::isnan(a.x) || std::isnan(a.y) || std::isnan(a.z) || !selected)
       return;
     glm::mat4 rotationMatrix = Maths::calculateRotationMatrix(P0, P1, a);
-    if (!std::isnan(rotationMatrix[0].x))
+    bool isNaN = false;
+    for (int i = 0; i < 4; ++i) {
+      isNaN = isNaN || std::isnan(rotationMatrix[i].x) || std::isnan(rotationMatrix[i].y) || std::isnan(rotationMatrix[i].z) || std::isnan(rotationMatrix[i].w);
+    }
+    if (!isNaN)
       selected->changeRotation(rotationMatrix);
   }
 
