@@ -20,7 +20,7 @@ extern Frame F2;
 
 static int prints3d=0;
 static int printinfo=0;
-#define VVDotCaller 1
+#define VVDotCaller 0
 
 #define SQ(x) ((x)*(x))
 #define printCaller(function) printf("%s called %s in %s at line %d\n", __func__, function, __FILE__, __LINE__)

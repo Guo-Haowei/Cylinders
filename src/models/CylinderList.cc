@@ -142,7 +142,8 @@ void CylinderList::update(RawModel& model) {
     if (std::isnan(a.x) || std::isnan(a.y) || std::isnan(a.z) || !selected)
       return;
     glm::mat4 rotationMatrix = Maths::calculateRotationMatrix(P0, P1, a);
-    selected->changeRotation(rotationMatrix);
+    if (!std::isnan(rotationMatrix[0].x))
+      selected->changeRotation(rotationMatrix);
   }
 
   // change color
