@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string>
 #include "geometry.h"
 
 /* Convenient macros */
@@ -65,7 +66,10 @@ int DefAffineError( const char *errmesg )
 {
   fprintf(stderr, "Affine error: %s...dumping core.\n", errmesg);
   fflush(stderr);
-  abort();
+  if (strcmp("VVDot: v1 is not a Vector", errmesg))
+    throw std::string("VVDot");
+  else
+    abort();
 }
 
 

@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -19,9 +20,10 @@ extern Frame F2;
 
 static int prints3d=0;
 static int printinfo=0;
-
+#define VVDotCaller 1
 
 #define SQ(x) ((x)*(x))
+#define printCaller(function) printf("%s called %s in %s at line %d\n", __func__, function, __FILE__, __LINE__)
 
 Point LineIntersectPlane(Point P, Vector v, Point Q, Normal n) {
   return PVAdd(P,SVMult(NVApply(n,PPDiff(Q,P))/NVApply(n,v),
@@ -33,6 +35,9 @@ Point LineIntersectPlane(Point P, Vector v, Point Q, Normal n) {
 Scalar PPSDist(Vector dir, Point P1, Point P2) {
   Scalar dist;
   dist = PPDist(P1,P2);
+#if VVDotCaller
+  printCaller("VVDot");
+#endif
   if ( VVDot(dir,PPDiff(P1,P2)) < 0 ) {
     return -dist;
   } else {
@@ -173,6 +178,9 @@ int FindExtremeOfCircleIntersectEllipse(Scalar r1, Point ecenter, Scalar d, Scal
   // If two of circle or ellipse edges are in the result, then we
   // don't need to solve 4th degree equation
   if ( ne == 2 ) {
+#if VVDotCaller
+    printCaller("VVDot");
+#endif
     if ( VVDot(FV(F2,0),PPDiff(pts[0],cleft)) >
         VVDot(FV(F2,0),PPDiff(pts[1],cleft)) ) {
       Point tmp;
@@ -209,6 +217,9 @@ int FindExtremeOfCircleIntersectEllipse(Scalar r1, Point ecenter, Scalar d, Scal
    */
   if ( ne > 2 ) {
     double d[6];
+#if VVDotCaller
+    printCaller("VVDot");
+#endif
     for (i=0; i<ne; i++) {
       d[i] = VVDot(FV(F2,0),PPDiff(pts[i],cleft));
     }
@@ -299,6 +310,9 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
               intersection.hitmiss = 1;
               PCoords(pts[0],F2, &p0,&p1);
               Point tmpP = PCreate3(FT, p0,p1,p2);
+#if VVDotCaller
+              printCaller("VVDot");
+#endif
               intersection.a = intersection.b = VVDot(PPDiff(tmpP,C.P),C.v);
               break;
             }
@@ -311,12 +325,18 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
               Point tmpP = PCreate3(FT, p0,p1,p2);
               if ( prints3d )
                 printf("o 1 1 0\n");
+#if VVDotCaller
+              printCaller("VVDot");
+#endif
               intersection.a = VVDot(PPDiff(tmpP,C.P),C.v);
 
               PCoords(pts[1],F2, &p0,&p1);
               tmpP = PCreate3(FT, p0,p1,p2);
               if ( prints3d )
                 printf("o 1 1 0\n");
+#if VVDotCaller
+              printCaller("VVDot");
+#endif
               intersection.b = VVDot(PPDiff(tmpP,C.P),C.v);
               break;
             }
@@ -346,9 +366,13 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
           C2.v));
     Scalar dist;
     dist = PPDist(C1.P,CP2);
-    if (printinfo)
+    if (printinfo) {
+#if VVDotCaller
+      printCaller("VVDot");
+#endif
       fprintf(stderr,"CPOC: Parallel axes dist %g vs %g (%g)\n",
           dist,C1.r+C2.r,VVDot(C2.v,PPDiff(C1.P,CP2)));
+    }
     if ( dist <= C1.r + C2.r ) {
       return 0;
     } else {
@@ -360,6 +384,9 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
   Point P2 = PCreate(F2,p1,p2);
   Vector A2 = VCreate(F2,a1,a2);
   Vector v = PPDiff(P2,FOrg(F2));
+#if VVDotCaller
+  printCaller("VVDot");
+#endif
   Point ClosestPoint = PVAdd(P2,SVMult(-VVDot(v,VNormalize(A2)),
         VNormalize(A2)));
   Scalar dist = PPDist(FOrg(F2),ClosestPoint);
@@ -375,6 +402,9 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
 
   Vector cp;
   cp = VVCross(C1.v, C2.v);
+#if VVDotCaller
+  printCaller("VVDot");
+#endif
   if ( VVDot(cp, PPDiff(C1.P,C2.P)) < 0 ) {
     cp = SVMult(-1.,cp);
   }
@@ -384,6 +414,9 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
 
 
 void AlignCylinders(Cylinder C1, Cylinder* C2) {
+#if VVDotCaller
+  printCaller("VVDot");
+#endif
   if ( VVDot(C1.v,C2->v) > 0 ) {
     return;
   } else {
@@ -482,6 +515,9 @@ Intersection IntersectLineCircle(Point P, Vector v,
     Point C, Normal n, Scalar r) {
   Intersection intersection;
   double roots[2];
+#if VVDotCaller
+  printCaller("VVDot");
+#endif
   int nr=quadraticRoots(1., 2*VVDot(PPDiff(P,C),v), SQ(PPDist(P,C))-r*r,
       roots);
   if ( nr==0 ) {
@@ -517,6 +553,9 @@ int IntersectCircles(Point C1, Normal n1, Scalar r1,
   Vector v;
   v = VVCross(NDual(n1),NDual(n2));
   Vector v1=VNormalize(VVCross(v,NDual(n1)));
+#if VVDotCaller
+  printCaller("VVDot");
+#endif
   Point P = PVAdd(C1, SVMult(VVDot(PPDiff(C2,C1),NDual(n2))/VVDot(v1,NDual(n2)),
         v1));
   //	S3dBall(P,.3);
@@ -624,8 +663,8 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
 
   switch(ClosestPointsOnCylinders(C1C,C2C,&CP1,&CP2)) {
     case -1:
-//	if ( printinfo )
-      // fprintf(stderr,"distance between closest points too large.\n");
+      if ( printinfo )
+        fprintf(stderr,"distance between closest points too large.\n");
       return 0; // TEST: closest points are too far away
     case 0:;
            //		if ( printinfo )
@@ -698,6 +737,9 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
            }
 
            // Test perpendicular axes
+#if VVDotCaller
+           printCaller("VVDot");
+#endif
            if ( fabs(VVDot(C1.v,C2.v)) < 1e-4 ) {
              fprintf(stderr,"Calling IntersectCircles!\n");
              CP1 = PVAdd(C1.P,SVMult(cps1,C1.v));
@@ -716,7 +758,8 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
                  CP2,VDual(C2.v),C2.r);
            }
 
-           // fprintf(stderr,"NOT calling IntersectCircles\n");
+           if (printinfo)
+             fprintf(stderr,"NOT calling IntersectCircles\n");
 
            // Now, intersect the top and bottom of each cylinder with
            // the other ellipse
@@ -843,26 +886,31 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
            // TEST: HM,MH
            if ( hm1==HM && hm2==MH ) {
              if ( I1B.a > C2.h ) {
-               fprintf(stderr,"HM,MH: I1B.a > C2.h\n");
+               if ( printinfo )
+                 fprintf(stderr,"HM,MH: I1B.a > C2.h\n");
                return 0;
              } else {
-               fprintf(stderr,"HM,MH: I1B.a <= C2.h\n");
+               if ( printinfo )
+                 fprintf(stderr,"HM,MH: I1B.a <= C2.h\n");
                return 1;
              }
            }
            // TEST: MH,HM
            if ( hm1==MH && hm2==HM ) {
              if ( I2B.a > C1.h ) {
-               fprintf(stderr,"MH,HM: I2B.a > C1.h\n");
+               if ( printinfo )
+                 fprintf(stderr,"MH,HM: I2B.a > C1.h\n");
                return 0;
              } else {
-               fprintf(stderr,"MH,HM: I2B.a <= C1.h\n");
+               if ( printinfo )
+                 fprintf(stderr,"MH,HM: I2B.a <= C1.h\n");
                return 1;
              }
            }
 
            // Old code from here
-           fprintf(stderr,"RUNNING OLD CODE\n");
+           if ( printinfo )
+             fprintf(stderr,"RUNNING OLD CODE\n");
 
            // TEST: CpMM, CpMH, HMCp, MMCp
            if ( (cps1 < 0 && ! I1B.hitmiss) ||
@@ -900,10 +948,12 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
            } else if ( (I1B.hitmiss && I2T.hitmiss) ) {
              return IntervalsOverlap(I2T.a,I2T.b, 0., C1.h);
            }
-           fprintf(stderr,"CylInterect: WE SHOULDN'T BE HERE!!!");
+           if ( printinfo )
+             fprintf(stderr,"CylInterect: WE SHOULDN'T BE HERE!!!");
   }
 
-  fprintf(stderr,"Algorithm not completed yet (!!! IT SHOULD BE COMPLETE!!!).\n");
+  if ( printinfo )
+    fprintf(stderr,"Algorithm not completed yet (!!! IT SHOULD BE COMPLETE!!!).\n");
   return 0;
 }
 
