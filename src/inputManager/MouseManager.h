@@ -13,6 +13,8 @@ enum BUTTONS {
 class MouseManager {
 private:
   static MOUSEMODE currentMode;
+  static double previousClickX;
+  static double previousClickY;
 
 public:
   static double lastX;
@@ -40,4 +42,5 @@ public:
   static bool buttonDown(int button);
   static bool buttonPressed(int button);
   static bool buttonReleased(int button);
+  static bool doubleClick();
 };

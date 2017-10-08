@@ -9,6 +9,8 @@ double MouseManager::xOffset;
 double MouseManager::yOffset;
 double MouseManager::xScrollOffset;
 double MouseManager::yScrollOffset;
+double MouseManager::previousClickX = -1.0l;
+double MouseManager::previousClickY = -1.0l;
 
 int MouseManager::buttons[2] = { 0, 0 };
 int MouseManager::currentButtons[2] = { 0, 0 };
@@ -42,6 +44,12 @@ void MouseManager::afterUpdate() {
   lastY = currentY;
   xScrollOffset = 0;
   yScrollOffset = 0;
+
+  // record previous click
+  if (downButtons[0]) {
+    previousClickX = currentX;
+    previousClickY = currentY;
+  }
 }
 
 void MouseManager::setMode(MOUSEMODE mode) {
@@ -66,4 +74,8 @@ bool MouseManager::buttonPressed(int button) {
 
 bool MouseManager::buttonReleased(int button) {
   return upButtons[button];
+}
+
+bool MouseManager::doubleClick() {
+  return downButtons[0] && previousClickX == currentX && previousClickY == currentY;
 }
