@@ -31,12 +31,11 @@ void Renderer::render(vector<Entity*> entities) {
     glFinish();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     unsigned char data[4];
-    int x = 2 * (int)MouseManager::currentX;
-    int y = HEIGHT - 2 * (int)MouseManager::currentY;
+    int x = (WIDTH / WINDOW_WIDTH) * (int)MouseManager::currentX;
+    int y = HEIGHT - (HEIGHT / WINDOW_HEIGHT) * (int)MouseManager::currentY;
     glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
     int id = data[0] + data[1] * 256 + data[2] * 256 * 256;
-    std::cout << "select " << id << "\n";
     if (id == 0x00ffffff) {
       CylinderList::selected = nullptr;
       MouseManager::setMode(SCENE);
