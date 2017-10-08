@@ -114,7 +114,7 @@ void CylinderList::update(RawModel& model) {
   }
 
   // transform
-  else if (MouseManager::buttonDown(RIGHT_BUTTON) && selected) {
+  else if (MouseManager::buttonDown(RIGHT_BUTTON) && !MouseManager::buttonDown(LEFT_BUTTON) && selected) {
     glm::vec3 camPos = Camera::getPos();
     glm::vec3 objPos = selected->getPos();
     float unitDistance =
@@ -129,7 +129,7 @@ void CylinderList::update(RawModel& model) {
   }
 
   // rotation
-  else if (MouseManager::buttonDown(LEFT_BUTTON)) {
+  else if (MouseManager::buttonDown(LEFT_BUTTON) && !MouseManager::buttonDown(RIGHT_BUTTON) && selected) {
     // construct two points
     float x0 = MouseManager::lastX - W / 2;
     float y0 = MouseManager::lastY - H / 2;
