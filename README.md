@@ -32,6 +32,7 @@ Hold left button to rotate selected cylinder.<br />
 ## Features
 * Trackball rotation
 * Use unionfind data structure to label intersected cylinders with same color
+* Color picking cylinders(Maybe using ray tracing later on)
 
 # Issues
 * Trackball rotation doesn't work properly
@@ -40,6 +41,5 @@ Hold left button to rotate selected cylinder.<br />
 * cylIntersect raises "Not a point/vector problem" (solved?)
 
 ## Future
-* Color picking for selecting cylinders
-* Hightlight the border of the selected cylinder
+* Hightlight the border of the selected cylinder(Object outlining)
 * Raytracing for refraction effect
