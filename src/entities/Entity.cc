@@ -4,12 +4,18 @@
 #include <vector>
 using std::vector;
 
-Entity::Entity(RawModel& model, glm::vec3 color, glm::vec3 pos, glm::vec3 scale, glm::mat4 rotationMatrix): model(model), color(color), pos(pos), scale(scale), rotationMatrix(rotationMatrix) { }
+int Entity::ID = 1;
+
+Entity::Entity(RawModel& model, glm::vec3 color, glm::vec3 pos, glm::vec3 scale, glm::mat4 rotationMatrix): model(model), color(color), pos(pos), scale(scale), rotationMatrix(rotationMatrix), id(Entity::ID++) { }
 
 void Entity::changePosition(float dx, float dy, float dz) {
   pos.x += dx;
   pos.y += dy;
   pos.z += dz;
+}
+
+int Entity::getID() const {
+  return id;
 }
 
 RawModel& Entity::getModel() const {
