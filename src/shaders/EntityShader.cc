@@ -1,10 +1,9 @@
 #include "EntityShader.h"
 #include "../entities/Camera.h"
 
-const char* EntityShader::VERTEX_FILE = "../src/shaders/basic.vert";
-const char* EntityShader::FRAGMENT_FILE = "../src/shaders/basic.frag";
-
 EntityShader::EntityShader() {
+  const char* VERTEX_FILE = "../src/shaders/basic.vert";
+  const char* FRAGMENT_FILE = "../src/shaders/basic.frag";
   init(VERTEX_FILE, FRAGMENT_FILE);
 }
 

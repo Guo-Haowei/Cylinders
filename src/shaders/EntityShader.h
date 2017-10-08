@@ -2,17 +2,13 @@
 #include "ShaderProgram.h"
 
 class EntityShader: public ShaderProgram {
-private:
-  static const char* VERTEX_FILE;
-  static const char* FRAGMENT_FILE;
-
+protected:
   // uniform locations
   int location_transformationMatrix;
   int location_projectionMatrix;
   int location_viewMatrix;
   int location_color;
-protected:
-  void bindAttributes();
+  virtual void bindAttributes();
   void getAllUniformLocations();
 public:
   EntityShader();
