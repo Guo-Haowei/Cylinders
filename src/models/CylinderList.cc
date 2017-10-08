@@ -24,7 +24,6 @@ Space W3 = SCreate("3-space", 3);
 Frame F3 = StdFrame(W3);
 
 Entity* CylinderList::selected = nullptr;
-int CylinderList::selectedEntry = -1;
 
 vector<Entity*> CylinderList::cylinders;
 
@@ -71,16 +70,19 @@ void CylinderList::update(RawModel& model) {
   if (KeyboardManager::isKeyPressed(KEY_DEL) && selected) {
     clean();
     selected = nullptr;
-    selectedEntry = -1;
     MouseManager::setMode(SCENE);
   }
 
   // delete selected
   if (KeyboardManager::isKeyPressed(KEY_BACKSPACE) && selected) {
-    cylinders.erase(cylinders.begin() + selectedEntry);
+    int i = 0;
+    for (; i < cylinders.size(); ++i) {
+      if (cylinders[i] == selected)
+        break;
+    }
+    cylinders.erase(cylinders.begin() + i);
     delete selected;
     selected = nullptr;
-    selectedEntry = -1;
     MouseManager::setMode(SCENE);
   }
 
@@ -91,7 +93,6 @@ void CylinderList::update(RawModel& model) {
 
     if (KeyboardManager::isKeyPressed(i)) {
       selected = cylinders[i - KEY_0];
-      selectedEntry = i - KEY_0;
 
       MouseManager::setMode(OBJECT);
     }

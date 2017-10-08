@@ -7,8 +7,6 @@
 using std::vector;
 
 class CylinderList {
-private:
-  static int selectedEntry;
 public:
   static Entity* selected;
   static vector<Entity*> cylinders;
