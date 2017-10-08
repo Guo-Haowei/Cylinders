@@ -45,19 +45,6 @@ void Camera::processScene() {
   if (MouseManager::getMouseMode() != SCENE)
     return;
 
-  // update Front
-
-
-  // camera position
-  if (KeyboardManager::isKeyDown(KEY_W))
-      position += speed * up;
-  if (KeyboardManager::isKeyDown(KEY_S))
-      position -= speed * up;
-  if (KeyboardManager::isKeyDown(KEY_A))
-      position -= speed * right;
-  if (KeyboardManager::isKeyDown(KEY_D))
-      position += speed * right;
-
   if (MouseManager::buttonDown(LEFT_BUTTON) && !CylinderList::selected) {
     // construct two points
     float x0 = -MouseManager::lastX + 400;
@@ -70,14 +57,16 @@ void Camera::processScene() {
     glm::vec3 a = glm::normalize(glm::cross(P0, P1));
     if (!std::isnan(a.x) && !std::isnan(a.y) && !std::isnan(a.z)) {
       glm::mat4 rotationMatrix = Maths::calculateRotationMatrix(P0, P1, a);
-      glm::mat4 T, T_1;
-      glm::vec3 center = CylinderList::calculateCenterPoint();
-      T = glm::translate(T, -center);
-      T_1 = glm::translate(T_1, center);
-      glm::vec4 pos = T_1 * rotationMatrix * T * glm::vec4(position.x, position.y, position.z, 1.0f);
-      position.x = pos.x;
-      position.y = pos.y;
-      position.z = pos.z;
+      if (!Maths::isNaNMatrix(rotationMatrix)) {
+        glm::mat4 T, T_1;
+        glm::vec3 center = CylinderList::calculateCenterPoint();
+        T = glm::translate(T, -center);
+        T_1 = glm::translate(T_1, center);
+        glm::vec4 pos = T_1 * rotationMatrix * T * glm::vec4(position.x, position.y, position.z, 1.0f);
+        position.x = pos.x;
+        position.y = pos.y;
+        position.z = pos.z;
+      }
     }
   }
 

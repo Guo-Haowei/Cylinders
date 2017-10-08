@@ -38,3 +38,11 @@ glm::mat4 Maths::calculateRotationMatrix(glm::vec3 P0, glm::vec3 P1, glm::vec3 a
 
   return Ryphi * Rzpsi * RxTheta * Rz_psi * Ry_phi;
 }
+
+bool Maths::isNaNMatrix(glm::mat4 mat) {
+  bool isNaN = false;
+  for (int i = 0; i < 4; ++i) {
+    isNaN = isNaN || std::isnan(mat[i].x) || std::isnan(mat[i].y) || std::isnan(mat[i].z) || std::isnan(mat[i].w);
+  }
+  return isNaN;
+}
