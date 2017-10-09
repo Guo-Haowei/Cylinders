@@ -5,10 +5,6 @@ set(CMAKE_BUILD_TYPE Debug)
 
 project(exe)
 
-# conditional flag
-option(WITH_FPS "display fps" OFF)
-option(WITH_AA "anti aliasing" ON)
-
 if(WITH_FPS)
   add_definitions(-DCOUNT_FPS)
 endif()

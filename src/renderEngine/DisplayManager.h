@@ -15,4 +15,5 @@ public:
 
   static long double getTime();
   static void getCursorPos(double* x, double* y);
+  static void setTitle(const char* title);
 };

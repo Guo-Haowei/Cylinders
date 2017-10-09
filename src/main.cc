@@ -29,17 +29,15 @@ bool shouldUpdate(double& currentTime, double& delta, double& lastTime, const in
   }
 }
 
-#if COUNT_FPS
 void updateFPSCount(double& previousSecond, int& updates) {
   if (DisplayManager::getTime() - previousSecond < 1.0) {
     return;
   }
 
   ++previousSecond;
-  cout << "FPS is " << updates << endl;
+  DisplayManager::setTitle(("Cylinders -- FPS: " + std::to_string(updates)).c_str());
   updates = 0;
 }
-#endif
 
 int main(int argc, char* argv[]) {
 
@@ -52,9 +50,7 @@ int main(int argc, char* argv[]) {
 
   int fps = 60;
   double currentTime, lastTime = DisplayManager::getTime();
-#if COUNT_FPS
   double previousSecond = lastTime;
-#endif
   double delta = 0;
   int updates = 0;
 
@@ -83,9 +79,7 @@ int main(int argc, char* argv[]) {
       ++updates;
     }
 
-#if COUNT_FPS
     updateFPSCount(previousSecond, updates);
-#endif
   }
   DisplayManager::cleanDisplay();
   CylinderList::clean();
