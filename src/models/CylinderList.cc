@@ -116,12 +116,8 @@ void CylinderList::update(RawModel& model) {
 
   // transform
   else if (MouseManager::buttonDown(RIGHT_BUTTON) && !MouseManager::buttonDown(LEFT_BUTTON) && selected) {
-    glm::vec3 camPos = Camera::getPos();
-    glm::vec3 objPos = selected->getPos();
-    float unitDistance =
-      ((camPos.x - objPos.x) * (camPos.x - objPos.x) +
-       (camPos.y - objPos.y) * (camPos.y - objPos.y) +
-       (camPos.z - objPos.z) * (camPos.z - objPos.z));
+    glm::vec3 dis = Camera::getPos() - selected->getPos();
+    float unitDistance = dis.x * dis.x + dis.y * dis.y + dis.z * dis.z;
     float deltaX = (MouseManager::currentX - MouseManager::lastX) * unitDistance / 4000.0f;
     float deltaY = (MouseManager::lastY - MouseManager::currentY) * unitDistance / 4800.0f;
     float deltaZ = MouseManager::yScrollOffset * unitDistance / 800.0f;
