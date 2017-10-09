@@ -6,18 +6,17 @@ This program is designed to test if cylinders intersect.
 ```
 mkdir build
 cd build
-ccmake .. -DWITH_FPS=[ON|OFF] -DWITH_AA=[ON|OFF]
+ccmake ..
 make
-./exe [1|2|3|...]
+./exe [-r] [path/to/cylinder/file]
 ```
 
 Note: <br />
-&nbsp;&nbsp;`WITH_FPS` displays frame per second, default to `OFF`, `WITH_AA` enables anti aliasing, default to `ON`. <br />
-&nbsp;&nbsp;Run `./exe` with optional argument `-r` will load file `cylinders.txt`. <br />
+&nbsp;&nbsp;Run `./exe -r` will load file `cylinders.txt` by default. <br />
 
 ## Controls
 Press `c` to create cylinder.<br />
-Press `0` up to `9` to select cylinders (This will put program in OBJECT mode, press `tab` to switch back to SCENE mode)<br />
+Press `0` up to `9` to select cylinders (Or simply left click on the cylinder)<br />
 Press `backspace` to delete selected cylinders.<br />
 Press `Delete` to delete all cylinders.<br />
 Press `o` to output current cylinder data<br />
@@ -30,16 +29,14 @@ Hold left button to rotate selected cylinder.<br />
 ![alt text](https://github.com/Guo-Haowei/Cylinders/blob/master/ScreenShot.png)
 
 ## Features
-* Trackball rotation
-* Use unionfind data structure to label intersected cylinders with same color
-* Color picking cylinders(Maybe using ray tracing later on)
+* Trackball rotation to rotate both camera and cylinders
+* Use unionfind data structure to label intersected cylinders with the same color
+* Color picking cylinders (Considering using ray tracing later on)
 
 # Issues
 * Trackball rotation doesn't work properly
-* Cylinder disappears occasionally when rotating (solved?)
-* glm::lookAt function is not perfect for this program
-* cylIntersect raises "Not a point/vector problem" (solved?)
+* GLM library sometimes gives nan matrix and vector
 
 ## Future
 * Hightlight the border of the selected cylinder(Object outlining)
-* Raytracing for refraction effect
+* Raytracing for reflaction and refraction effect
