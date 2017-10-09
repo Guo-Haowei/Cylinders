@@ -741,7 +741,8 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
            printCaller("VVDot");
 #endif
            if ( fabs(VVDot(C1.v,C2.v)) < 1e-4 ) {
-             fprintf(stderr,"Calling IntersectCircles!\n");
+             if (printinfo)
+               fprintf(stderr,"Calling IntersectCircles!\n");
              CP1 = PVAdd(C1.P,SVMult(cps1,C1.v));
              if ( cps1 < 0 ) {
                CP1 = C1.A;
