@@ -53,6 +53,9 @@ void unionNodes(Node* n1, Node* n2) {
 }
 
 void Controls::update(RawModel& model) {
+  if (KeyboardManager::isKeyPressed(KEY_M)) {
+    IO::manual();
+  }
   if (KeyboardManager::isKeyPressed(KEY_O) && CylinderList::cylinders.size() > 0) {
     IO::write(CylinderList::cylinders);
   }

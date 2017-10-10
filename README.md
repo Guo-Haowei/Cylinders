@@ -16,10 +16,11 @@ Note: <br />
 
 ## Controls
 Press `c` to create cylinder.<br />
-Press `0` up to `9` to select cylinders (Or simply left click on the cylinder)<br />
+Press `0` up to `9` to select cylinders (Or simply double click on the cylinder)<br />
 Press `backspace` to delete selected cylinders.<br />
 Press `Delete` to delete all cylinders.<br />
-Press `o` to output current cylinder data<br />
+Press `o` to output current cylinder data.<br />
+Press `m` to print manual to console.<br />
 Use `[`, `]` or scroll wheel to scale selected cylinders.<br />
 Scroll wheel in general change the depth.<br />
 Hold right button to translate selected cylinder.<br />

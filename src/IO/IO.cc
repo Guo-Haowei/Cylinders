@@ -88,3 +88,18 @@ void IO::read(std::vector<Entity*>& entities, RawModel& model, std::string name)
     ++lineCount;
   }
 }
+
+void IO::manual() {
+  cout << "\n==================================== Manual ====================================\n";
+  cout << "Press 'c' to create cylinder.\n";
+  cout << "Press '0' up to '9' to select cylinders (Or simply double click on the cylinder)\n";
+  cout << "Press 'backspace' to delete selected cylinders.\n";
+  cout << "Press 'Delete' to delete all cylinders.\n";
+  cout << "Press 'o' to output current cylinder data.\n";
+  cout << "Press 'm' to print manual to console.\n";
+  cout << "Use '[', ']' or scroll wheel to scale selected cylinders.\n";
+  cout << "Scroll wheel in general change the depth.\n";
+  cout << "Hold right button to translate selected cylinder.\n";
+  cout << "Hold left button to rotate selected cylinder.\n";
+  cout << "================================================================================\n\n";
+}
