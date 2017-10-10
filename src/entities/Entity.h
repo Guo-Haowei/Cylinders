@@ -26,6 +26,4 @@ public:
   void setScale(glm::vec3 scale);
   void setColor(glm::vec3 color);
   glm::mat4 createTransformationMatrix();
-
-  static RawModel createUniformCylinder();
 };

@@ -2,6 +2,7 @@
 #include "entities/Entity.h"
 #include "inputManager/KeyboardManager.h"
 #include "inputManager/MouseManager.h"
+#include "inputManager/Controls.h"
 #include "IO/IO.h"
 #include "models/CylinderList.h"
 #include "models/Loader.h"
@@ -44,7 +45,7 @@ int main(int argc, char* argv[]) {
   DisplayManager::createDisplay();
   Renderer renderer;
   vector<Entity*> entities;
-  RawModel model = Entity::createUniformCylinder();
+  RawModel model = CylinderList::createUniformCylinder();
   Camera::updateCameraVectors();
   MouseManager::prepare();
 
@@ -69,7 +70,7 @@ int main(int argc, char* argv[]) {
       DisplayManager::prepareDisplay();
       MouseManager::beforeUpdate();
       Camera::update();
-      CylinderList::update(model);
+      Controls::update(model);
 
       renderer.render(CylinderList::cylinders);
 

@@ -26,7 +26,7 @@ void Renderer::render(vector<Entity*> entities) {
   }
   colorPickShader.stop();
 
-  if (MouseManager::buttonPressed(0)) {
+  if (MouseManager::doubleClick()) {
     glFlush();
     glFinish();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
