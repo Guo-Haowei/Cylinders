@@ -47,8 +47,10 @@ int main(int argc, char* argv[]) {
   Renderer renderer;
   vector<Entity*> entities;
   RawModel model = CylinderList::createUniformCylinder();
-  RawModel circles = TwoCircles::createUniformTwoCircles();
-  TwoCircles::twoCircles = new Entity(circles, glm::vec3(0, 0, 0));
+  RawModel circle1 = TwoCircles::createUniformUpperCircle();
+  RawModel circle2 = TwoCircles::createUniformLowerCircle();
+  TwoCircles::upper = new Entity(circle1, glm::vec3(1.0f, 1.0f, 0.0f));
+  TwoCircles::lower = new Entity(circle2, glm::vec3(1.0f, 1.0f, 0.0f));
   Camera::updateCameraVectors();
   MouseManager::prepare();
 
@@ -87,6 +89,7 @@ int main(int argc, char* argv[]) {
   }
   DisplayManager::cleanDisplay();
   CylinderList::clean();
+  TwoCircles::clean();
   Loader::clean();
 
   return 0;

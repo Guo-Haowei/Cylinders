@@ -24,8 +24,6 @@ Frame F2 = StdFrame(W2);
 Space W3 = SCreate("3-space", 3);
 Frame F3 = StdFrame(W3);
 
-const float W = 400.0f, H = 300.0f, D = 500.0f;
-
 // helpers
 Cylinder createCylinderFromEntity(Entity* entity);
 int intersect(Entity* cyl1, Entity* cyl2);

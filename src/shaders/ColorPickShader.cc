@@ -16,3 +16,7 @@ void ColorPickShader::loadColor(int id) {
   int b = (id & 0x00ff0000) >> 16;
   loadVector3f(location_color, glm::vec3(r/255.0f, g/255.0f, b/255.0f));
 }
+
+void ColorPickShader::loadColor(glm::vec3 color) {
+  loadVector3f(location_color, color);
+}

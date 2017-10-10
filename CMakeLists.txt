@@ -5,14 +5,6 @@ set(CMAKE_BUILD_TYPE Debug)
 
 project(exe)
 
-if(WITH_FPS)
-  add_definitions(-DCOUNT_FPS)
-endif()
-
-if(WITH_AA)
-  add_definitions(-DANTI_ALIASING)
-endif()
-
 # glfw
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)

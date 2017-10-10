@@ -6,6 +6,9 @@
 
 class TwoCircles {
 public:
-  static Entity* twoCircles;
-  static RawModel createUniformTwoCircles();
+  static Entity* upper;
+  static Entity* lower;
+  static RawModel createUniformUpperCircle();
+  static RawModel createUniformLowerCircle();
+  static void clean();
 };
