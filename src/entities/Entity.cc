@@ -50,6 +50,10 @@ void Entity::setScale(glm::vec3 scale) {
   this->scale = scale;
 }
 
+void Entity::setRotation(glm::mat4 rot) {
+  this->rotationMatrix = rot;
+}
+
 void Entity::setColor(glm::vec3 color) {
   this->color = color;
 }

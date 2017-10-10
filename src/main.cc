@@ -1,12 +1,13 @@
 #include "entities/Camera.h"
 #include "entities/Entity.h"
+#include "inputManager/Controls.h"
 #include "inputManager/KeyboardManager.h"
 #include "inputManager/MouseManager.h"
-#include "inputManager/Controls.h"
 #include "IO/IO.h"
 #include "models/CylinderList.h"
 #include "models/Loader.h"
 #include "models/RawModel.h"
+#include "models/TwoCircles.h"
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Renderer.h"
 #include <glm/glm.hpp>
@@ -46,6 +47,8 @@ int main(int argc, char* argv[]) {
   Renderer renderer;
   vector<Entity*> entities;
   RawModel model = CylinderList::createUniformCylinder();
+  RawModel circles = TwoCircles::createUniformTwoCircles();
+  TwoCircles::twoCircles = new Entity(circles, glm::vec3(0, 0, 0));
   Camera::updateCameraVectors();
   MouseManager::prepare();
 

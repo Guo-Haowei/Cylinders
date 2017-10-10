@@ -3,9 +3,11 @@
 #include "../common.h"
 #include "../inputManager/MouseManager.h"
 #include "../models/CylinderList.h"
+#include "../models/TwoCircles.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 #include <iostream>
+using std::cout;
 
 Renderer::Renderer() { }
 
@@ -58,6 +60,17 @@ void Renderer::render(vector<Entity*> entities) {
   for (int i = 0; i < entities.size(); ++i) {
     prepareModel(entities[i]);
     renderEntity(entities[i]);
+  }
+
+  if (CylinderList::selected) {
+    TwoCircles::twoCircles->setPos(CylinderList::selected->getPos());
+    glm::vec3 scale = CylinderList::selected->getScale();
+    const float offset = 0.01;
+    scale.x += offset; scale.z += offset; scale.y -= offset;
+    TwoCircles::twoCircles->setScale(scale);
+    TwoCircles::twoCircles->setRotation(CylinderList::selected->getRotationMatrix());
+    prepareModel(TwoCircles::twoCircles);
+    renderEntity(TwoCircles::twoCircles);
   }
   entityShader.stop();
 }

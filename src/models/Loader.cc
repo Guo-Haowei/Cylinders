@@ -8,7 +8,6 @@ vector<unsigned int> Loader::vbos;
 
 RawModel Loader::loadToVAO(vector<float> vertices, vector<float> normals) {
   unsigned int vaoID = createVAO();
-  // bindIndicesBuffer(indices);
   storeDataInAttributeList(0, 3, vertices);
   storeDataInAttributeList(1, 3, normals);
   unbindVAO();

@@ -5,7 +5,7 @@
 class Entity {
 private:
   static int ID;
-  int id;
+  const int id;
   RawModel& model;
   glm::vec3 pos;
   glm::vec3 scale;
@@ -25,5 +25,6 @@ public:
   void setPos(glm::vec3 pos);
   void setScale(glm::vec3 scale);
   void setColor(glm::vec3 color);
+  void setRotation(glm::mat4 rot);
   glm::mat4 createTransformationMatrix();
 };
