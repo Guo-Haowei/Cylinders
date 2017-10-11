@@ -62,6 +62,8 @@ void Controls::update(RawModel& model) {
     int color = CylinderList::cylinders.size();
     Entity* entity = new Entity(model, glm::vec3(COLORS[color*3], COLORS[color*3+1], COLORS[color*3+2]), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1, 0.1, 1));
     CylinderList::cylinders.push_back(entity);
+    CylinderList::selected = entity;
+    MouseManager::setMode(OBJECT);
   }
 
   // delete all
