@@ -12,10 +12,10 @@ const float FAR_PLANE = 1000.0f;
 const float W = 400.0f, H = 300.0f, D = 500.0f;
 
 const float COLORS[] = {
-  0.3f, 0.4f, 0.3f,
+  0.2f, 0.2f, 0.6f,
   0.3f, 0.4f, 0.5f,
   0.1f, 0.6f, 0.5f,
-  0.5f, 0.2f, 0.2f,
+  0.5f, 0.2f, 0.9f,
   0.3f, 0.6f, 0.1f,
   0.4f, 0.5f, 0.3f,
   0.8f, 0.3f, 0.2f,
