@@ -667,8 +667,8 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
         fprintf(stderr,"distance between closest points too large.\n");
       return 0; // TEST: closest points are too far away
     case 0:;
-           //		if ( printinfo )
-           fprintf(stderr,"Parallel axes\n");
+           if (printinfo)
+             fprintf(stderr,"Parallel axes\n");
            // The axes are parallel.  We assume that the distance
            // between the axes is less than C1C.r+C2C.r
            Scalar c0,c1,c2,A1,B1,A2,B2;
