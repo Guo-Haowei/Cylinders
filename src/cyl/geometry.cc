@@ -156,7 +156,7 @@ int IsNormal(Normal n)
 /*
  ** Create a new affine space of the specified dimension.
  */
-Space SCreate(char *name, int dim)
+Space SCreate(const char *name, int dim)
 {
   Space NewSpace;
 
@@ -262,7 +262,7 @@ Frame FCreate(char *name,Point origin, Vector v0, Vector v1, ...)
   return NewFrame;
 }
 
-Frame FCreate3(char *name,Point origin, Vector v0, Vector v1, Vector v2)
+Frame FCreate3(const char *name,Point origin, Vector v0, Vector v1, Vector v2)
 {
   Frame NewFrame;
   int isValid = TRUE;

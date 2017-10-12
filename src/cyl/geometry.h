@@ -34,14 +34,14 @@
 
 typedef struct frame {			/* An affine frame.                */
   struct euclideanSpace *s;	/* The containing space.           */
-  char *name;			/* Printable name for debugging.   */
+  const char *name;			/* Printable name for debugging.   */
   Matrix tostdf;			/* Rep of frame rel to s->stdf.    */
   Matrix fromstdf;		/* Rep of s->stdf rel to frame.    */
 } Frame;
 
 typedef struct euclideanSpace {		/* A Euclidean space.            */
   int dim;			/* The dimension of the space    */
-  char *name;			/* Printable name for debugging  */
+  const char *name;			/* Printable name for debugging  */
   Frame stdf;			/* A predefined Cartesian frame. */
 } *Space;
 
@@ -72,9 +72,9 @@ typedef struct {			/* An affine transformation.     */
 extern double sqrt(double);
 
 /* Creation routines */
-extern Space       SCreate(char*, int);
-extern Frame       FCreate(char *name,Point origin, Vector, Vector, ...);
-extern Frame       FCreate3(char *name,Point origin, Vector, Vector, Vector);
+extern Space       SCreate(const char*, int);
+extern Frame       FCreate(const char *name,Point origin, Vector, Vector, ...);
+extern Frame       FCreate3(const char *name,Point origin, Vector, Vector, Vector);
 extern Point       PCreate(Frame F,  Scalar, Scalar, ...);
 extern Point       PCreate3(Frame F,  Scalar, Scalar, Scalar);
 extern Vector      VCreate(Frame F,  Scalar, Scalar, ...);
