@@ -2,7 +2,7 @@
 #include "../common.h"
 #include <glm/glm.hpp>
 
-const float SPEED = 1.0f;
+const float SPEED = 0.1f;
 const float SENSITIVITY = 0.01f;
 
 class Camera {

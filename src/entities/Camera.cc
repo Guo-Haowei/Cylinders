@@ -45,6 +45,15 @@ void Camera::processScene() {
   if (MouseManager::getMouseMode() != SCENE)
     return;
 
+  if (KeyboardManager::isKeyDown(KEY_S))
+    position -= speed * front;
+  if (KeyboardManager::isKeyDown(KEY_W))
+    position += speed * front;
+  if (KeyboardManager::isKeyDown(KEY_A))
+    position -= speed * right;
+  if (KeyboardManager::isKeyDown(KEY_D))
+    position += speed * right;
+
   if (MouseManager::buttonDown(LEFT_BUTTON) && !CylinderList::selected) {
     // construct two points
     float x0 = -MouseManager::lastX + 400;
