@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
   Camera::updateCameraVectors();
   MouseManager::prepare();
 
-  int fps = 60;
+  int fps = 30;
   double currentTime, lastTime = DisplayManager::getTime();
   double previousSecond = lastTime;
   double delta = 0;

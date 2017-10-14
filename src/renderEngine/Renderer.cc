@@ -68,21 +68,15 @@ void Renderer::render(vector<Entity*> entities) {
     glm::vec3 scale = CylinderList::selected->getScale();
     scale.y += 0.004f;
     // upper circle
-    TwoCircles::upper->setPos(CylinderList::selected->getPos());
-    TwoCircles::upper->setScale(scale);
-    TwoCircles::upper->setRotation(CylinderList::selected->getRotationMatrix());
     prepareModel(TwoCircles::upper);
     colorPickShader.loadColor(TwoCircles::upper->getColor());
-    colorPickShader.loadTransformationMatrx(TwoCircles::upper->createTransformationMatrix());
+    colorPickShader.loadTransformationMatrx(CylinderList::selected->createTransformationMatrix());
     glDrawArrays(GL_LINES, 0, TwoCircles::upper->getModel().getVertexCount());
 
     // lower circle
-    TwoCircles::lower->setPos(CylinderList::selected->getPos());
-    TwoCircles::lower->setScale(scale);
-    TwoCircles::lower->setRotation(CylinderList::selected->getRotationMatrix());
     prepareModel(TwoCircles::lower);
     colorPickShader.loadColor(TwoCircles::lower->getColor());
-    colorPickShader.loadTransformationMatrx(TwoCircles::lower->createTransformationMatrix());
+    colorPickShader.loadTransformationMatrx(CylinderList::selected->createTransformationMatrix());
     glDrawArrays(GL_LINES, 0, TwoCircles::lower->getModel().getVertexCount());
     colorPickShader.stop();
   }

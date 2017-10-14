@@ -128,12 +128,14 @@ void Controls::update(RawModel& model) {
   // rotation
   else if (MouseManager::buttonDown(LEFT_BUTTON) && !MouseManager::buttonDown(RIGHT_BUTTON) && CylinderList::selected) {
     // construct two points
-    float x0 = MouseManager::lastX - W / 2;
-    float y0 = MouseManager::lastY - H / 2;
-    glm::vec3 P0 = glm::vec3(x0, y0, sqrt(D*D - y0 * y0));
-    float x1 = MouseManager::currentX - W / 2;
-    float y1 = MouseManager::currentY - H / 2;
-    glm::vec3 P1 = glm::vec3(x1, y1, sqrt(D*D - y1 * y1));
+    float x0 = MouseManager::lastX - W;
+    float y0 = H - MouseManager::lastY;
+    float x1 = MouseManager::currentX - W;
+    float y1 = H - MouseManager::currentY;
+    if (x0 * x0 + y0 * y0 > H * H || x1 * x1 + y1 * y1 > H * H)
+      return;
+    glm::vec3 P0 = glm::vec3(x0, y0, -sqrt(H * H - y0 * y0 - x0 * x0));
+    glm::vec3 P1 = glm::vec3(x1, y1, -sqrt(H * H - y1 * y1 - x1 * x1));
     // rotation vector
     glm::vec3 a = glm::normalize(glm::cross(P0, P1));
     if (std::isnan(a.x) || std::isnan(a.y) || std::isnan(a.z) || !CylinderList::selected)
