@@ -18,15 +18,13 @@ void IO::write(std::vector<Entity*>& entities, std::string name) {
   for (int i = 0; i < entities.size(); ++i) {
     glm::vec3 position = entities[i]->getPos();
     glm::vec3 scale = entities[i]->getScale();
-    glm::mat4 rotation = entities[i]->getRotationMatrix();
+    glm::mat4 transformation = entities[i]->getTransformtationMatrix();
     outfile << "## Cylinder" << (i + 1) << '\n';
-    outfile << "## position\n";
-    outfile << position.x << ' ' << position.y << ' ' << position.z << '\n';
     outfile << "## scale\n";
     outfile << scale.x << ' ' << scale.y << ' ' << scale.z << '\n';
-    outfile << "## rotation\n";
+    outfile << "## transformation\n";
     for (int j = 0; j < 4; ++j) {
-      outfile << rotation[j].x << ' ' << rotation[j].y << ' ' << rotation[j].z << ' ' << rotation[j].w << '\n';
+      outfile << transformation[j].x << ' ' << transformation[j].y << ' ' << transformation[j].z << ' ' << transformation[j].w << '\n';
     }
     outfile << '\n';
   }
@@ -36,11 +34,12 @@ void IO::write(std::vector<Entity*>& entities, std::string name) {
   // write file 2
   outfile.open("../" + name + "_standard.txt");
   for (int i = 0; i < entities.size(); ++i) {
-    float h = entities[i]->getScale().y * 2.0f;
-    glm::vec4 y4d = entities[i]->getRotationMatrix() * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
-    glm::vec3 y = h / 2.0f * glm::vec3(y4d.x, y4d.y, y4d.z);
-    glm::vec3 A = entities[i]->getPos() - y;
-    glm::vec3 B = entities[i]->getPos() + y;
+    float h = entities[i]->getScale().y;
+    glm::mat4 transformationMatrix = entities[i]->getTransformtationMatrix();
+    glm::vec4 A4d = transformationMatrix * glm::vec4(0.0f, h, 0.0f, 1.0f);
+    glm::vec4 B4d = transformationMatrix * glm::vec4(0.0f, -h, 0.0f, 1.0f);
+    glm::vec3 A = glm::vec3(A4d.x, A4d.y, A4d.z);
+    glm::vec3 B = glm::vec3(B4d.x, B4d.y, B4d.z);
     glm::vec3 v = glm::normalize(B - A);
 
     outfile << A.x << ' ' << A.y << ' ' << A.z << ' ' << v.x << ' ' << v.y << ' ' << v.z << ' ' << h << ' ' << entities[i]->getScale().x << '\n';
@@ -51,7 +50,7 @@ void IO::write(std::vector<Entity*>& entities, std::string name) {
 
 void IO::read(std::vector<Entity*>& entities, RawModel& model, std::string name) {
   glm::vec3 position, scale;
-  glm::mat4 rotation;
+  glm::mat4 transformation;
   ifstream infile;
   cout << "Reading file cylinders.txt...\n";
   infile.open(name);
@@ -70,21 +69,18 @@ void IO::read(std::vector<Entity*>& entities, RawModel& model, std::string name)
       continue;
 
     stringstream ss(line);
-    if (lineCount % 6 == 0) {
-      ss >> position.x >> position.y >> position.z;
-    }
     // scale
-    else if (lineCount % 6 == 1) {
+    if (lineCount % 5 == 0) {
       ss >> scale.x >> scale.y >> scale.z;
     }
-    // rotation
+    // transformation
     else {
-      int row = lineCount % 6 - 2;
-      ss >> rotation[row].x >> rotation[row].y >> rotation[row].z >> rotation[row].w;
+      int row = lineCount % 5 - 1;
+      ss >> transformation[row].x >> transformation[row].y >> transformation[row].z >> transformation[row].w;
     }
 
-    if (lineCount % 6 == 5)
-      entities.push_back(new Entity(model, glm::vec3(0.3f), position, scale, rotation));
+    if (lineCount % 5 == 4)
+      entities.push_back(new Entity(model, glm::vec3(0.3f), transformation, scale));
     ++lineCount;
   }
 }

@@ -60,7 +60,7 @@ void Controls::update(RawModel& model) {
   // create
   if (KeyboardManager::isKeyPressed(KEY_C) && CylinderList::cylinders.size() < 10) {
     int color = CylinderList::cylinders.size();
-    Entity* entity = new Entity(model, glm::vec3(COLORS[color*3], COLORS[color*3+1], COLORS[color*3+2]), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1, 0.1, 1));
+    Entity* entity = new Entity(model, glm::vec3(COLORS[color*3], COLORS[color*3+1], COLORS[color*3+2]), glm::mat4(1.0f), glm::vec3(1.0f, 0.1f, 1.0f));
     CylinderList::cylinders.push_back(entity);
     CylinderList::selected = entity;
     MouseManager::setMode(OBJECT);
@@ -180,12 +180,14 @@ void Controls::update(RawModel& model) {
 
 Cylinder createCylinderFromEntity(Entity* entity) {
   Cylinder c;
+  float h = entity->getScale().y;
   c.r = entity->getScale().x;
-  c.h = entity->getScale().y * 2.0f;
-  glm::vec4 y4d = entity->getRotationMatrix() * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
-  glm::vec3 y = (float)c.h / 2.0f * glm::vec3(y4d.x, y4d.y, y4d.z);
-  glm::vec3 A = entity->getPos() - y;
-  glm::vec3 B = entity->getPos() + y;
+  c.h = h * 2.0f;
+  glm::mat4 transformationMatrix = entity->getTransformtationMatrix();
+  glm::vec4 A4d = transformationMatrix * glm::vec4(0.0f, h, 0.0f, 1.0f);
+  glm::vec4 B4d = transformationMatrix * glm::vec4(0.0f, -h, 0.0f, 1.0f);
+  glm::vec3 A = glm::vec3(A4d.x, A4d.y, A4d.z);
+  glm::vec3 B = glm::vec3(B4d.x, B4d.y, B4d.z);
   c.P = PCreate3(F3, A.x, A.y, A.z);
   c.A = c.P;
   c.B = PCreate3(F3, B.x, B.y, B.z);
