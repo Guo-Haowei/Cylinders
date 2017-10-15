@@ -8,17 +8,10 @@ using std::vector;
 
 int Entity::ID = 1;
 
-Entity::Entity(RawModel& model, glm::vec3 color, glm::vec3 pos, glm::vec3 scale, glm::mat4 rotationMatrix): model(model), color(color), pos(pos), scale(scale), rotationMatrix(rotationMatrix), id(Entity::ID++) {
-  // initialize transformation matrix
-  finalTransformation = glm::mat4(1.0f);
-  // rotation
-  glm::mat4 T, T_1, translation;
-  T = glm::translate(T, -pos);
-  T_1 = glm::translate(T_1, pos);
-  glm::mat4 rotation = T_1 * rotationMatrix * T;
-  // translation
-  translation = glm::translate(translation, pos);
-  finalTransformation = rotation * translation * finalTransformation;
+Entity::Entity(RawModel& model, glm::vec3 color, glm::mat4 transformation, glm::vec3 scale): model(model), color(color), finalTransformation(transformation), scale(scale), id(Entity::ID++) {
+  pos.x = transformation[3].x;
+  pos.y = transformation[3].y;
+  pos.z = transformation[3].z;
 }
 
 void Entity::changePosition(float dx, float dy, float dz) {
@@ -51,13 +44,11 @@ glm::vec3 Entity::getColor() const {
   return color;
 }
 
-glm::mat4 Entity::getRotationMatrix() const {
-  return rotationMatrix;
+glm::mat4 Entity::getTransformtationMatrix() const {
+  return finalTransformation;
 }
 
 void Entity::changeRotation(glm::mat4 rot) {
-  rotationMatrix = rot * rotationMatrix;
-
   glm::mat4 T, TInverse;
   T = glm::translate(T, -pos);
   TInverse = glm::translate(TInverse, pos);
@@ -81,10 +72,6 @@ void Entity::setPos(glm::vec3 pos) {
 
 void Entity::setScale(glm::vec3 scale) {
   this->scale = scale;
-}
-
-void Entity::setRotation(glm::mat4 rot) {
-  this->rotationMatrix = rot;
 }
 
 void Entity::setColor(glm::vec3 color) {
