@@ -2,7 +2,46 @@
 
 This program is designed to test if cylinders intersect.
 
-## Compile
+## Installation
+
+### MacOS
+If you already have `brew` installed, skip this step. Otherwise, do
+```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+to install `brew`.
+
+After installing `brew`, you need to download a few more packages.
+
+```
+brew install cmake
+brew install pkg-config
+brew install glew
+brew install glfw
+brew install glm
+```
+### Linux
+Similar to `brew install`, do `apt-get` to download desired packages.
+```
+sudo apt-get update
+sudo apt-get install cmake
+sudo apt-get install pkgconf
+sudo apt-get install libglfw-dev
+sudo apt-get install libglew-dev
+sudo apt-get install libglm-dev
+```
+If you do not have GLFW version 3, download the source distribution and run cmake:
+```
+wget https://github.com/glfw/glfw/releases/download/3.1.2/glfw-3.1.2.zip
+unzip glfw-3.1.2.zip
+cd glfw*
+mkdir build
+cd build
+ccmake ..
+```
+
+### Compile Code
+
 ```
 mkdir build
 cd build
@@ -30,14 +69,10 @@ Hold left button to rotate selected cylinder.<br />
 ![alt text](https://github.com/Guo-Haowei/Cylinders/blob/master/ScreenShot.png)
 
 ## Features
-* Trackball rotation to rotate both camera and cylinders
+* Trackball rotation to rotate both scene and cylinders
 * Use unionfind data structure to label intersected cylinders with the same color
 * Color picking cylinders (Considering using ray tracing later on)
-
-# Issues
-* Trackball rotation doesn't work properly
-* GLM library sometimes gives nan matrix and vector
+* Hightlight the border of the selected cylinder(Object outlining)
 
 ## Future
-* Hightlight the border of the selected cylinder(Object outlining)
 * Raytracing for reflaction and refraction effect
