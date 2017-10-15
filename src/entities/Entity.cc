@@ -2,6 +2,8 @@
 #include "../models/Loader.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include <iostream>
+using std::cout;
 using std::vector;
 
 int Entity::ID = 1;
@@ -53,13 +55,20 @@ glm::mat4 Entity::getRotationMatrix() const {
   return rotationMatrix;
 }
 
-void Entity::changeRotation(glm::mat4 rot, glm::vec3 rotationCenter) {
+void Entity::changeRotation(glm::mat4 rot) {
   rotationMatrix = rot * rotationMatrix;
-  // update transformation matrix as well
-  glm::mat4 T, T_1;
-  T = glm::translate(T, rotationCenter - pos);
-  T_1 = glm::translate(T_1, pos - rotationCenter);
-  finalTransformation = T_1 * rot * T * finalTransformation;
+
+  glm::mat4 T, TInverse;
+  T = glm::translate(T, -pos);
+  TInverse = glm::translate(TInverse, pos);
+  finalTransformation = TInverse * rot * T * finalTransformation;
+}
+
+void Entity::changeRotation(glm::mat4 rot, glm::vec3 rotationCenter) {
+  glm::mat4 T, TInverse;
+  T = glm::translate(T, -rotationCenter);
+  TInverse = glm::translate(TInverse, rotationCenter);
+  finalTransformation = TInverse * rot * T * finalTransformation;
 }
 
 void Entity::setPos(glm::vec3 pos) {

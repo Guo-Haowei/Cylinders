@@ -8,12 +8,11 @@ const float SENSITIVITY = 0.01f;
 class Camera {
 private:
   static glm::vec3 position;
+  static glm::vec3 center;
   static glm::vec3 front;
   static glm::vec3 up;
   static glm::vec3 right;
   static glm::vec3 worldUp;
-
-  static glm::mat4 rotationMatrix;
 
   static float speed;
   static float sensitivity;
@@ -27,5 +26,6 @@ public:
   static glm::vec3 getUp();
   static glm::vec3 getRight();
   static glm::mat4 getViewMatrix();
+  static void setCenter(glm::vec3 point);
   static void updateCameraVectors();
 };
