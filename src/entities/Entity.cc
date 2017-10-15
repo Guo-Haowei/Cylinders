@@ -15,13 +15,13 @@ Entity::Entity(RawModel& model, glm::vec3 color, glm::mat4 transformation, glm::
 }
 
 void Entity::changePosition(float dx, float dy, float dz) {
-  pos.x += dx;
-  pos.y += dy;
-  pos.z += dz;
   // change transformation matrix
   glm::mat4 translation;
   translation = glm::translate(translation, glm::vec3(dx, dy, dz));
   finalTransformation = translation * finalTransformation;
+  pos.x = finalTransformation[3].x;
+  pos.y = finalTransformation[3].y;
+  pos.z = finalTransformation[3].z;
 }
 
 int Entity::getID() const {
@@ -53,6 +53,10 @@ void Entity::changeRotation(glm::mat4 rot) {
   T = glm::translate(T, -pos);
   TInverse = glm::translate(TInverse, pos);
   finalTransformation = TInverse * rot * T * finalTransformation;
+  // position also updated!
+  pos.x = finalTransformation[3].x;
+  pos.y = finalTransformation[3].y;
+  pos.z = finalTransformation[3].z;
 }
 
 void Entity::changeRotation(glm::mat4 rot, glm::vec3 rotationCenter) {
