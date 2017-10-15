@@ -69,6 +69,10 @@ void Entity::changeRotation(glm::mat4 rot, glm::vec3 rotationCenter) {
   T = glm::translate(T, -rotationCenter);
   TInverse = glm::translate(TInverse, rotationCenter);
   finalTransformation = TInverse * rot * T * finalTransformation;
+  // position also updated!
+  pos.x = finalTransformation[3].x;
+  pos.y = finalTransformation[3].y;
+  pos.z = finalTransformation[3].z;
 }
 
 void Entity::setPos(glm::vec3 pos) {
