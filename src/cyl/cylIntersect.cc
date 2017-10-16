@@ -402,10 +402,8 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
     Scalar dist;
     dist = PPDist(C1.P,CP2);
     if (printinfo) {
-#if VVDotCaller
-      printCaller("VVDot");
-#endif
-      fprintf(stderr,"CPOC: Parallel axes dist %g vs %g (%g)\n",
+      if ( printinfo ) 
+        fprintf(stderr,"CPOC: Parallel axes dist %g vs %g (%g)\n",
           dist,C1.r+C2.r,VVDot(C2.v,PPDiff(C1.P,CP2)));
     }
     if ( dist <= C1.r + C2.r ) {
@@ -414,16 +412,24 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
       return -1;
     }
   }
+  if ( printinfo ) {
+	  fprintf(stderr," p1,p2 = %g,%g\n",p1,p2);
+	  fprintf(stderr," a1,a2 = %g,%g\n",a1,a2);
+  }
+
 
   // Compute closest point in 2D
   Point P2 = PCreate(F2,p1,p2);
   Vector A2 = VCreate(F2,a1,a2);
   Vector v = PPDiff(P2,FOrg(F2));
-#if VVDotCaller
-  printCaller("VVDot");
-#endif
   Point ClosestPoint = PVAdd(P2,SVMult(-VVDot(v,VNormalize(A2)),
         VNormalize(A2)));
+  if ( printinfo ) {
+	  fprintf(stderr,"ClosestPoint in 2D: ");
+	  PPrintf(stderr,ClosestPoint);
+	  fprintf(stderr," Cp-F2 = ");
+	  VPrintf(stderr, v);
+  }
   Scalar dist = PPDist(FOrg(F2),ClosestPoint);
   if ( printinfo )
     fprintf(stderr,"CPOC: dist is %g, |A2| is %g\n",dist,VMag(A2));
@@ -437,22 +443,20 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
 
   Vector cp;
   cp = VVCross(C1.v, C2.v);
-#if VVDotCaller
-  printCaller("VVDot");
-#endif
   if ( VVDot(cp, PPDiff(C1.P,C2.P)) < 0 ) {
     cp = SVMult(-1.,cp);
   }
   *CP1 = PVAdd(*CP2,SVMult(dist,VNormalize(cp)));
+  if (printinfo) {
+	  PPrintf(stderr,*CP1);
+	  PPrintf(stderr,*CP2);
+  }
   return 1;
 }
 
 
 // Make axis of C2 have positive dot product with axis of C1
 void AlignCylinders(Cylinder C1, Cylinder* C2) {
-#if VVDotCaller
-  printCaller("VVDot");
-#endif
   if ( VVDot(C1.v,C2->v) > 0 ) {
     return;
   } else {
@@ -472,13 +476,25 @@ static Frame CylFrame(Cylinder C, const char* name) {
   v3 = C.v;
   VCoords(v3,F3, &c0,&c1,&c2);
   if ( fabs(c0)<=fabs(c1) && fabs(c0)<=fabs(c2) ) {
+	  if (printinfo) fprintf(stderr,"CylFrame 1\n");
     v1 = VVCross(v3,FV(F3,0));
   } else if ( fabs(c1)<=fabs(c0) && fabs(c1)<=fabs(c2) ) {
+	  if (printinfo) fprintf(stderr,"CylFrame 2\n");
     v1 = VVCross(v3,FV(F3,1));
   } else {
+	  if (printinfo) {
+		  fprintf(stderr,"CylFrame 3\n");
+	  }
     v1 = VVCross(v3,FV(F3,2));
   }
+  v1 = SVMult(1./VMag(v1),v1);
   v2 = VVCross(v1,v3);
+  if (printinfo){
+  VPrintf(stderr,v1);
+  VPrintf(stderr,v2);
+  VPrintf(stderr,v3);
+  fprintf(stderr," %g %g %g: 1,1,1?\n",VMag(v1),VMag(v2),VMag(v3));
+  }
 
   Frame FT;
   FT = FCreate3(name,C.P,v1,v2,v3);
@@ -523,6 +539,12 @@ static void MapToCanonicalCylinder(Cylinder C1, Cylinder C2,
   C2C->B = PAxform(C2.B, Map);
   C2C->h = C2.h;
   C2C->r = C2.r;
+  if ( printinfo ) {
+	  fprintf(stderr,"MapToCanonicalCylinder\n");
+	  fprintf(stderr,"C2C->A - C2C->B = ");
+	  VPrintf(stderr,PPDiff(C2C->A,C2C->B));
+	  VPrintf(stderr,C2C->v);
+  }
 }
 
 int IntervalsOverlap(Scalar A1, Scalar B1, Scalar A2, Scalar B2) {
@@ -695,7 +717,28 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
     fprintf(stderr,"h: %g\n", C2.h);
   }
   AlignCylinders(C1,&C2);
+  if (printinfo) {
+	  fprintf(stderr,"Aligned cylinders: C1.P - C2.P = ");
+	  VPrintf(stderr,PPDiff(C1.P,C2.P));
+	  fprintf(stderr,"  %g\n",PPDist(C1.P,C2.P));
+	  fprintf(stderr,"Aligned cylinders: C1.B - C2.B = ");
+	  VPrintf(stderr,PPDiff(C1.B,C2.B));
+	  fprintf(stderr,"  %g\n",PPDist(C1.B,C2.B));
+  }
   MapToCanonicalCylinder(C1,C2,&C1C,&C2C);
+  if (printinfo) {
+	  fprintf(stderr,"Canonical cylinders: C1C.P - C2C.P = ");
+	  VPrintf(stderr,PPDiff(C1C.P,C2C.P));
+	  fprintf(stderr,"  %g\n",PPDist(C1C.P,C2C.P));
+	  fprintf(stderr,"Canonical cylinders: C1C.B - C2C.B = ");
+	  VPrintf(stderr,PPDiff(C1C.B,C2C.B));
+	  fprintf(stderr,"  %g\n",PPDist(C1C.B,C2C.B));
+  }
+		printf("#\n");
+S3dDisk(C1C.A,C1C.v,C1C.r);
+  S3dDisk(C2C.A,C2C.v,C2C.r);
+		printf("#\n");
+                printf("o 1 1 0\n");
     if ( printinfo ) {
     double x, y, z;
     fprintf(stderr,"\n\nCylinder 1 Canonical\n");
@@ -731,8 +774,8 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
         fprintf(stderr,"distance between closest points too large.\n");
       return 0; // TEST: closest points are too far away
     case 0:;
-           //		if ( printinfo )
-           fprintf(stderr,"Parallel axes\n");
+	   if ( printinfo )
+             fprintf(stderr,"Parallel axes\n");
            // The axes are parallel.  We assume that the distance
            // between the axes is less than C1C.r+C2C.r
            Scalar c0,c1,c2,A1,B1,A2,B2;
