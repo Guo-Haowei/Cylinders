@@ -734,11 +734,6 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
 	  VPrintf(stderr,PPDiff(C1C.B,C2C.B));
 	  fprintf(stderr,"  %g\n",PPDist(C1C.B,C2C.B));
   }
-		printf("#\n");
-S3dDisk(C1C.A,C1C.v,C1C.r);
-  S3dDisk(C2C.A,C2C.v,C2C.r);
-		printf("#\n");
-                printf("o 1 1 0\n");
     if ( printinfo ) {
     double x, y, z;
     fprintf(stderr,"\n\nCylinder 1 Canonical\n");
