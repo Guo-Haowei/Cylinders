@@ -130,19 +130,29 @@ void Controls::update(RawModel& model) {
     float y0 = H - MouseManager::lastY;
     float x1 = MouseManager::currentX - W;
     float y1 = H - MouseManager::currentY;
-    glm::vec3 P0 = glm::vec3(x0, y0, -sqrt(H * H - y0 * y0 - x0 * x0));
-    glm::vec3 P1 = glm::vec3(x1, y1, -sqrt(H * H - y1 * y1 - x1 * x1));
-    glm::vec3 a = glm::normalize(glm::cross(P0, P1));
-    if (x0 * x0 + y0 * y0 > H * H || x1 * x1 + y1 * y1 > H * H || Maths::isNaNVector(a))
-      return;
-    glm::mat4 rotationMatrix = Maths::calculateRotationMatrix(P0, P1, a);
+    glm::mat4 rotationMatrix;
+    if (x0 * x0 + y0 * y0 <= R * R && x1 * x1 + y1 * y1 <= R * R) {
+      glm::vec3 P0 = glm::vec3(x0, y0, -sqrt(R * R - y0 * y0 - x0 * x0));
+      glm::vec3 P1 = glm::vec3(x1, y1, -sqrt(R * R - y1 * y1 - x1 * x1));
+      glm::vec3 a = glm::normalize(glm::cross(P0, P1));
+      if (Maths::isNaNVector(a))
+        return;
+      float cosTheta = glm::dot(P0, P1) / (glm::length(P0) * glm::length(P1));
+      float sinTheta = -sqrt(1 - cosTheta * cosTheta);
+      rotationMatrix = Maths::calculateRotationMatrix(cosTheta, sinTheta, a);
+    } else {
+      float cosA = x0 / sqrt(x0 * x0 + y0 * y0), sinA = y0 / sqrt(x0 * x0 + y0 * y0);
+      float cosB = x1 / sqrt(x1 * x1 + y1 * y1), sinB = y1 / sqrt(x1 * x1 + y1 * y1);
+      float cosTheta = cosA * cosB + sinA * sinB;
+      float sinTheta = sinA * cosB - cosA * sinB;
+      rotationMatrix = Maths::calculateRotationMatrix(cosTheta, sinTheta, Camera::getFront());
+    }
+
     if (Maths::isNaNMatrix(rotationMatrix))
       return;
     if (CylinderList::selected) {
-      // cylinder rotation
       CylinderList::selected->changeRotation(rotationMatrix);
     } else {
-      // scene rotation
       glm::vec3 centerPoint = CylinderList::calculateCenterPoint();
       for (int i = 0; i < CylinderList::cylinders.size(); ++i) {
         CylinderList::cylinders[i]->changeRotation(rotationMatrix, centerPoint);

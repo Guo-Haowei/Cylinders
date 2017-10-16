@@ -9,7 +9,7 @@ const float ZOOM = 45.0f;
 const float NEAR_PLANE = 0.1f;
 const float FAR_PLANE = 1000.0f;
 
-const double W = 400.0l, H = 300.0l;
+const double W = 400.0l, H = 300.0l, R = 250.0l;
 
 const float COLORS[] = {
   0.2f, 0.2f, 0.6f,

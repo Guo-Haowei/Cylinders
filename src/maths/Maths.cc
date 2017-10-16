@@ -4,7 +4,7 @@
 using std::cout;
 using std::abs;
 
-glm::mat4 Maths::calculateRotationMatrix(glm::vec3 P0, glm::vec3 P1, glm::vec3 a) {
+glm::mat4 Maths::calculateRotationMatrix(float cosTheta, float sinTheta, glm::vec3 a) {
   float yz = sqrt(a.y * a.y + a.z * a.z);
   glm::mat4 Rx = glm::mat4(1.0f), RxInverse = glm::mat4(1.0f), Ry = glm::mat4(1.0f), RyInverse = glm::mat4(1.0f), Rz = glm::mat4(1.0f);
   float sinTheta1 = a.y / yz, cosTheta1 = a.z / yz;
@@ -15,8 +15,6 @@ glm::mat4 Maths::calculateRotationMatrix(glm::vec3 P0, glm::vec3 P1, glm::vec3 a
   RyInverse[0].x = cosTheta2; RyInverse[0].z = sinTheta2; RyInverse[2].x = -sinTheta2; RyInverse[2].z = cosTheta2;
 
   // angle theta
-  float cosTheta = glm::dot(P0, P1) / (glm::length(P0) * glm::length(P1));
-  float sinTheta = -sqrt(1 - cosTheta * cosTheta);
   Rz[0].x = cosTheta; Rz[0].y = sinTheta; Rz[1].x = -sinTheta; Rz[1].y = cosTheta;
 
   return RxInverse * RyInverse * Rz * Ry * Rx;
