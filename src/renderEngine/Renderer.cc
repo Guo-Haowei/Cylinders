@@ -25,6 +25,13 @@ void Renderer::render(vector<Entity*> entities) {
   for (int i = 0; i < entities.size(); ++i) {
     prepareModel(entities[i]);
     renderEntity(entities[i], COLORPICK);
+    // two circles
+    if (TwoCircles::renderCircle) {
+      colorPickShader.loadColor(entities[i]->getID());
+      colorPickShader.loadTransformationMatrx(entities[i]->createTransformationMatrix());
+      prepareModel(TwoCircles::twoCircles);
+      glDrawArrays(GL_TRIANGLES, 0, TwoCircles::twoCircles->getModel().getVertexCount());
+    }
   }
   colorPickShader.stop();
 
