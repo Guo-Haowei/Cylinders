@@ -4,6 +4,7 @@
 #include "KeyboardManager.h"
 #include "../common.h"
 #include "../models/CylinderList.h"
+#include "../models/TwoCircles.h"
 #include "../entities/Camera.h"
 #include "../IO/IO.h"
 #include "../renderEngine/DisplayManager.h"
@@ -51,6 +52,9 @@ void unionNodes(Node* n1, Node* n2) {
 }
 
 void Controls::update(RawModel& model) {
+  if (KeyboardManager::isKeyPressed(KEY_F)) {
+    TwoCircles::flipRenderCircle();
+  }
   if (KeyboardManager::isKeyPressed(KEY_M)) {
     IO::manual();
   }

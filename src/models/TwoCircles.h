@@ -5,9 +5,8 @@
 #include <glm/glm.hpp>
 
 class TwoCircles {
-private:
-  static bool renderCircle;
 public:
+  static bool renderCircle;
   static Entity* upper;
   static Entity* lower;
   static Entity* twoCircles;
@@ -15,4 +14,5 @@ public:
   static RawModel createUniformLowerCircle();
   static RawModel createUniformTwoCircles();
   static void clean();
+  static void flipRenderCircle();
 };

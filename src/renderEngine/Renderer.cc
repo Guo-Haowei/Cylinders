@@ -61,10 +61,12 @@ void Renderer::render(vector<Entity*> entities) {
     prepareModel(entities[i]);
     renderEntity(entities[i]);
     // render two circles separately
-    entityShader.loadColor(entities[i]->getColor());
-    entityShader.loadTransformationMatrx(entities[i]->createTransformationMatrix());
-    prepareModel(TwoCircles::twoCircles);
-    glDrawArrays(GL_TRIANGLES, 0, TwoCircles::twoCircles->getModel().getVertexCount());
+    if (TwoCircles::renderCircle) {
+      entityShader.loadColor(entities[i]->getColor());
+      entityShader.loadTransformationMatrx(entities[i]->createTransformationMatrix());
+      prepareModel(TwoCircles::twoCircles);
+      glDrawArrays(GL_TRIANGLES, 0, TwoCircles::twoCircles->getModel().getVertexCount());
+    }
   }
   entityShader.stop();
 

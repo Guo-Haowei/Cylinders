@@ -2,9 +2,14 @@
 #include <vector>
 using std::vector;
 
+bool TwoCircles::renderCircle = true;
 Entity* TwoCircles::upper = nullptr;
 Entity* TwoCircles::lower = nullptr;
 Entity* TwoCircles::twoCircles = nullptr;
+
+void TwoCircles::flipRenderCircle() {
+  renderCircle = !renderCircle;
+}
 
 RawModel TwoCircles::createUniformTwoCircles() {
   vector<float> vertices;
