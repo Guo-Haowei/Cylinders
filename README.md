@@ -60,6 +60,7 @@ Press `backspace` to delete selected cylinders.<br />
 Press `Delete` to delete all cylinders.<br />
 Press `o` to output current cylinder data.<br />
 Press `m` to print manual to console.<br />
+Press `f` to turn on/off circles.<br />
 Use `[`, `]` or scroll wheel to scale selected cylinders.<br />
 Scroll wheel in general change the depth.<br />
 Hold right button to translate selected cylinder.<br />
