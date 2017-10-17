@@ -42,7 +42,7 @@ void IO::write(std::vector<Entity*>& entities, std::string name) {
     glm::vec3 B = glm::vec3(B4d.x, B4d.y, B4d.z);
     glm::vec3 v = glm::normalize(B - A);
 
-    outfile << A.x << ' ' << A.y << ' ' << A.z << ' ' << v.x << ' ' << v.y << ' ' << v.z << ' ' << h << ' ' << entities[i]->getScale().x << '\n';
+    outfile << A.x << ' ' << A.y << ' ' << A.z << ' ' << v.x << ' ' << v.y << ' ' << v.z << ' ' << entities[i]->getScale().x << '\n' << ' ' << (2.0f * h) << '\n';
   }
 
   outfile.close();

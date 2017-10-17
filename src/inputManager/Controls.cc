@@ -192,7 +192,7 @@ Cylinder createCylinderFromEntity(Entity* entity) {
   Cylinder c;
   float h = entity->getScale().y;
   c.r = entity->getScale().x;
-  c.h = h * 2.0f;
+  c.h = h * 2.0l;
   glm::mat4 transformationMatrix = entity->getTransformtationMatrix();
   glm::vec4 A4d = transformationMatrix * glm::vec4(0.0f, h, 0.0f, 1.0f);
   glm::vec4 B4d = transformationMatrix * glm::vec4(0.0f, -h, 0.0f, 1.0f);
