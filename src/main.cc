@@ -49,9 +49,11 @@ int main(int argc, char* argv[]) {
   RawModel model = CylinderList::createUniformCylinder();
   RawModel circle1 = TwoCircles::createUniformUpperCircle();
   RawModel circle2 = TwoCircles::createUniformLowerCircle();
+  RawModel circles = TwoCircles::createUniformTwoCircles();
   glm::vec3 borderColor = glm::vec3(1.0f, 1.0f, 0.0f);
   TwoCircles::upper = new Entity(circle1, borderColor);
   TwoCircles::lower = new Entity(circle2, borderColor);
+  TwoCircles::twoCircles = new Entity(circles);
   Camera::updateCameraVectors();
   MouseManager::prepare();
 

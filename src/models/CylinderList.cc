@@ -32,6 +32,7 @@ RawModel CylinderList::createUniformCylinder() {
   vector<float> vertices;
   vector<float> normals;
 
+#if 0
   for (int a = 2; a + 2 < 360; a += 2) {
     float x1 = sin(a * M_PI / 180);
     float z1 = cos(a * M_PI / 180);
@@ -79,6 +80,7 @@ RawModel CylinderList::createUniformCylinder() {
     normals.push_back(-1.0f);
     normals.push_back(0.0f);
   }
+#endif
 
   for (int a = 0; a + 2 <= 360; a += 2) {
     float x1 = sin(a * M_PI / 180);

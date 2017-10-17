@@ -60,13 +60,16 @@ void Renderer::render(vector<Entity*> entities) {
   for (int i = 0; i < entities.size(); ++i) {
     prepareModel(entities[i]);
     renderEntity(entities[i]);
+    // render two circles separately
+    entityShader.loadColor(entities[i]->getColor());
+    entityShader.loadTransformationMatrx(entities[i]->createTransformationMatrix());
+    prepareModel(TwoCircles::twoCircles);
+    glDrawArrays(GL_TRIANGLES, 0, TwoCircles::twoCircles->getModel().getVertexCount());
   }
   entityShader.stop();
 
   if (CylinderList::selected) {
     colorPickShader.start();
-    glm::vec3 scale = CylinderList::selected->getScale();
-    scale.y += 0.004f;
     // upper circle
     prepareModel(TwoCircles::upper);
     colorPickShader.loadColor(TwoCircles::upper->getColor());

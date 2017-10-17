@@ -12,7 +12,7 @@ private:
   glm::mat4 finalTransformation;
   glm::vec3 color;
 public:
-  Entity(RawModel& model, glm::vec3 color, glm::mat4 transformation = glm::mat4(1.0f), glm::vec3 scale = glm::vec3(1.0f));
+  Entity(RawModel& model, glm::vec3 color = glm::vec3(0.0f), glm::mat4 transformation = glm::mat4(1.0f), glm::vec3 scale = glm::vec3(1.0f));
   void changePosition(float dx, float dy, float dz);
 
   int getID() const;
