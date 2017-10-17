@@ -96,15 +96,15 @@ RawModel CylinderList::createUniformCylinder() {
     vertices.push_back(-1.0f);
     vertices.push_back(z1);
     // normal
-    normals.push_back(x1 + x2);
+    normals.push_back(x1);
     normals.push_back(0);
-    normals.push_back(z1 + z2);
-    normals.push_back(x1 + x2);
+    normals.push_back(z1);
+    normals.push_back(x2);
     normals.push_back(0);
-    normals.push_back(z1 + z2);
-    normals.push_back(x1 + x2);
+    normals.push_back(z2);
+    normals.push_back(x1);
     normals.push_back(0);
-    normals.push_back(z1 + z2);
+    normals.push_back(z1);
     // triangle 2
     vertices.push_back(x2);
     vertices.push_back(1.0f);
@@ -116,15 +116,15 @@ RawModel CylinderList::createUniformCylinder() {
     vertices.push_back(-1.0f);
     vertices.push_back(z1);
     // normal
-    normals.push_back(x1 + x2);
+    normals.push_back(x2);
     normals.push_back(0);
-    normals.push_back(z1 + z2);
-    normals.push_back(x1 + x2);
+    normals.push_back(z2);
+    normals.push_back(x2);
     normals.push_back(0);
-    normals.push_back(z1 + z2);
-    normals.push_back(x1 + x2);
+    normals.push_back(z2);
+    normals.push_back(x1);
     normals.push_back(0);
-    normals.push_back(z1 + z2);
+    normals.push_back(z1);
   }
 
   return Loader::loadToVAO(vertices, normals);
