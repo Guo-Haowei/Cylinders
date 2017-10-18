@@ -70,6 +70,7 @@ Hold left button to rotate selected cylinder.<br />
 ![alt text](https://github.com/Guo-Haowei/Cylinders/blob/master/ScreenShot.png)
 
 ## Features
+* Phong shading
 * Trackball rotation to rotate both scene and cylinders
 * Use unionfind data structure to label intersected cylinders with the same color
 * Color picking cylinders (Considering using ray tracing later on)
