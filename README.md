@@ -1,4 +1,4 @@
-# Cylinders (In Progress)
+# Cylinders
 
 This program is designed to test if cylinders intersect.
 
@@ -77,4 +77,5 @@ Hold left button to rotate selected cylinder.<br />
 * Hightlight the border of the selected cylinder(Object outlining)
 
 ## Future
-* Raytracing for reflaction and refraction effect
+* Soft shadow
+* Reflection
