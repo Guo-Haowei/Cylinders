@@ -38,6 +38,21 @@ cd glfw*
 mkdir build
 cd build
 ccmake ..
+
+make
+sudo make install
+```
+If cmake is not able to find the glm package, do the following:
+```
+wget https://github.com/glfw/glfw/releases/download/3.1.2/glfw-3.1.2.zip
+unzip glfw-3.1.2.zip
+cd glfw*
+mkdir build
+cd build
+ccmake ..
+
+make
+sudo make install
 ```
 
 ### Compile Code
