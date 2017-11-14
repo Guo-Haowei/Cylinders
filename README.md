@@ -90,7 +90,4 @@ Hold left button to rotate selected cylinder.<br />
 * Use unionfind data structure to label intersected cylinders with the same color
 * Color picking cylinders (Considering using ray tracing later on)
 * Hightlight the border of the selected cylinder(Object outlining)
-
-## Future
-* Soft shadow
-* Reflection
+* Alpha blending (in progress)
