@@ -24,12 +24,12 @@ RawModel TwoCircles::createUniformTwoCircles() {
     vertices.push_back(0.0f);
     vertices.push_back(1.0f);
     vertices.push_back(1.0f);
-    vertices.push_back(x1);
-    vertices.push_back(1.0f);
-    vertices.push_back(z1);
     vertices.push_back(x2);
     vertices.push_back(1.0f);
     vertices.push_back(z2);
+    vertices.push_back(x1);
+    vertices.push_back(1.0f);
+    vertices.push_back(z1);
     // top normals
     normals.push_back(0.0f);
     normals.push_back(1.0f);
