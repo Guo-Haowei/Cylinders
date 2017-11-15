@@ -19,6 +19,8 @@ Renderer::~Renderer() {
 void Renderer::render(vector<Entity*> entities) {
   prepare();
 
+  glDisable(GL_CULL_FACE);
+  glDisable(GL_BLEND);
   colorPickShader.start();
   colorPickShader.loadViewMatrix();
   colorPickShader.loadProjectionMatrix(glm::perspective(ZOOM, (float) WIDTH / (float) HEIGHT, NEAR_PLANE, FAR_PLANE));
@@ -34,6 +36,8 @@ void Renderer::render(vector<Entity*> entities) {
     }
   }
   colorPickShader.stop();
+  glEnable(GL_BLEND);
+  glEnable(GL_CULL_FACE);
 
   if (MouseManager::doubleClick()) {
     glFlush();
@@ -42,7 +46,7 @@ void Renderer::render(vector<Entity*> entities) {
     unsigned char data[4];
     int x = (WIDTH / WINDOW_WIDTH) * (int)MouseManager::currentX;
     int y = HEIGHT - (HEIGHT / WINDOW_HEIGHT) * (int)MouseManager::currentY;
-    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, data);
 
     int id = data[0] + data[1] * 256 + data[2] * 256 * 256;
     if (id == 0x00ffffff) {
