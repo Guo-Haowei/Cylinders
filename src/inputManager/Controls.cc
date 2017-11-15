@@ -25,6 +25,8 @@ Frame F2 = StdFrame(W2);
 Space W3 = SCreate("3-space", 3);
 Frame F3 = StdFrame(W3);
 
+bool transparent = true;
+
 // helpers
 Cylinder createCylinderFromEntity(Entity* entity);
 int intersect(Entity* cyl1, Entity* cyl2);
@@ -57,6 +59,10 @@ void Controls::update(RawModel& model) {
   }
   if (KeyboardManager::isKeyPressed(KEY_M)) {
     IO::manual();
+  }
+  if (KeyboardManager::isKeyPressed(KEY_T)) {
+    transparent = !transparent;
+    glBlendFunc(GL_SRC_ALPHA, transparent ? GL_SRC_COLOR : GL_CONSTANT_COLOR);
   }
   if (KeyboardManager::isKeyPressed(KEY_O) && CylinderList::cylinders.size() > 0) {
     IO::write(CylinderList::cylinders);
