@@ -94,6 +94,8 @@ void IO::manual() {
   cout << "Press 'o' to output current cylinder data.\n";
   cout << "Press 'm' to print manual to console.\n";
   cout << "Press 'f' to turn on/off circles.\n";
+  cout << "Press `p` to toggle color scheme.\n";
+  cout << "Press `t` to toggle transparency and cylinder axes\n";
   cout << "Use '[', ']' or scroll wheel to scale selected cylinders.\n";
   cout << "Scroll wheel in general change the depth.\n";
   cout << "Hold right button to translate selected cylinder.\n";
