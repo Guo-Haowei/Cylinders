@@ -97,6 +97,18 @@ void Renderer::render(vector<Entity*> entities) {
     prepareModel(e);
     renderEntity(e);
     // render two circles separately
+    if (transparent) {
+      // render axis
+      glDisable(GL_DEPTH_TEST);
+      Entity* axis = CylinderList::axis;
+      axis->setTransform(e->getTransformtationMatrix());
+      glm::vec3 scale = e->getScale();
+      scale.x = 0.01; scale.z = 0.01;
+      axis->setScale(scale);
+      prepareModel(axis);
+      renderEntity(axis);
+      glEnable(GL_DEPTH_TEST);
+    }
     if (TwoCircles::renderCircle) {
       entityShader.loadColor(e->getColor());
       entityShader.loadTransformationMatrx(e->createTransformationMatrix());

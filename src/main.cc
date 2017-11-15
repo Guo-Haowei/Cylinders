@@ -54,6 +54,7 @@ int main(int argc, char* argv[]) {
   TwoCircles::upper = new Entity(circle1, borderColor);
   TwoCircles::lower = new Entity(circle2, borderColor);
   TwoCircles::twoCircles = new Entity(circles);
+  CylinderList::axis = new Entity(model, glm::vec3(0.1));
   Camera::updateCameraVectors();
   MouseManager::prepare();
 

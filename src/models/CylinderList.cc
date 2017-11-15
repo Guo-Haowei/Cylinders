@@ -9,6 +9,7 @@ using std::cout;
 using std::endl;
 
 Entity* CylinderList::selected = nullptr;
+Entity* CylinderList::axis = nullptr;
 vector<Entity*> CylinderList::cylinders;
 
 glm::vec3 CylinderList::calculateCenterPoint() {

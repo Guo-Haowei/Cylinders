@@ -44,6 +44,10 @@ glm::vec3 Entity::getColor() const {
   return color;
 }
 
+void Entity::setTransform(glm::mat4 trans) {
+  this->finalTransformation = trans;
+}
+
 glm::mat4 Entity::getTransformtationMatrix() const {
   return finalTransformation;
 }

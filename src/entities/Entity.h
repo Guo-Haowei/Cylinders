@@ -25,6 +25,7 @@ public:
   void changeRotation(glm::mat4 rot);
   void changeRotation(glm::mat4 rot, glm::vec3 rotationCenter);
   void setPos(glm::vec3 pos);
+  void setTransform(glm::mat4 trans);
   void setScale(glm::vec3 scale);
   void setColor(glm::vec3 color);
   glm::mat4 createTransformationMatrix();

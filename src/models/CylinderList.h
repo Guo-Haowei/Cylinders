@@ -9,6 +9,7 @@ using std::vector;
 class CylinderList {
 public:
   static Entity* selected;
+  static Entity* axis;
   static vector<Entity*> cylinders;
   static glm::vec3 calculateCenterPoint();
   static void clean();
