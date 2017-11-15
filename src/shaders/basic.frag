@@ -38,5 +38,5 @@ void main() {
   vec3 specular = specularStrength * specularFactor * lightColor;
   specular *= attenuation;
 
-  out_Color = vec4((ambient + diffuse + specular) * color, 0.5f);
+  out_Color = vec4((ambient + diffuse + specular) * color, 1.0f);
 }

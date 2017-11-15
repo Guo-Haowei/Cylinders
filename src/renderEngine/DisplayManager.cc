@@ -46,9 +46,6 @@ void DisplayManager::createDisplay() {
   glfwSetScrollCallback(window, scrollCallback);
   glfwSetMouseButtonCallback(window, mouseButtonCallback);
 
-  // hide cursor initially
-  // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
   glewExperimental = GL_TRUE;
   if (glewInit() != GLEW_OK) {
     cout << "======================================\n";
@@ -62,7 +59,7 @@ void DisplayManager::createDisplay() {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
   glEnable(GL_CULL_FACE);
-  glCullFace(GL_FRONT);
+  glCullFace(GL_BACK);
 }
 
 void DisplayManager::prepareDisplay() {
