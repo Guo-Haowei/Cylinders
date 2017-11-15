@@ -26,6 +26,7 @@ Space W3 = SCreate("3-space", 3);
 Frame F3 = StdFrame(W3);
 
 bool transparent = true;
+bool colorscheme = true;
 
 // helpers
 Cylinder createCylinderFromEntity(Entity* entity);
@@ -54,6 +55,9 @@ void unionNodes(Node* n1, Node* n2) {
 }
 
 void Controls::update(RawModel& model) {
+  if (KeyboardManager::isKeyPressed(KEY_P)) {
+    colorscheme = !colorscheme;
+  }
   if (KeyboardManager::isKeyPressed(KEY_F)) {
     TwoCircles::flipRenderCircle();
   }
@@ -172,28 +176,30 @@ void Controls::update(RawModel& model) {
 
   // change color
   Node nodes[CylinderList::cylinders.size()];
-  for (int i = 0; i < CylinderList::cylinders.size(); ++i) {
-    nodes[i].parent = &nodes[i];
-    nodes[i].entity = CylinderList::cylinders[i];
-    nodes[i].color = i;
-  }
+  if (colorscheme) {
+    for (int i = 0; i < CylinderList::cylinders.size(); ++i) {
+      nodes[i].parent = &nodes[i];
+      nodes[i].entity = CylinderList::cylinders[i];
+      nodes[i].color = i;
+    }
 
-  for (int i = 0; i < CylinderList::cylinders.size(); ++i) {
-    for (int j = i + 1; j < CylinderList::cylinders.size(); ++j) {
-      try {
-        if (intersect(nodes[i].entity, nodes[j].entity)) {
-          unionNodes(&nodes[i], &nodes[j]);
+    for (int i = 0; i < CylinderList::cylinders.size(); ++i) {
+      for (int j = i + 1; j < CylinderList::cylinders.size(); ++j) {
+        try {
+          if (intersect(nodes[i].entity, nodes[j].entity)) {
+            unionNodes(&nodes[i], &nodes[j]);
+          }
+        } catch (std::exception& e) {
+          cout << e.what() << endl;
+          IO::write(CylinderList::cylinders, "VVDot");
+          exit(-1);
         }
-      } catch (std::exception& e) {
-        cout << e.what() << endl;
-        IO::write(CylinderList::cylinders, "VVDot");
-        exit(-1);
       }
     }
   }
 
   for (int i = 0; i < CylinderList::cylinders.size(); ++i) {
-    int entry = find(&nodes[i])->color;
+    int entry = colorscheme ? find(&nodes[i])->color : i;
     CylinderList::cylinders[i]->setColor(glm::vec3(COLORS[entry*3], COLORS[entry*3+1], COLORS[entry*3+2]));
   }
 }

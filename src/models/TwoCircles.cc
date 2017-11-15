@@ -1,4 +1,5 @@
 #include "TwoCircles.h"
+#include <GL/glew.h>
 #include <vector>
 using std::vector;
 
