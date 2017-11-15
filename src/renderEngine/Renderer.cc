@@ -7,6 +7,7 @@
 #include "../models/TwoCircles.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
+#include <algorithm>
 #include <iostream>
 using std::cout;
 
