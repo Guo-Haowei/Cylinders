@@ -1,6 +1,7 @@
 #define GLEW_STATIC
 #include "Renderer.h"
 #include "../common.h"
+#include "../entities/Camera.h"
 #include "../inputManager/MouseManager.h"
 #include "../models/CylinderList.h"
 #include "../models/TwoCircles.h"
@@ -8,6 +9,16 @@
 #include <GL/glew.h>
 #include <iostream>
 using std::cout;
+
+typedef struct Sorter {
+  float dist;
+  int id;
+  Sorter(int id, float dist): id(id), dist(dist) {}
+} Sorter;
+
+int sorter(const Sorter& a, const Sorter& b) {
+  return a.dist > b.dist;
+}
 
 Renderer::Renderer() { }
 
@@ -68,13 +79,26 @@ void Renderer::render(vector<Entity*> entities) {
   entityShader.start();
   entityShader.loadViewMatrix();
   entityShader.loadProjectionMatrix(glm::perspective(ZOOM, (float) WIDTH / (float) HEIGHT, NEAR_PLANE, FAR_PLANE));
+  // render entity by order
+  vector<Sorter> order;
+  glm::vec3 eye = Camera::getPos();
   for (int i = 0; i < entities.size(); ++i) {
-    prepareModel(entities[i]);
-    renderEntity(entities[i]);
+    glm::vec4 pos = entities[i]->getTransformtationMatrix() * glm::vec4(entities[i]->getPos(), 1.0f);
+    float dx = pos.x - eye.x;
+    float dy = pos.y - eye.y;
+    float dz = pos.z - eye.z;
+    order.push_back(Sorter(i, dx*dx+dy*dy+dz*dz));
+  }
+  std::sort(order.begin(), order.end(), sorter);
+
+  for (int i = 0; i < entities.size(); ++i) {
+    Entity* e = entities[order[i].id];
+    prepareModel(e);
+    renderEntity(e);
     // render two circles separately
     if (TwoCircles::renderCircle) {
-      entityShader.loadColor(entities[i]->getColor());
-      entityShader.loadTransformationMatrx(entities[i]->createTransformationMatrix());
+      entityShader.loadColor(e->getColor());
+      entityShader.loadTransformationMatrx(e->createTransformationMatrix());
       prepareModel(TwoCircles::twoCircles);
       glDrawArrays(GL_TRIANGLES, 0, TwoCircles::twoCircles->getModel().getVertexCount());
     }
