@@ -77,6 +77,13 @@ void Renderer::render(vector<Entity*> entities) {
 
   prepare();
 
+  if (!TwoCircles::renderCircle) {
+    glDisable(GL_CULL_FACE);
+  } else {
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+  }
+
   entityShader.start();
   entityShader.loadViewMatrix();
   entityShader.loadProjectionMatrix(glm::perspective(ZOOM, (float) WIDTH / (float) HEIGHT, NEAR_PLANE, FAR_PLANE));
