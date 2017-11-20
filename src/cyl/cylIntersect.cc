@@ -52,6 +52,10 @@ int CircleIntersectEllipse(Scalar r1, Point ecenter,
   Scalar x0,y0;
 
   PCoords(ecenter,F2,&x0,&y0);
+  if ( printinfo ) {
+    fprintf(stderr,"CIE(r=%g, ec=(%g,%g), d=%g, e=%g)\n",
+        r1,x0,y0,d,e);
+  }
 
   /*
      y4 = d^4 + e^4 -2e^2d^2;
@@ -98,9 +102,11 @@ int CircleIntersectEllipse(Scalar r1, Point ecenter,
   double xroots[4];
 
   if ( printinfo )
-    fprintf(stderr,"qR: %g %g %g %g\n",y3/y4, y2/y4, y1/y4, cnst/y4);
+    fprintf(stderr,"qR: %12.12g %12.12g %12.12g %12.12g\n",y3/y4, y2/y4, y1/y4, cnst/y4);
   int nr = quarticRoots(y3/y4, y2/y4, y1/y4, cnst/y4, yroots);
 
+  if ( printinfo )
+    fprintf(stderr,"nr: %d\n",nr);
   int i;
   for (i=0; i<nr; i++) {
     if ( r1*r1-yroots[i]*yroots[i] > 0 ) {
@@ -274,10 +280,10 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
   }
   Vector v2=VVCross(FV(F3,2),v1);
   if ( printinfo ) {
-	  fprintf(stderr,"  FCreate:\n");
-	  fprintf(stderr,"   "); VPrintf(stderr,v1);
-	  fprintf(stderr,"   "); VPrintf(stderr,v2);
-	  fprintf(stderr,"   "); VPrintf(stderr,FV(F3,2));
+    fprintf(stderr,"  FCreate:\n");
+    fprintf(stderr,"   "); VPrintf(stderr,v1);
+    fprintf(stderr,"   "); VPrintf(stderr,v2);
+    fprintf(stderr,"   "); VPrintf(stderr,FV(F3,2));
   }
 
   Frame FT=FCreate3("tmp",FOrg(F3),v1,v2,FV(F3,2));
@@ -285,18 +291,18 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
   AffineMap ATR = ACreateF(F3,FT);
   // The following shouldn't be needed
   if(1){
-  CR.P =PAxform(C.P,AT);
-  CR.v = VAxform(C.v,AT);
-  CR.r = C.r;
-  CR.h = C.h;
-  CR.A = CR.P;
-  CR.B = PVAdd(CR.A,SVMult(CR.h,CR.v));
-  if ( printinfo ) {
-    fprintf(stderr,"  C.v before rotation: ");
-    VPrintf(stderr,C.v);
-    fprintf(stderr,"  C.v after rotation: ");
-    VPrintf(stderr,CR.v);
-  }
+    CR.P =PAxform(C.P,AT);
+    CR.v = VAxform(C.v,AT);
+    CR.r = C.r;
+    CR.h = C.h;
+    CR.A = CR.P;
+    CR.B = PVAdd(CR.A,SVMult(CR.h,CR.v));
+    if ( printinfo ) {
+      fprintf(stderr,"  C.v before rotation: ");
+      VPrintf(stderr,C.v);
+      fprintf(stderr,"  C.v after rotation: ");
+      VPrintf(stderr,CR.v);
+    }
   }
   // We need this to map from 3D down to 2D for the ellipse center
   AffineMap Project = ACreate(F3, FOrg(F2), FV(F2, 0), FV(F2, 1),
@@ -304,23 +310,23 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
   Point ECntr;
   // Which is correct?
   if (1) {
-  ECntr = LineIntersectPlane(CR.P,CR.v, Cntr, VDual(v));
-  Scalar tc0,tc1,tc2;
-  PCoords(ECntr,F3, &tc0,&tc1,&tc2);
-  if ( printinfo )
-    fprintf(stderr," ECntr %g %g %g\n",tc0,tc1,tc2);
-  } else {
-  ECntr = LineIntersectPlane(C.P,C.v, Cntr, VDual(v));
-  if ( printinfo ) {
+    ECntr = LineIntersectPlane(CR.P,CR.v, Cntr, VDual(v));
     Scalar tc0,tc1,tc2;
-    PCoords(C.P,F3, &tc0,&tc1,&tc2);
-    fprintf(stderr," C.P %g %g %g\n",tc0,tc1,tc2);
     PCoords(ECntr,F3, &tc0,&tc1,&tc2);
-    fprintf(stderr," ECntr %g %g %g\n",tc0,tc1,tc2);
-  }
+    if ( printinfo )
+      fprintf(stderr," ECntr %g %g %g\n",tc0,tc1,tc2);
+  } else {
+    ECntr = LineIntersectPlane(C.P,C.v, Cntr, VDual(v));
+    if ( printinfo ) {
+      Scalar tc0,tc1,tc2;
+      PCoords(C.P,F3, &tc0,&tc1,&tc2);
+      fprintf(stderr," C.P %g %g %g\n",tc0,tc1,tc2);
+      PCoords(ECntr,F3, &tc0,&tc1,&tc2);
+      fprintf(stderr," ECntr %g %g %g\n",tc0,tc1,tc2);
+    }
   }
 
-	  
+
   PCoords(Cntr,F3, &p0,&p1,&p2); // we only care about p2
   Point pts[6];
   double denom;
@@ -363,16 +369,16 @@ Intersection ComputeIntersection(Point Cntr, Vector v, Scalar r, Cylinder C) {
                 printf("o 1 1 0\n");
               intersection.b = VVDot(PPDiff(tmpP,C.P),C.v);
 
-	      if ( intersection.a > intersection.b ) {
-		      double t;
-		      t = intersection.a;
-		      intersection.a = intersection.b;
-		      intersection.b = t;
-	      }
-	      if ( printinfo ) {
-		      fprintf(stderr," intersection = [%g,%g]\n",
-			      intersection.a,intersection.b);
-	      }
+              if ( intersection.a > intersection.b ) {
+                double t;
+                t = intersection.a;
+                intersection.a = intersection.b;
+                intersection.b = t;
+              }
+              if ( printinfo ) {
+                fprintf(stderr," intersection = [%g,%g]\n",
+                    intersection.a,intersection.b);
+              }
               break;
             }
     default:
@@ -395,7 +401,7 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
   VCoords(C2.v, F3, &a1,&a2,&a3);
 
   // special case - axes are parallel, so just check distance
-  if (printinfo) fprintf(stderr,"how close is close?  %g %g\n",a3,fabs(a3-1.));
+  if (printinfo) fprintf(stderr,"Axes parallel?  How close is close?  %g %g\n",a3,fabs(a3-1.));
   if ( fabs(a3-1.) < 1e-5 ) {
     Point CP2 = PVAdd(C2.P, SVMult(VVDot(C2.v, PPDiff(C1.P,C2.P)),
           C2.v));
@@ -404,7 +410,7 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
     if (printinfo) {
       if ( printinfo ) 
         fprintf(stderr,"CPOC: Parallel axes dist %g vs %g (%g)\n",
-          dist,C1.r+C2.r,VVDot(C2.v,PPDiff(C1.P,CP2)));
+            dist,C1.r+C2.r,VVDot(C2.v,PPDiff(C1.P,CP2)));
     }
     if ( dist <= C1.r + C2.r ) {
       return 0;
@@ -413,11 +419,47 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
     }
   }
   if ( printinfo ) {
-	  fprintf(stderr," p1,p2 = %g,%g\n",p1,p2);
-	  fprintf(stderr," a1,a2 = %g,%g\n",a1,a2);
+    fprintf(stderr," p1,p2 = %g,%g\n",p1,p2);
+    fprintf(stderr," a1,a2 = %g,%g\n",a1,a2);
   }
 
+#if 0
+  // New closest point code
+  // From http://geomalgorithms.com/a07-_distance.html
+  double a,b,c,d,e;
+  double sc,tc;
+  Vector u,vv,w0;
+  u = PPDiff(C1.A,C1.B);
+  vv = PPDiff(C2.A,C2.B);
+  a = VVDot(u,u);
+  b = VVDot(u,vv);
+  c = VVDot(vv,vv);
+  w0 = PPDiff(C1.A,C2.A);
+  d = VVDot(u,w0);
+  e = VVDot(vv,w0);
+  Point NCP1,NCP2;
 
+  if ( fabs(a*c-b*c) < 1e-6 ) {
+    fprintf(stderr,"Parallel axes! Shouldn't be here.\n");
+    exit(1);
+  }
+  sc = (b*e-c*d)/(a*c-b*b);
+  tc = (a*e-b*d)/(a*c-b*b);
+  NCP1 = PVAdd(C1.A,SVMult(sc,u));
+  NCP2 = PVAdd(C2.A,SVMult(tc,vv));
+  if ( printinfo ) {
+    fprintf(stderr,"NCP1 = ");
+    PPrintf(stderr,NCP1);
+    fprintf(stderr,"NCP2 = ");
+    PPrintf(stderr,NCP2);
+  }
+
+  *CP1 = NCP1;
+  *CP2 = NCP2;
+  return 1;
+
+  // Old closest point routine
+#else
   // Compute closest point in 2D
   Point P2 = PCreate(F2,p1,p2);
   Vector A2 = VCreate(F2,a1,a2);
@@ -425,10 +467,10 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
   Point ClosestPoint = PVAdd(P2,SVMult(-VVDot(v,VNormalize(A2)),
         VNormalize(A2)));
   if ( printinfo ) {
-	  fprintf(stderr,"ClosestPoint in 2D: ");
-	  PPrintf(stderr,ClosestPoint);
-	  fprintf(stderr," Cp-F2 = ");
-	  VPrintf(stderr, v);
+    fprintf(stderr,"ClosestPoint in 2D: ");
+    PPrintf(stderr,ClosestPoint);
+    fprintf(stderr," Cp-F2 = ");
+    VPrintf(stderr, v);
   }
   Scalar dist = PPDist(FOrg(F2),ClosestPoint);
   if ( printinfo )
@@ -448,10 +490,11 @@ int ClosestPointsOnCylinders(Cylinder C1, Cylinder C2, Point* CP1, Point* CP2) {
   }
   *CP1 = PVAdd(*CP2,SVMult(dist,VNormalize(cp)));
   if (printinfo) {
-	  PPrintf(stderr,*CP1);
-	  PPrintf(stderr,*CP2);
+    PPrintf(stderr,*CP1);
+    PPrintf(stderr,*CP2);
   }
   return 1;
+#endif
 }
 
 
@@ -476,24 +519,24 @@ static Frame CylFrame(Cylinder C, const char* name) {
   v3 = C.v;
   VCoords(v3,F3, &c0,&c1,&c2);
   if ( fabs(c0)<=fabs(c1) && fabs(c0)<=fabs(c2) ) {
-	  if (printinfo) fprintf(stderr,"CylFrame 1\n");
+    if (printinfo) fprintf(stderr,"CylFrame 1\n");
     v1 = VVCross(v3,FV(F3,0));
   } else if ( fabs(c1)<=fabs(c0) && fabs(c1)<=fabs(c2) ) {
-	  if (printinfo) fprintf(stderr,"CylFrame 2\n");
+    if (printinfo) fprintf(stderr,"CylFrame 2\n");
     v1 = VVCross(v3,FV(F3,1));
   } else {
-	  if (printinfo) {
-		  fprintf(stderr,"CylFrame 3\n");
-	  }
+    if (printinfo) {
+      fprintf(stderr,"CylFrame 3\n");
+    }
     v1 = VVCross(v3,FV(F3,2));
   }
   v1 = SVMult(1./VMag(v1),v1);
   v2 = VVCross(v1,v3);
   if (printinfo){
-  VPrintf(stderr,v1);
-  VPrintf(stderr,v2);
-  VPrintf(stderr,v3);
-  fprintf(stderr," %g %g %g: 1,1,1?\n",VMag(v1),VMag(v2),VMag(v3));
+    VPrintf(stderr,v1);
+    VPrintf(stderr,v2);
+    VPrintf(stderr,v3);
+    fprintf(stderr," %g %g %g: 1,1,1?\n",VMag(v1),VMag(v2),VMag(v3));
   }
 
   Frame FT;
@@ -540,16 +583,16 @@ static void MapToCanonicalCylinder(Cylinder C1, Cylinder C2,
   C2C->h = C2.h;
   C2C->r = C2.r;
   if ( printinfo ) {
-	  fprintf(stderr,"MapToCanonicalCylinder\n");
-	  fprintf(stderr,"C2C->A - C2C->B = ");
-	  VPrintf(stderr,PPDiff(C2C->A,C2C->B));
-	  VPrintf(stderr,C2C->v);
+    fprintf(stderr,"MapToCanonicalCylinder\n");
+    fprintf(stderr,"C2C->A - C2C->B = ");
+    VPrintf(stderr,PPDiff(C2C->A,C2C->B));
+    VPrintf(stderr,C2C->v);
   }
 }
 
 int IntervalsOverlap(Scalar A1, Scalar B1, Scalar A2, Scalar B2) {
-	if (printinfo) 
-		fprintf(stderr,"IntervalsOverlap(%g,%g, %g,%g)\n",A1,B1,A2,B2);
+  if (printinfo) 
+    fprintf(stderr,"IntervalsOverlap(%g,%g, %g,%g)\n",A1,B1,A2,B2);
   if ( A1 > B1 ) {
     Scalar T;
     T = A1;
@@ -686,6 +729,8 @@ HitMiss HitStatus(int h1, int h2) {
   }
 }
 
+// The old, more complicated way
+#if 0
 int CylIntersect(Cylinder C1, Cylinder C2) {
   Point CP1,CP2;
   Cylinder C1C, C2C;
@@ -718,23 +763,23 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
   }
   AlignCylinders(C1,&C2);
   if (printinfo) {
-	  fprintf(stderr,"Aligned cylinders: C1.P - C2.P = ");
-	  VPrintf(stderr,PPDiff(C1.P,C2.P));
-	  fprintf(stderr,"  %g\n",PPDist(C1.P,C2.P));
-	  fprintf(stderr,"Aligned cylinders: C1.B - C2.B = ");
-	  VPrintf(stderr,PPDiff(C1.B,C2.B));
-	  fprintf(stderr,"  %g\n",PPDist(C1.B,C2.B));
+    fprintf(stderr,"Aligned cylinders: C1.P - C2.P = ");
+    VPrintf(stderr,PPDiff(C1.P,C2.P));
+    fprintf(stderr,"  %g\n",PPDist(C1.P,C2.P));
+    fprintf(stderr,"Aligned cylinders: C1.B - C2.B = ");
+    VPrintf(stderr,PPDiff(C1.B,C2.B));
+    fprintf(stderr,"  %g\n",PPDist(C1.B,C2.B));
   }
   MapToCanonicalCylinder(C1,C2,&C1C,&C2C);
   if (printinfo) {
-	  fprintf(stderr,"Canonical cylinders: C1C.P - C2C.P = ");
-	  VPrintf(stderr,PPDiff(C1C.P,C2C.P));
-	  fprintf(stderr,"  %g\n",PPDist(C1C.P,C2C.P));
-	  fprintf(stderr,"Canonical cylinders: C1C.B - C2C.B = ");
-	  VPrintf(stderr,PPDiff(C1C.B,C2C.B));
-	  fprintf(stderr,"  %g\n",PPDist(C1C.B,C2C.B));
+    fprintf(stderr,"Canonical cylinders: C1C.P - C2C.P = ");
+    VPrintf(stderr,PPDiff(C1C.P,C2C.P));
+    fprintf(stderr,"  %g\n",PPDist(C1C.P,C2C.P));
+    fprintf(stderr,"Canonical cylinders: C1C.B - C2C.B = ");
+    VPrintf(stderr,PPDiff(C1C.B,C2C.B));
+    fprintf(stderr,"  %g\n",PPDist(C1C.B,C2C.B));
   }
-    if ( printinfo ) {
+  if ( printinfo ) {
     double x, y, z;
     fprintf(stderr,"\n\nCylinder 1 Canonical\n");
     PCoords(C1C.P, F3, &x, &y, &z);
@@ -766,10 +811,10 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
   switch(ClosestPointsOnCylinders(C1C,C2C,&CP1,&CP2)) {
     case -1:
       if ( printinfo )
-        fprintf(stderr,"distance between closest points too large.\n");
+        fprintf(stderr,"*** distance between closest points too large.\n");
       return 0; // TEST: closest points are too far away
     case 0:;
-	   if ( printinfo )
+           if ( printinfo )
              fprintf(stderr,"Parallel axes\n");
            // The axes are parallel.  We assume that the distance
            // between the axes is less than C1C.r+C2C.r
@@ -807,13 +852,15 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
 #else
            // TEST: check that parallel cylinders overlap
            if ( printinfo )
-             fprintf(stderr,"Parallel cylinders: %g %g, %g %g\n",
+             fprintf(stderr,"*** Parallel cylinders: %g %g, %g %g\n",
                  A1,B1,A2,B2);
            return IntervalsOverlap(A1,B1, A2,B2);
 #endif
 
     case 1:;
            // First check if CP's are both on cylinder segments
+           if ( printinfo )
+             fprintf(stderr,"*** General case, check if top/bottoms intersect other cylinder\n");
            Scalar cps1,cps2;
            if ( printinfo ) {
              PPrintf(stderr,CP1);
@@ -839,9 +886,9 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
            }
 
            // Test perpendicular axes
-#if VVDotCaller
-           printCaller("VVDot");
-#endif
+           if ( printinfo )
+             fprintf(stderr," Test for Perp axes: v1.v2 = %g\n",
+                 VVDot(C1.v,C2.v));
            if ( fabs(VVDot(C1.v,C2.v)) < 1e-4 ) {
              if (printinfo)
                fprintf(stderr,"Calling IntersectCircles!\n");
@@ -879,19 +926,24 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
              S3dDisk(C1.B,C1.v,C1.r*3);
            }
 
-           // Display the region of intersection on opposite
-           // infinite cylinder
-           if ( I1B.hitmiss && printinfo && prints3d ) {
+           if ( I1B.hitmiss && printinfo ) {
              fprintf(stderr,"I1B hit: %g to %g\n",I1B.a,I1B.b);
              VPrintf(stderr,C2C.v);
              PPrintf(stderr,C2C.P);
-             S3dCircle(PVAdd(C2.P,SVMult(I1B.a,C2.v)),C2.v,C2.r*1.001);
-             S3dCircle(PVAdd(C2.P,SVMult(I1B.b,C2.v)),C2.v,C2.r*1.001);
            }
-           if ( I1T.hitmiss && printinfo && prints3d ) {
+
+           if ( I1T.hitmiss && printinfo ) {
              fprintf(stderr,"I1T hit: %g to %g\n",I1T.a,I1T.b);
              VPrintf(stderr,C2C.v);
              PPrintf(stderr,C2C.P);
+           }
+           // Display the region of intersection on opposite
+           // infinite cylinder
+           if ( I1B.hitmiss && prints3d ) {
+             S3dCircle(PVAdd(C2.P,SVMult(I1B.a,C2.v)),C2.v,C2.r*1.001);
+             S3dCircle(PVAdd(C2.P,SVMult(I1B.b,C2.v)),C2.v,C2.r*1.001);
+           }
+           if ( I1T.hitmiss && prints3d ) {
              S3dCircle(PVAdd(C2.P,SVMult(I1T.a,C2.v)),C2.v,C2.r*1.001);
              S3dCircle(PVAdd(C2.P,SVMult(I1T.b,C2.v)),C2.v,C2.r*1.001);
            }
@@ -921,19 +973,23 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
            if ( printinfo )
              fprintf(stderr,"Intersection 2 hitmiss: %d %d\n",I2B.hitmiss,I2T.hitmiss);
 
-           // Display the region of intersection on the opposite
-           // infinite cylinder
-           if ( I2B.hitmiss && printinfo && prints3d ) {
+           if ( I2B.hitmiss && printinfo ) {
              fprintf(stderr,"I2B hit: %g to %g\n",I2B.a,I2B.b);
              VPrintf(stderr,C1.v);
              PPrintf(stderr,C1.P);
-             S3dCircle(PVAdd(C1.P,SVMult(I2B.a,C1.v)),C1.v,C1.r*1.001);
-             S3dCircle(PVAdd(C1.P,SVMult(I2B.b,C1.v)),C1.v,C1.r*1.001);
            }
-           if ( I2T.hitmiss && printinfo && prints3d ) {
+           if ( I2T.hitmiss && printinfo ) {
              fprintf(stderr,"I2T hit: %g to %g\n",I2T.a,I2T.b);
              VPrintf(stderr,C1.v);
              PPrintf(stderr,C1.P);
+           }
+           // Display the region of intersection on the opposite
+           // infinite cylinder
+           if ( I2B.hitmiss && prints3d ) {
+             S3dCircle(PVAdd(C1.P,SVMult(I2B.a,C1.v)),C1.v,C1.r*1.001);
+             S3dCircle(PVAdd(C1.P,SVMult(I2B.b,C1.v)),C1.v,C1.r*1.001);
+           }
+           if ( I2T.hitmiss && prints3d ) {
              S3dCircle(PVAdd(C1.P,SVMult(I2T.a,C1.v)),C1.v,C1.r*1.001);
              S3dCircle(PVAdd(C1.P,SVMult(I2T.b,C1.v)),C1.v,C1.r*1.001);
            }
@@ -1059,6 +1115,295 @@ int CylIntersect(Cylinder C1, Cylinder C2) {
     fprintf(stderr,"Algorithm not completed yet (!!! IT SHOULD BE COMPLETE!!!).\n");
   return 0;
 }
+#endif
+
+int CylIntersect(Cylinder C1, Cylinder C2) {
+  Point CP1,CP2;
+  Cylinder C1C, C2C;
+
+  if (printinfo) {
+    double x, y, z;
+    fprintf(stderr,"\n\nCylinder 1\n");
+    PCoords(C1.P, F3, &x, &y, &z);
+    fprintf(stderr,"P: %g, %g, %g\n", x, y, z);
+    PCoords(C1.A, F3, &x, &y, &z);
+    fprintf(stderr,"A: %g, %g, %g\n", x, y, z);
+    PCoords(C1.B, F3, &x, &y, &z);
+    fprintf(stderr,"B: %g, %g, %g\n", x, y, z);
+    VCoords(C1.v, F3, &x, &y, &z);
+    fprintf(stderr,"v: %g, %g, %g\n", x, y, z);
+    fprintf(stderr,"r: %g\n", C1.r);
+    fprintf(stderr,"h: %g\n", C1.h);
+
+    fprintf(stderr,"\n\nCylinder 2\n");
+    PCoords(C2.P, F3, &x, &y, &z);
+    fprintf(stderr,"P: %g, %g, %g\n", x, y, z);
+    PCoords(C2.A, F3, &x, &y, &z);
+    fprintf(stderr,"A: %g, %g, %g\n", x, y, z);
+    PCoords(C2.B, F3, &x, &y, &z);
+    fprintf(stderr,"B: %g, %g, %g\n", x, y, z);
+    VCoords(C2.v, F3, &x, &y, &z);
+    fprintf(stderr,"v: %g, %g, %g\n", x, y, z);
+    fprintf(stderr,"r: %g\n", C2.r);
+    fprintf(stderr,"h: %g\n", C2.h);
+  }
+  AlignCylinders(C1,&C2);
+  if (printinfo) {
+    fprintf(stderr,"Aligned cylinders: C1.P - C2.P = ");
+    VPrintf(stderr,PPDiff(C1.P,C2.P));
+    fprintf(stderr,"  %g\n",PPDist(C1.P,C2.P));
+    fprintf(stderr,"Aligned cylinders: C1.B - C2.B = ");
+    VPrintf(stderr,PPDiff(C1.B,C2.B));
+    fprintf(stderr,"  %g\n",PPDist(C1.B,C2.B));
+  }
+  MapToCanonicalCylinder(C1,C2,&C1C,&C2C);
+  if (printinfo) {
+    fprintf(stderr,"Canonical cylinders: C1C.P - C2C.P = ");
+    VPrintf(stderr,PPDiff(C1C.P,C2C.P));
+    fprintf(stderr,"  %g\n",PPDist(C1C.P,C2C.P));
+    fprintf(stderr,"Canonical cylinders: C1C.B - C2C.B = ");
+    VPrintf(stderr,PPDiff(C1C.B,C2C.B));
+    fprintf(stderr,"  %g\n",PPDist(C1C.B,C2C.B));
+  }
+  if ( printinfo ) {
+    double x, y, z;
+    fprintf(stderr,"\n\nCylinder 1 Canonical\n");
+    PCoords(C1C.P, F3, &x, &y, &z);
+    fprintf(stderr,"P: %g, %g, %g\n", x, y, z);
+    PCoords(C1C.A, F3, &x, &y, &z);
+    fprintf(stderr,"A: %g, %g, %g\n", x, y, z);
+    PCoords(C1C.B, F3, &x, &y, &z);
+    fprintf(stderr,"B: %g, %g, %g\n", x, y, z);
+    VCoords(C1C.v, F3, &x, &y, &z);
+    fprintf(stderr,"v: %g, %g, %g\n", x, y, z);
+    fprintf(stderr,"r: %g\n", C1C.r);
+    fprintf(stderr,"h: %g\n", C1C.h);
+
+    fprintf(stderr,"\n\nCylinder 2 Canonical\n");
+    PCoords(C2C.P, F3, &x, &y, &z);
+    fprintf(stderr,"P: %g, %g, %g\n", x, y, z);
+    PCoords(C2C.A, F3, &x, &y, &z);
+    fprintf(stderr,"A: %g, %g, %g\n", x, y, z);
+    PCoords(C2C.B, F3, &x, &y, &z);
+    fprintf(stderr,"B: %g, %g, %g\n", x, y, z);
+    VCoords(C2C.v, F3, &x, &y, &z);
+    fprintf(stderr,"v: %g, %g, %g\n", x, y, z);
+    fprintf(stderr,"r: %g\n", C2C.r);
+    fprintf(stderr,"h: %g\n", C2C.h);
+  }
+  //	C1C = C1;
+  //	C2C = C2;
+
+  switch(ClosestPointsOnCylinders(C1C,C2C,&CP1,&CP2)) {
+    case -1:
+      if ( printinfo )
+        fprintf(stderr,"*** distance between closest points too large.\n");
+      return 0; // TEST: closest points are too far away
+    case 0:;
+           if ( printinfo )
+             fprintf(stderr,"Parallel axes\n");
+           // The axes are parallel.  We assume that the distance
+           // between the axes is less than C1C.r+C2C.r
+           Scalar c0,c1,c2,A1,B1,A2,B2;
+           PCoords(C1C.A,F3, &c0,&c1,&c2);
+           A1 = c2;
+           PCoords(C1C.B,F3, &c0,&c1,&c2);
+           B1 = c2;
+
+           PCoords(C2C.A,F3, &c0,&c1,&c2);
+           A2 = c2;
+           PCoords(C2C.B,F3, &c0,&c1,&c2);
+           B2 = c2;
+
+#if 0
+           if ( A1 > B1 ) {
+             if ( (A2 > A1  &&  B2 > A1) ||
+                 (A2 < B1  &&  B2 < B1)) {
+               return 0;
+             } else {
+               if ( printinfo )
+                 fprintf(stderr,"Parallel cylinders\n");
+               return 1;
+             }
+           } else {
+             if ( (A2 < A1  &&  B2 < A1) ||
+                 (A2 > B1  &&  B2 > B1)) {
+               return 0;
+             } else {
+               if ( printinfo )
+                 fprintf(stderr,"Parallel cylinders\n");
+               return 1;
+             }
+           }
+#else
+           // TEST: check that parallel cylinders overlap
+           if ( printinfo )
+             fprintf(stderr,"*** Parallel cylinders: %g %g, %g %g\n",
+                 A1,B1,A2,B2);
+           return IntervalsOverlap(A1,B1, A2,B2);
+#endif
+
+    case 1:;
+           // First check if CP's are both on cylinder segments
+           if ( printinfo )
+             fprintf(stderr,"*** General case, check if top/bottoms intersect other cylinder\n");
+           Scalar cps1,cps2;
+           if ( printinfo ) {
+             PPrintf(stderr,CP1);
+             PPrintf(stderr,CP2);
+           }
+           cps1 = PPSDist(C1C.v,CP1,C1C.P);
+           cps2 = PPSDist(C2C.v,CP2,C2C.P);
+           if ( printinfo )
+             fprintf(stderr,"cps1 %g (%g), cps2 %g (%g)\n",
+                 cps1,C1C.h,cps2,C2C.h);
+
+           // TEST: closest points inside each finite cylinder
+           // If closest point on each axis lies on inside of each finite
+           // cylinder, then there's an intersection.  This works because
+           // the line between the closest points is perpendicular to
+           // the axes and thus in the planes the two circles at the
+           // closest point on each axis.
+           if ( cps1 >= 0 && cps1 <= C1C.h &&
+               cps2 >= 0 && cps2 <= C2C.h ) {
+             if ( printinfo )
+               fprintf(stderr,"ClosestPoints lie inside each other\n");
+             return 1;
+           }
+
+           // Test perpendicular axes
+           if ( printinfo )
+             fprintf(stderr," Test for Perp axes: v1.v2 = %g\n",
+                 VVDot(C1.v,C2.v));
+           if ( fabs(VVDot(C1.v,C2.v)) < 1e-4 ) {
+             if (printinfo)
+               fprintf(stderr,"Calling IntersectCircles!\n");
+             CP1 = PVAdd(C1.P,SVMult(cps1,C1.v));
+             if ( cps1 < 0 ) {
+               CP1 = C1.A;
+             } else if ( cps1 > C1.h ) {
+               CP1 = C1.B;
+             }
+             CP2 = PVAdd(C2.P,SVMult(cps2,C2.v));
+             if ( cps2 < 0 ) {
+               CP2 = C2.A;
+             } else if ( cps2 > C2.h ) {
+               CP2 = C2.B;
+             }
+             return IntersectCircles(CP1,VDual(C1.v),C1.r,
+                 CP2,VDual(C2.v),C2.r);
+           }
+
+           if (printinfo)
+             fprintf(stderr,"NOT calling IntersectCircles\n");
+
+           // Now, intersect the top and bottom of each cylinder with
+           // the other ellipse
+           //		S3dCircle(C1C.A,C1C.v,C1C.r);
+           //		S3dCircle(C1C.B,C1C.v,C1C.r);
+           Intersection I1B; I1B = ComputeIntersection(C1C.A,C1C.v,C1C.r, C2C);
+           Intersection I1M; //I1M = ComputeIntersection(PPac(C1C.A,C1C.B,0.5),C1C.v,C1C.r, C2C);
+           Intersection I1T; I1T = ComputeIntersection(C1C.B,C1C.v,C1C.r, C2C);
+
+           if ( prints3d ) {
+             S3dDisk(C1.A,C1.v,C1.r*3);
+             S3dDisk(C1.B,C1.v,C1.r*3);
+           }
+
+           if (  printinfo ) {
+             fprintf(stderr,"I1B hit: %d %g to %g\n",I1B.hitmiss,I1B.a,I1B.b);
+             VPrintf(stderr,C2C.v);
+             PPrintf(stderr,C2C.P);
+           }
+
+           if ( printinfo ) {
+             fprintf(stderr,"I1T hit: %d %g to %g\n",I1T.hitmiss,I1T.a,I1T.b);
+             VPrintf(stderr,C2C.v);
+             PPrintf(stderr,C2C.P);
+           }
+           /* moved below for debugging 
+           // If either C1's top or bottom intersect C2, then we have a hit
+           if ( I1B.hitmiss && IntervalsOverlap(I1B.a,I1B.b, 0., C2.h) ) {
+           return 1;
+           }
+           if ( I1T.hitmiss && IntervalsOverlap(I1T.a,I1T.b, 0., C2.h) ) {
+           return 1;
+           }
+           */
+
+           Cylinder C1D,C2D;
+           MapToCanonicalCylinder(C2,C1,&C2D,&C1D);
+           Intersection I2B; I2B = ComputeIntersection(C2D.A,C2D.v,C2D.r, C1D);
+           Intersection I2M; //I2M = ComputeIntersection(PPac(C2D.A,C2D.B,0.5),C1C.v,C1C.r, C2C);
+           Intersection I2T; I2T = ComputeIntersection(C2D.B,C2D.v,C2D.r, C1D);
+
+           if ( prints3d ) {
+             S3dDisk(C2.A,C2.v,C2.r*3);
+             S3dDisk(C2.B,C2.v,C2.r*3);
+           }
+
+           if ( printinfo )
+             fprintf(stderr,"Intersection 2* hitmiss: %d %d\n",I2B.hitmiss,I2T.hitmiss);
+
+
+           if ( printinfo ) {
+             fprintf(stderr,"I2B hit: %d %g to %g\n",I2B.hitmiss, I2B.a,I2B.b);
+             VPrintf(stderr,C1.v);
+             PPrintf(stderr,C1.P);
+           }
+           if ( printinfo ) {
+             fprintf(stderr,"I2T hit: %d %g to %g\n",I2T.hitmiss,I2T.a,I2T.b);
+             VPrintf(stderr,C1.v);
+             PPrintf(stderr,C1.P);
+           }
+
+           /* moved here for debugging */
+           if ( I1B.hitmiss && IntervalsOverlap(I1B.a,I1B.b, 0., C2.h) ) {
+             if ( printinfo ) 
+               fprintf(stderr," I1B overlaps\n");
+             return 1;
+           }
+
+           if (0) {
+             if ( I1M.hitmiss && IntervalsOverlap(I1M.a,I1M.b, 0., C2.h) ) {
+               if ( printinfo ) 
+                 fprintf(stderr," I1M overlaps\n");
+               return 1;
+             }
+           }
+
+           if ( I1T.hitmiss && IntervalsOverlap(I1T.a,I1T.b, 0., C2.h) ) {
+             if ( printinfo ) 
+               fprintf(stderr," I1T overlaps\n");
+             return 1;
+           }
+           /* end move for debugging */
+
+           // If either C2's top or bottom intersect C1, then we have a hit
+           if ( I2B.hitmiss && IntervalsOverlap(I2B.a,I2B.b, 0., C1.h) ) {
+             if ( printinfo ) 
+               fprintf(stderr," I2B overlaps\n");
+             return 1;
+           }
+           if (0) {
+             if ( I2M.hitmiss && IntervalsOverlap(I2M.a,I2M.b, 0., C2.h) ) {
+               if ( printinfo ) 
+                 fprintf(stderr," I2M overlaps\n");
+               return 1;
+             }
+           }
+
+           if ( I2T.hitmiss && IntervalsOverlap(I2T.a,I2T.b, 0., C1.h) ) {
+             if ( printinfo ) 
+               fprintf(stderr," I2T overlaps\n");
+             return 1;
+           }
+
+  }
+  return 0;
+}
+
+
 
 void AssignColors(UnionFindNode UF[], int nc) {
   int i; int c=0;
