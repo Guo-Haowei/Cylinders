@@ -58,7 +58,6 @@ void DisplayManager::createDisplay() {
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
-  glDisable(GL_CULL_FACE);
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
 }
