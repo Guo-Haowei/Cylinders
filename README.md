@@ -83,7 +83,7 @@ Scroll wheel in general change the depth.<br />
 Hold right button to translate selected cylinder.<br />
 Hold left button to rotate selected cylinder.<br />
 
-## Screen shots
+## Screenshots
 ![alt text](https://github.com/Guo-Haowei/Cylinders/blob/master/ScreenShot.png)
 
 ## Features
